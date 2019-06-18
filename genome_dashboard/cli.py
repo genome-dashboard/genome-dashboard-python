@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """Console script for genome_dashboard."""
+
 import sys
 import click
 
