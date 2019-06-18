@@ -4,4 +4,4 @@
 
 
 def hello():
-    print "Hello from the genome_dashboard.core.py file."
+    print "Hello from genome_dashboard.core.py."
