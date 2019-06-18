@@ -34,10 +34,8 @@ with open('HISTORY.rst') as history_file:
 # Edit these values to reflect yourpackage details.
 
 module_name = 'genome_dashboard'
-current_version = '0.0.15'
+current_version = '0.0.16'
 module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
-module_includes = ['hptools', 'gdash']
-module_excludes = ['contrib', 'docs', 'tests']
 module_python = '>=2.7'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
@@ -47,10 +45,15 @@ module_long_description_content_type = 'text/x-rst'
 module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genome-dashboard'
 module_keywords = 'python biology genomics'
-requirements = ['Click>=6.0'] # , 'peppercorn'
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
+module_includes = [
+    'genome_dashboard.hptools',
+    'genome_dashboard.gdash',
+]
+module_excludes = ['contrib', 'docs', 'tests']
+requirements = ['Click>=6.0'] # , 'peppercorn'
 setup_requirements = [ ]
 test_requirements = [ ]
 
