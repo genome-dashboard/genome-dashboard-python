@@ -48,8 +48,8 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'Genome Dashboard'
-copyright = u"2019, My Full Name"
-author = u"My Full Name"
+copyright = u"2019, Zilong Li, Ran Sun, Thomas C. Bishop"
+author = u"Zilong Li, Ran Sun, Thomas C. Bishop"
 
 # The version info for the project you're documenting, acts as replacement
 # for |version| and |release|, also used in various other places throughout
@@ -158,6 +158,3 @@ texinfo_documents = [
      'One line description of project.',
      'Miscellaneous'),
 ]
-
-
-

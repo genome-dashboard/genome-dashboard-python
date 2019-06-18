@@ -5,9 +5,12 @@ Credits
 Development Lead
 ----------------
 
-* My Full Name <genome.dashboard@gmail.com>
+* Genome Dashboard <genome.dashboard@gmail.com>
+* Zilong Li <zli007@latech.edu>
+* Ran Sun <rsu007@latech.edu>
+* Thomas C. Bishop <bishop@latech.edu>
 
 Contributors
 ------------
 
-None yet. Why not be the first?
+* John Gentle  <taoteg@gmail.com>

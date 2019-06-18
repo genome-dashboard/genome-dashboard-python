@@ -1,10 +1,20 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""The setup script."""
+"""
+A setuptools based setup module.
+See:
+https://packaging.python.org/guides/distributing-packages-using-setuptools/
+https://github.com/pypa/sampleproject
+"""
 
+# Always use setuptools over distutils.
 from setuptools import setup, find_packages
 from os import path
+# io.open is needed for projects that support Python 2.7
+# It ensures open() defaults to text mode with universal newlines,
+# and accepts an argument to specify the text encoding
+# Python 3 only projects can skip this import
 from io import open
 
 
@@ -24,7 +34,7 @@ with open('HISTORY.rst') as history_file:
 # Edit these values to reflect yourpackage details.
 
 module_name = 'genome_dashboard'
-current_version = '0.0.6'
+current_version = '0.0.7'
 module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
 module_includes = ['genome_dashboard']
 module_excludes = ['contrib', 'docs', 'tests']
