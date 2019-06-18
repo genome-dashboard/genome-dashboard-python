@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""HPTools module."""
+"""hptools module."""
 
 def hello():
     print "Hello from genome_dashboard.hptools.hptools.py."

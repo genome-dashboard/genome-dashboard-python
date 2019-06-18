@@ -2,8 +2,6 @@
 
 """Top-level package for Genome Dashboard"""
 
-import genome_dashboard.hptools as hp
-import genome_dashboard.gdash as gdash
 import core
 
 
