@@ -100,3 +100,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# cruft and testing
+genome_dashboard/__init__.py.old
