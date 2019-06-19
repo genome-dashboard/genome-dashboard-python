@@ -17,6 +17,6 @@ __email__ = 'genome.dashboard@gmail.com'
 # from . import hptools
 # from . import gdash
 
-from . import core as gene
-from .hptools import core as hpt
-from .dashboard import core as dash
+from . import gdash as g
+from .hpt import hpt as g.hpt
+from .ui import ui as g.ui
