@@ -63,7 +63,7 @@ with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
 
 with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
     description = f.read()
-    print(module_description)
+    print(description)
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as g:
     readme = g.read()
