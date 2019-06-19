@@ -21,42 +21,65 @@ from io import open
 
 print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 
-# here = path.abspath(path.dirname(__file__))
 
-# with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-#     long_description = f.read()
+"""
+Using RST - Failing.
+"""
+"""
+print("\n... PARSING RST FILES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # Get the current version from a single source of truth.
-# with open('VERSION.rst') as version_file:
-    # module_version = version_file.read()
-    # print(module_version)
-    # print("----\n")
-
+with open('VERSION') as version_file:
+    current_version = str(version_file.read())
+    # print(current_version)
 
 with open('DESCRIPTION.rst') as description_file:
-    module_description = description_file.read()
+    module_description = str(description_file.read())
     # print(module_description)
-    # print("----\n")
-
 
 with open('README.rst') as readme_file:
-    readme = readme_file.read()
+    readme = str(readme_file.read())
     # print(readme)
-    # print("----\n")
-
 
 with open('HISTORY.rst') as history_file:
-    history = history_file.read()
+    history = str(history_file.read())
     # print(history)
-    # print("----\n")
+"""
+
+
+"""
+Using MD...
+"""
+print("\n... PARSING MD FILES ...\n")
+
+here = path.abspath(path.dirname(__file__))
+
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
+# Get the current version from a single source of truth.
+with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
+    current_version = e.read()
+    print(current_version)
+
+with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
+    description = f.read()
+    print(module_description)
+
+with open(path.join(here, 'README.md'), encoding='utf-8') as g:
+    readme = g.read()
+    # print(readme)
+
+with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as h:
+    history = h.read()
+    # print(history)
 
 
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-module_version = '0.0.25'
+# module_version = '0.0.25'
+module_version = current_version   # Trying to get external kfiles to work properly. Switching from RST to MD.
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
@@ -64,11 +87,10 @@ module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genome-dashboard'
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
-
+module_description = description
 # 'text/plain', 'text/x-rst', or 'text/markdown'
 module_long_description_content_type = 'text/x-rst'
 module_long_description = readme + '\n\n' + history
-
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
@@ -137,8 +159,8 @@ print("\n........ BUILDING PACKAGE ........\n")
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name=module_name,
-    version=str(module_version),
-    description=str(module_description),
+    version=module_version,
+    description=module_description,
     packages=find_packages(include=module_includes, exclude=module_excludes),
     python_requires=module_python,
     author=module_authors,
