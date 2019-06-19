@@ -23,6 +23,14 @@ from io import open
 # with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 #     long_description = f.read()
 
+# Get the current version from a single source of truth.
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
+with open('VERSION.rst') as version_file:
+    current_version = version_file.read()
+
+with open('DESCRIPTION.rst') as description_file:
+    module_description = description_file.read()
+
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -31,10 +39,11 @@ with open('HISTORY.rst') as history_file:
 
 
 # Configuration for package when publishing.
-# Edit these values to reflect yourpackage details.
-current_version = '0.0.24'    # -->>> !!!! IMPORTANT: BUMP VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  !!!! <<<--
+# Edit these values to reflect your package details.
+
+module_version = current_version
 module_name = 'genomedashboard'     # Using Python convention of a hyphen in package name but an underscore in build name used during installation.
-module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
+# module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
 module_python = '>=2.7'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
@@ -47,15 +56,28 @@ module_keywords = 'python biology genomics'
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
+
 module_includes = [
+    'genomedashboard',
     'genomedashboard.gdash',
     'genomedashboard.htp',
     'genomedashboard.ui',
 ]
-module_excludes = ['contrib', 'docs', 'tests']
-requirements = ['Click>=6.0'] # , 'peppercorn'
-setup_requirements = [ ]
-test_requirements = [ ]
+
+module_excludes = [
+    'contrib',
+    'docs',
+    'tests'
+
+]
+module_install_requires = [
+    'Click>=6.0',
+    'peppercorn'
+]
+
+module_setup_requires = [ ]
+
+module_test_requires = [ ]
 
 module_classifiers = [
     'Development Status :: 2 - Pre-Alpha',
@@ -96,7 +118,7 @@ module_extras_require = {
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name=module_name,
-    version=current_version,
+    version=module_version,
     description=module_description,
     packages=find_packages(include=module_includes, exclude=module_excludes),
     python_requires=module_python,
@@ -108,13 +130,13 @@ setup(
     url=module_url,
     classifiers=module_classifiers,
     keywords=module_keywords,
-    install_requires=requirements,
+    install_requires=module_install_requires,
     extras_require=module_extras_require,
     package_data=module_package_data,
     entry_points=module_entry_points,
     include_package_data=module_data_included,
     zip_safe=module_enable_compression,
-    setup_requires=setup_requirements,
+    setup_requires=module_setup_requires,
     test_suite=module_test_suite,
-    tests_require=test_requirements,
+    tests_require=module_test_requires,
 )

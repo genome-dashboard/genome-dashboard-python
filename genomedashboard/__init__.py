@@ -2,9 +2,16 @@
 
 """Top-level package for Genome Dashboard"""
 
-__author__ = """Zilong Li, Ran Sun, Thomas C. Bishop"""
-__email__ = 'genome.dashboard@gmail.com'
 
-
-
+from io import open
 from . import gdash as g
+
+
+# Get the current version from a single source of truth.
+with open('VERSION.rst') as version_file:
+    current_version = version_file.read()
+
+
+__version__ =  current_version
+__author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
+__email__ = 'genome.dashboard@gmail.com'
