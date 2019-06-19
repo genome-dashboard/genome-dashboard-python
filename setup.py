@@ -80,8 +80,8 @@ module_python = '>=2.7'
 module_description = description_text
 # 'text/plain', 'text/x-rst', or 'text/markdown'
 module_long_description_content_type = 'text/x-rst'
-module_long_description = readme + '\n' + history
-# module_long_description = long_description_text
+# module_long_description = readme + '\n\n' + history
+module_long_description = readme
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
@@ -154,8 +154,8 @@ setup(
     python_requires=module_python,
     author=module_authors,
     author_email=module_authors_email,
-    long_description_content_type=module_long_description_content_type,
     long_description=module_long_description,
+    long_description_content_type=module_long_description_content_type,
     license=module_license,
     url=module_url,
     classifiers=module_classifiers,
