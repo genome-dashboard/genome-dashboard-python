@@ -25,6 +25,6 @@ from . import genomedashboard
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # __version__ =  str(current_version)
 
-__version__ = '0.0.30'
+__version__ = '0.0.31'
 __author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 __email__ = 'genome.dashboard@gmail.com'

@@ -6,11 +6,11 @@ genomedashboard
 .. image:: https://img.shields.io/pypi/v/genomedashboard.svg
         :target: https://pypi.python.org/pypi/genomedashboard
 
-.. image:: https://img.shields.io/travis/taoteg/genomedashboard.svg
-        :target: https://travis-ci.org/taoteg/genomedashboard
+.. image:: https://img.shields.io/travis/genomeDashboard/genomedashboard.svg
+        :target: https://travis-ci.org/genomeDashboard/genome-dashboard
 
-.. image:: https://readthedocs.org/projects/genomedashboard/badge/?version=latest
-        :target: https://genomedashboard.readthedocs.io/en/latest/?badge=latest
+.. image:: https://readthedocs.org/projects/genome-dashboard/badge/?version=latest
+        :target: https://genome-dashboard.readthedocs.io/en/latest/?badge=latest
         :alt: Documentation Status
 
 
@@ -18,7 +18,7 @@ Genome Dashboard is the logic behind a web-based prototype of a genomics dashboa
 
 
 * Free software: MIT license
-* Documentation: https://genomedashboard.readthedocs.io.
+* Documentation: https://genome-dashboard.readthedocs.io.
 
 
 Features
