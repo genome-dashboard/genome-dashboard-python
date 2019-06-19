@@ -16,7 +16,6 @@ from os import path
 # and accepts an argument to specify the text encoding
 # Python 3 only projects can skip this import
 from io import open
-# import cmarkgfm   # For markdown.
 
 
 print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
@@ -93,7 +92,6 @@ module_test_suite = 'tests'
 
 module_includes = [
     'genomedashboard',
-    'genomedashboard.gdash',
     'genomedashboard.htp',
     'genomedashboard.ui',
 ]
@@ -107,7 +105,6 @@ module_excludes = [
 module_install_requires = [
     'Click>=6.0',
     'peppercorn',
-    # 'cmarkgfm',
 ]
 
 module_setup_requires = [ ]
