@@ -3,4 +3,4 @@
 """hptools module."""
 
 def hello():
-    print "Hello from genome_dashboard.hptools.hptools.py."
+    print "Hello from genome_dashboard.hptools.core.py."

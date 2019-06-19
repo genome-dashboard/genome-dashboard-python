@@ -32,8 +32,8 @@ with open('HISTORY.rst') as history_file:
 
 # Configuration for package when publishing.
 # Edit these values to reflect yourpackage details.
-current_version = '0.0.17'    # -->>> !!!! IMPORTANT: BUMP VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  !!!! <<<--
-module_name = 'genome_dashboard'
+current_version = '0.0.19'    # -->>> !!!! IMPORTANT: BUMP VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  !!!! <<<--
+module_name = 'genome_dashboard'     # Using Python convention of a hyphen in package name but an underscore in build name used during installation.
 module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
 module_python = '>=2.7'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -48,6 +48,7 @@ module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
 module_includes = [
+    'genome_dashboard.core',
     'genome_dashboard.hptools',
     'genome_dashboard.gdash',
 ]
@@ -67,11 +68,11 @@ module_classifiers = [
     'Natural Language :: English',
     "Programming Language :: Python :: 2",
     'Programming Language :: Python :: 2.7',
-    # 'Programming Language :: Python :: 3',
-    # 'Programming Language :: Python :: 3.4',
-    # 'Programming Language :: Python :: 3.5',
-    # 'Programming Language :: Python :: 3.6',
-    # 'Programming Language :: Python :: 3.7',
+    'Programming Language :: Python :: 3',
+    'Programming Language :: Python :: 3.4',
+    'Programming Language :: Python :: 3.5',
+    'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.7',
 ]
 
 module_entry_points = {
@@ -81,7 +82,8 @@ module_entry_points = {
 }
 
 module_package_data = {
-    'genome_dashboard': ['package_data.dat'],
+    '': ['*.txt'],
+    'genome_dashboard': ['data/*.dat'],
 }
 
 module_extras_require = {
