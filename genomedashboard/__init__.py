@@ -9,7 +9,7 @@ from . import gdash as g
 
 
 # Get the current version from a single source of truth.
-# with open('VERSION') as version_file:
+# with open('../VERSION') as version_file:
 #     current_version = str(version_file.read())
 #     print(current_version)
 
