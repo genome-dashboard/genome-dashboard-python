@@ -78,10 +78,13 @@ module_url = 'https://github.com/genomeDashboard/genome-dashboard'
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
 module_description = description_text
+
 # 'text/plain', 'text/x-rst', or 'text/markdown'
 module_long_description_content_type = 'text/x-rst'
 # module_long_description = readme + '\n\n' + history
-module_long_description = readme
+# module_long_description = readme
+module_long_description = "THIS DOESNT WORK IN BUILD"
+
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
