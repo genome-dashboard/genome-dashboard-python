@@ -7,12 +7,12 @@
 import unittest
 from click.testing import CliRunner
 
-from test_genomedashboard import test_genomedashboard
-from test_genomedashboard import cli
+from genomedashboard import genomedashboard
+from genomedashboard import cli
 
 
 class TestGenomedashboard(unittest.TestCase):
-    """Tests for `test_genomedashboard` package."""
+    """Tests for `genomedashboard` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""
@@ -28,7 +28,7 @@ class TestGenomedashboard(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main)
         assert result.exit_code == 0
-        assert 'test_genomedashboard.cli.main' in result.output
+        assert 'genomedashboard.cli.main' in result.output
         help_result = runner.invoke(cli.main, ['--help'])
         assert help_result.exit_code == 0
         assert '--help  Show this message and exit.' in help_result.output

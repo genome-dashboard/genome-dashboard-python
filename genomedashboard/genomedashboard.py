@@ -8,4 +8,4 @@ from .ui import ui as ui
 
 
 def hello():
-    print("Hello from genomedashboard.gdash.py.")
+    print("Hello from genomedashboard.genomedashboard.py.")
