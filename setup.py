@@ -34,9 +34,8 @@ here = path.abspath(path.dirname(__file__))
 #     current_version = str(version_file.read())
 
 print("\n... PARSING VERSION MD ...\n")
-with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
-    current_version = e.read()
-
+with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+    current_version = f.read()
 
 print("\n... PARSING DESCRIPTION RST ...\n")
 with open('DESCRIPTION.rst') as description_file:
@@ -46,6 +45,9 @@ with open('DESCRIPTION.rst') as description_file:
 # with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
 #     description_text = f.read()
 
+print("\n... PARSING LONG_DESCRIPTION MD ...\n")
+with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
+    long_description_text = f.read()
 
 print("\n... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
@@ -53,9 +55,8 @@ with open('README.rst') as readme_file:
     # readme = str(readme_file.read())
 
 # print("\n... PARSING README MD ...\n")
-# with open(path.join(here, 'README.md'), encoding='utf-8') as g:
-#     readme = g.read()
-
+# with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+#     readme = f.read()
 
 print("\n... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
@@ -63,8 +64,8 @@ with open('HISTORY.rst') as history_file:
     # history = str(history_file.read())
 
 # print("\n... PARSING HISTORY MD ...\n")
-# with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as h:
-#     history = h.read()
+# with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
+#     history = f.read()
 
 
 print("\n........ ASSIGNING CONFIGURATION VALUES ........\n")
@@ -83,8 +84,9 @@ module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
 module_description = description_text
 # 'text/plain', 'text/x-rst', or 'text/markdown'
-# module_long_description_content_type = 'text/x-rst'
-module_long_description = readme + '\n' + history
+module_long_description_content_type = 'text/markdown'
+# module_long_description = readme + '\n' + history
+module_long_description = long_description_text
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
