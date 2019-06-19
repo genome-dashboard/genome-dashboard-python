@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-"""Console script for genome_dashboard."""
+"""Console script for genomedashboard."""
 
 import sys
 import click
@@ -8,9 +8,9 @@ import click
 
 @click.command()
 def main(args=None):
-    """Console script for genome_dashboard."""
+    """Console script for genomedashboard."""
     click.echo("Replace this message by putting your code into "
-               "genome_dashboard.cli.main")
+               "genomedashboard.cli.main")
     click.echo("See click documentation at http://click.pocoo.org/")
     return 0
 

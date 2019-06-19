@@ -3,17 +3,15 @@ Genome Dashboard
 ================
 
 
-.. image:: https://img.shields.io/pypi/v/genome_dashboard.svg
-        :target: https://pypi.python.org/pypi/genome_dashboard
+.. image:: https://img.shields.io/pypi/v/genomedashboard.svg
+    :target: https://pypi.python.org/pypi/genomedashboard
 
-.. image:: https://img.shields.io/travis/genomeDashboard/genome_dashboard.svg
-        :target: https://travis-ci.org/genomeDashboard/genome_dashboard
+.. image:: https://img.shields.io/travis/genomeDashboard/genomedashboard.svg
+    :target: https://travis-ci.org/genomeDashboard/genomedashboard
 
 .. image:: https://readthedocs.org/projects/genome-dashboard/badge/?version=latest
-        :target: https://genome-dashboard.readthedocs.io/en/latest/?badge=latest
-        :alt: Documentation Status
-
-
+    :target: https://genome-dashboard.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
 
 
 Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.

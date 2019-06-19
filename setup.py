@@ -18,44 +18,98 @@ from os import path
 from io import open
 
 
-# here = path.abspath(path.dirname(__file__))
+print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 
-# with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-#     long_description = f.read()
+print("\n... PARSING CONFIG FILES ...\n")
 
+# For Markdown.
+here = path.abspath(path.dirname(__file__))
+
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
+# Get the current version from a single source of truth.
+
+# print("\n... PARSING VERSION RST ...\n")
+# with open('VERSION') as version_file:
+#     current_version = str(version_file.read())
+
+print("\n... PARSING VERSION MD ...\n")
+with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+    current_version = f.read()
+
+print("\n... PARSING DESCRIPTION RST ...\n")
+with open('DESCRIPTION.rst') as description_file:
+    description_text = str(description_file.read())
+
+# print("\n... PARSING DESCRIPTION MD ...\n")
+# with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
+#     description_text = f.read()
+
+print("\n... PARSING LONG_DESCRIPTION MD ...\n")
+with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
+    long_description_text = f.read()
+
+print("\n... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
     readme = readme_file.read()
+    # readme = str(readme_file.read())
 
+# print("\n... PARSING README MD ...\n")
+# with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+#     readme = f.read()
+
+print("\n... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
+    # history = str(history_file.read())
 
+# print("\n... PARSING HISTORY MD ...\n")
+# with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
+#     history = f.read()
+
+
+print("\n........ ASSIGNING CONFIGURATION VALUES ........\n")
 
 # Configuration for package when publishing.
-# Edit these values to reflect yourpackage details.
-current_version = '0.0.22'    # -->>> !!!! IMPORTANT: BUMP VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  !!!! <<<--
-module_name = 'genome_dashboard'     # Using Python convention of a hyphen in package name but an underscore in build name used during installation.
-module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
-module_python = '>=2.7'
+# Edit these values to reflect your package details.
+
+# module_version = 'M.m.p'
+module_version = current_version
+module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
-module_long_description = readme + '\n\n' + history
-# 'text/plain', 'text/x-rst', or 'text/markdown'
-module_long_description_content_type = 'text/x-rst'
 module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genome-dashboard'
-module_keywords = 'python biology genomics'
+module_keywords = 'python biology genomics genome dashboard'
+module_python = '>=2.7'
+module_description = description_text
+# 'text/plain', 'text/x-rst', or 'text/markdown'
+module_long_description_content_type = 'text/markdown'
+# module_long_description = readme + '\n' + history
+module_long_description = long_description_text
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
+
 module_includes = [
-    'genome_dashboard.gdash',
-    'genome_dashboard.htp',
-    'genome_dashboard.ui',
+    'genomedashboard',
+    'genomedashboard.htp',
+    'genomedashboard.ui',
 ]
-module_excludes = ['contrib', 'docs', 'tests']
-requirements = ['Click>=6.0'] # , 'peppercorn'
-setup_requirements = [ ]
-test_requirements = [ ]
+
+module_excludes = [
+    'contrib',
+    'docs',
+    'tests'
+
+]
+module_install_requires = [
+    'Click>=6.0',
+    'peppercorn',
+]
+
+module_setup_requires = [ ]
+
+module_test_requires = [ ]
 
 module_classifiers = [
     'Development Status :: 2 - Pre-Alpha',
@@ -77,13 +131,13 @@ module_classifiers = [
 
 module_entry_points = {
     'console_scripts': [
-        'genome_dashboard=genome_dashboard.cli:main',
+        'genomedashboard=genomedashboard.cli:main',
     ],
 }
 
 module_package_data = {
     '': ['*.txt'],
-    'genome_dashboard': ['data/*.dat'],
+    'genomedashboard': ['data/*.dat'],
 }
 
 module_extras_require = {
@@ -92,29 +146,33 @@ module_extras_require = {
 }
 
 
+print("\n........ BUILDING PACKAGE ........\n")
+
 # Setup method to publish package.
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name=module_name,
-    version=current_version,
+    version=module_version,
     description=module_description,
     packages=find_packages(include=module_includes, exclude=module_excludes),
     python_requires=module_python,
     author=module_authors,
     author_email=module_authors_email,
-    long_description=module_long_description,
     long_description_content_type=module_long_description_content_type,
+    long_description=module_long_description,
     license=module_license,
     url=module_url,
     classifiers=module_classifiers,
     keywords=module_keywords,
-    install_requires=requirements,
+    install_requires=module_install_requires,
     extras_require=module_extras_require,
     package_data=module_package_data,
     entry_points=module_entry_points,
     include_package_data=module_data_included,
     zip_safe=module_enable_compression,
-    setup_requires=setup_requirements,
+    setup_requires=module_setup_requires,
     test_suite=module_test_suite,
-    tests_require=test_requirements,
+    tests_require=module_test_requires,
 )
+
+print("\n>>>> PACKAGE SETUP FINISHED <<<<\n")

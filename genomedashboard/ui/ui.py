@@ -3,4 +3,4 @@
 """ui module."""
 
 def hello():
-    print("Hello from genome_dashboard.ui.ui.py.")
+    print("Hello from genomedashboard.ui.ui.py.")
