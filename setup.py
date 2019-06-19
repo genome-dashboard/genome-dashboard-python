@@ -23,7 +23,7 @@ print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 print("\n... PARSING CONFIG FILES ...\n")
 
 # For Markdown.
-here = path.abspath(path.dirname(__file__))
+# here = path.abspath(path.dirname(__file__))
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # Get the current version from a single source of truth.
@@ -32,9 +32,9 @@ here = path.abspath(path.dirname(__file__))
 # with open('VERSION') as version_file:
 #     current_version = str(version_file.read())
 
-print("\n... PARSING VERSION MD ...\n")
-with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
-    current_version = str(f.read())
+# print("\n... PARSING VERSION MD ...\n")
+# with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+#     current_version = str(f.read())
 
 print("\n... PARSING DESCRIPTION RST ...\n")
 with open('DESCRIPTION.rst') as description_file:
@@ -44,9 +44,9 @@ with open('DESCRIPTION.rst') as description_file:
 # with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
 #     description_text = f.read()
 
-print("\n... PARSING LONG_DESCRIPTION MD ...\n")
-with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
-    long_description_text = f.read()
+# print("\n... PARSING LONG_DESCRIPTION MD ...\n")
+# with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
+#     long_description_text = f.read()
 
 print("\n... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
@@ -73,7 +73,7 @@ print("\n........ ASSIGNING CONFIGURATION VALUES ........\n")
 # Edit these values to reflect your package details.
 
 # module_version = 'M.m.p'
-module_version = current_version
+module_version = '0.0.30'
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
@@ -83,9 +83,9 @@ module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
 module_description = description_text
 # 'text/plain', 'text/x-rst', or 'text/markdown'
-module_long_description_content_type = 'text/markdown'
-# module_long_description = readme + '\n' + history
-module_long_description = long_description_text
+module_long_description_content_type = 'text/x-rst'
+module_long_description = readme + '\n' + history
+# module_long_description = long_description_text
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'

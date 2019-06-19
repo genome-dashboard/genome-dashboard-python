@@ -1,18 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-"""Tests for `genome_dashboard` package."""
+"""Tests for `genomedashboard` package."""
 
 
 import unittest
 from click.testing import CliRunner
 
-from genome_dashboard import genome_dashboard
-from genome_dashboard import cli
+from genomedashboard import genomedashboard
+from genomedashboard import cli
 
 
-class TestGenome_dashboard(unittest.TestCase):
-    """Tests for `genome_dashboard` package."""
+class TestGenomedashboard(unittest.TestCase):
+    """Tests for `genomedashboard` package."""
 
     def setUp(self):
         """Set up test fixtures, if any."""
@@ -28,7 +28,7 @@ class TestGenome_dashboard(unittest.TestCase):
         runner = CliRunner()
         result = runner.invoke(cli.main)
         assert result.exit_code == 0
-        assert 'genome_dashboard.cli.main' in result.output
+        assert 'genomedashboard.cli.main' in result.output
         help_result = runner.invoke(cli.main, ['--help'])
         assert help_result.exit_code == 0
         assert '--help  Show this message and exit.' in help_result.output
