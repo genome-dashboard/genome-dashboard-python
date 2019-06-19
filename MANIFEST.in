@@ -1,4 +1,3 @@
-include VERSION.rst
 include DESCRIPTION.rst
 include AUTHORS.rst
 include CONTRIBUTING.rst

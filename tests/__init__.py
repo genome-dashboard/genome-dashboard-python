@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-"""Unit test package for genomedashboard."""
+"""Unit test package for test_genomedashboard."""
