@@ -18,9 +18,21 @@ from os import path
 from io import open
 
 
-print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
+print("\n>>> STARTING PACKAGE SETUP <<<\n")
 
 print("\n... PARSING CONFIG FILES ...\n")
+
+print("\n... PARSING DESCRIPTION RST ...\n")
+with open('DESCRIPTION.rst') as description_file:
+    description_text = str(description_file.read())
+
+print("\n... PARSING README RST ...\n")
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+
+print("\n... PARSING HISTORY RST ...\n")
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
 
 # For Markdown.
 # here = path.abspath(path.dirname(__file__))
@@ -36,10 +48,6 @@ print("\n... PARSING CONFIG FILES ...\n")
 # with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
 #     current_version = str(f.read())
 
-print("\n... PARSING DESCRIPTION RST ...\n")
-with open('DESCRIPTION.rst') as description_file:
-    description_text = str(description_file.read())
-
 # print("\n... PARSING DESCRIPTION MD ...\n")
 # with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
 #     description_text = f.read()
@@ -48,31 +56,19 @@ with open('DESCRIPTION.rst') as description_file:
 # with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
 #     long_description_text = f.read()
 
-print("\n... PARSING README RST ...\n")
-with open('README.rst') as readme_file:
-    readme = readme_file.read()
-    # readme = str(readme_file.read())
-
 # print("\n... PARSING README MD ...\n")
 # with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 #     readme = f.read()
-
-print("\n... PARSING HISTORY RST ...\n")
-with open('HISTORY.rst') as history_file:
-    history = history_file.read()
-    # history = str(history_file.read())
 
 # print("\n... PARSING HISTORY MD ...\n")
 # with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
 #     history = f.read()
 
-
-print("\n........ ASSIGNING CONFIGURATION VALUES ........\n")
+print("\n... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
-
-# module_version = 'M.m.p'
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 module_version = '0.0.30'
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -146,7 +142,7 @@ module_extras_require = {
 }
 
 
-print("\n........ BUILDING PACKAGE ........\n")
+print("\n... BUILDING PACKAGE ...\n")
 
 # Setup method to publish package.
 # DO NOT EDIT BELOW THIS LINE.
@@ -175,4 +171,4 @@ setup(
     tests_require=module_test_requires,
 )
 
-print("\n>>>> PACKAGE SETUP FINISHED <<<<\n")
+print("\n>>> PACKAGE SETUP FINISHED <<<\n")

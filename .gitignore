@@ -102,3 +102,4 @@ ENV/
 .mypy_cache/
 
 # cruft and testing
+scratch/
