@@ -16,43 +16,48 @@ from os import path
 # and accepts an argument to specify the text encoding
 # Python 3 only projects can skip this import
 from io import open
+# import cmarkgfm   # For markdown.
 
+
+print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 
 # here = path.abspath(path.dirname(__file__))
 
 # with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 #     long_description = f.read()
 
-# Get the current version from a single source of truth.
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-with open('VERSION.rst') as version_file:
-    module_version = version_file.read()
-    print(module_version)
-    print("----\n")
+# Get the current version from a single source of truth.
+# with open('VERSION.rst') as version_file:
+    # module_version = version_file.read()
+    # print(module_version)
+    # print("----\n")
 
 
 with open('DESCRIPTION.rst') as description_file:
     module_description = description_file.read()
-    print(module_description)
-    print("----\n")
+    # print(module_description)
+    # print("----\n")
 
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
-    print(readme)
-    print("----\n")
+    # print(readme)
+    # print("----\n")
 
 
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
-    print(history)
-    print("----\n")
+    # print(history)
+    # print("----\n")
 
 
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 
-module_name = 'genomedashboard'     # Using Python convention of a hyphen in package name but an underscore in build name used during installation.
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
+module_version = '0.0.25'
+module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
 module_license = "MIT license"
@@ -83,7 +88,8 @@ module_excludes = [
 ]
 module_install_requires = [
     'Click>=6.0',
-    'peppercorn'
+    'peppercorn',
+    # 'cmarkgfm',
 ]
 
 module_setup_requires = [ ]
@@ -125,12 +131,14 @@ module_extras_require = {
 }
 
 
+print("\n........ BUILDING PACKAGE ........\n")
+
 # Setup method to publish package.
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name=module_name,
-    version=module_version,
-    description=module_description,
+    version=str(module_version),
+    description=str(module_description),
     packages=find_packages(include=module_includes, exclude=module_excludes),
     python_requires=module_python,
     author=module_authors,
@@ -151,3 +159,5 @@ setup(
     test_suite=module_test_suite,
     tests_require=module_test_requires,
 )
+
+print("\n>>>> PACKAGE SETUP FINISHED <<<<\n")
