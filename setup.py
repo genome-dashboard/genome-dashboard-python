@@ -21,65 +21,55 @@ from io import open
 
 print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 
-
-"""
-Using RST - Failing.
-"""
-"""
-print("\n... PARSING RST FILES ...\n")
-
-# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-# Get the current version from a single source of truth.
-with open('VERSION') as version_file:
-    current_version = str(version_file.read())
-    # print(current_version)
-
-with open('DESCRIPTION.rst') as description_file:
-    module_description = str(description_file.read())
-    # print(module_description)
-
-with open('README.rst') as readme_file:
-    readme = str(readme_file.read())
-    # print(readme)
-
-with open('HISTORY.rst') as history_file:
-    history = str(history_file.read())
-    # print(history)
-"""
-
-
-"""
-Using MD...
-"""
-print("\n... PARSING MD FILES ...\n")
-
+# For Markdown.
 here = path.abspath(path.dirname(__file__))
 
+print("\n... PARSING FILES ...\n")
+
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # Get the current version from a single source of truth.
+# print("\n... PARSING VERSION RST ...\n")
+# with open('VERSION') as version_file:
+#     current_version = str(version_file.read())
+
+print("\n... PARSING VERSION MD ...\n")
 with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
     current_version = e.read()
-    print(current_version)
 
+# print("\n... PARSING DESCRIPTION RST ...\n")
+# with open('DESCRIPTION.rst') as description_file:
+#     module_description = str(description_file.read())
+
+print("\n... PARSING DESCRIPTION MD ...\n")
 with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
     description = f.read()
-    print(description)
 
-with open(path.join(here, 'README.md'), encoding='utf-8') as g:
-    readme = g.read()
-    # print(readme)
+print("\n... PARSING README RST ...\n")
+with open('README.rst') as readme_file:
+    readme = readme_file.read()
+    # readme = str(readme_file.read())
 
-with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as h:
-    history = h.read()
-    # print(history)
+# print("\n... PARSING README MD ...\n")
+# with open(path.join(here, 'README.md'), encoding='utf-8') as g:
+#     readme = g.read()
 
+print("\n... PARSING HISTORY RST ...\n")
+with open('HISTORY.rst') as history_file:
+    history = history_file.read()
+    # history = str(history_file.read())
+
+# print("\n... PARSING HISTORY MD ...\n")
+# with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as h:
+#     history = h.read()
+
+
+print("\n........ ASSIGNING CONFIGURATION VALUES ........\n")
 
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 
-# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-# module_version = '0.0.25'
-module_version = current_version   # Trying to get external kfiles to work properly. Switching from RST to MD.
+# module_version = 'M.m.p'
+module_version = current_version
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'

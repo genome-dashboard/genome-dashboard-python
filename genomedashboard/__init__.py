@@ -18,7 +18,7 @@ from . import gdash as g
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
     current_version = e.read()
-    print(current_version)
+    # print(current_version)
 
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
