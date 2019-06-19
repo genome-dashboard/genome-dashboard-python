@@ -5,7 +5,7 @@
 
 from os import path
 from io import open
-from . import gdash
+from . import genomedashboard
 
 
 # Get the current version from a single source of truth.
