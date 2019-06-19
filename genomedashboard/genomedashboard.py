@@ -2,7 +2,6 @@
 
 """genomedashboard root module."""
 
-
 from .hpt import hpt as hpt
 from .ui import ui as ui
 

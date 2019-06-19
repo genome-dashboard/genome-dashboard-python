@@ -3,10 +3,10 @@
 """Top-level package for Genome Dashboard"""
 
 
-from os import path
-from io import open
-from . import genomedashboard
+# from os import path
+# from io import open
 
+from genomedashboard import *
 
 # Get the current version from a single source of truth.
 # with open('../VERSION') as version_file:

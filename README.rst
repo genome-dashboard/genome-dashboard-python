@@ -6,7 +6,7 @@ genomedashboard
 .. image:: https://img.shields.io/pypi/v/genomedashboard.svg
         :target: https://pypi.python.org/pypi/genomedashboard
 
-.. image:: https://img.shields.io/travis/genomeDashboard/genomedashboard.svg
+.. image:: https://img.shields.io/travis/genomeDashboard/genome-dashboard.svg
         :target: https://travis-ci.org/genomeDashboard/genome-dashboard
 
 .. image:: https://readthedocs.org/projects/genome-dashboard/badge/?version=latest
