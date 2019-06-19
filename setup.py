@@ -34,7 +34,7 @@ here = path.abspath(path.dirname(__file__))
 
 print("\n... PARSING VERSION MD ...\n")
 with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
-    current_version = f.read()
+    current_version = str(f.read())
 
 print("\n... PARSING DESCRIPTION RST ...\n")
 with open('DESCRIPTION.rst') as description_file:

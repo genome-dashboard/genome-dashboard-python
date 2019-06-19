@@ -18,7 +18,7 @@ from . import gdash as g
 # Get the current version from a single source of truth.
 here = path.abspath(path.dirname(__file__))
 with open(path.join(here, '../VERSION.md'), encoding='utf-8') as e:
-    current_version = e.read()
+    current_version = str(e.read())
     # print(current_version)
 
 
