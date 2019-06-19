@@ -100,7 +100,7 @@ module_excludes = [
 ]
 module_install_requires = [
     'Click>=6.0',
-    'peppercorn',
+    # 'peppercorn',
 ]
 
 module_setup_requires = [ ]
