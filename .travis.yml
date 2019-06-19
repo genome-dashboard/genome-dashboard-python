@@ -26,6 +26,6 @@ deploy:
     secure: PLEASE_REPLACE_ME
   on:
     tags: true
-    repo: genomeDashboard/genome_dashboard
+    repo: genomeDashboard/genomedashboard
     # python: 3.6
     python: 2.7

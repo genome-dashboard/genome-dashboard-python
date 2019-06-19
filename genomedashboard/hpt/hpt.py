@@ -3,4 +3,4 @@
 """hpt (helix parameter tools) module."""
 
 def hello():
-    print("Hello from genome_dashboard.hpt.hpt.py.")
+    print("Hello from genomedashboard.hpt.hpt.py.")
