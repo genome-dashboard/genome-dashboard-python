@@ -3,6 +3,7 @@
 """Top-level package for Genome Dashboard"""
 
 
+from os import path
 from io import open
 from . import gdash as g
 

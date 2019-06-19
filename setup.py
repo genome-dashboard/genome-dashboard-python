@@ -21,13 +21,14 @@ from io import open
 
 print("\n>>>> STARTING PACKAGE SETUP <<<<\n")
 
+print("\n... PARSING CONFIG FILES ...\n")
+
 # For Markdown.
 here = path.abspath(path.dirname(__file__))
 
-print("\n... PARSING FILES ...\n")
-
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # Get the current version from a single source of truth.
+
 # print("\n... PARSING VERSION RST ...\n")
 # with open('VERSION') as version_file:
 #     current_version = str(version_file.read())
@@ -36,13 +37,15 @@ print("\n... PARSING VERSION MD ...\n")
 with open(path.join(here, 'VERSION.md'), encoding='utf-8') as e:
     current_version = e.read()
 
-# print("\n... PARSING DESCRIPTION RST ...\n")
-# with open('DESCRIPTION.rst') as description_file:
-#     module_description = str(description_file.read())
 
-print("\n... PARSING DESCRIPTION MD ...\n")
-with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
-    description = f.read()
+print("\n... PARSING DESCRIPTION RST ...\n")
+with open('DESCRIPTION.rst') as description_file:
+    description_text = str(description_file.read())
+
+# print("\n... PARSING DESCRIPTION MD ...\n")
+# with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
+#     description_text = f.read()
+
 
 print("\n... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
@@ -52,6 +55,7 @@ with open('README.rst') as readme_file:
 # print("\n... PARSING README MD ...\n")
 # with open(path.join(here, 'README.md'), encoding='utf-8') as g:
 #     readme = g.read()
+
 
 print("\n... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
@@ -77,10 +81,10 @@ module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genome-dashboard'
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
-module_description = description
+module_description = description_text
 # 'text/plain', 'text/x-rst', or 'text/markdown'
-module_long_description_content_type = 'text/x-rst'
-module_long_description = readme + '\n\n' + history
+# module_long_description_content_type = 'text/x-rst'
+module_long_description = readme + '\n' + history
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
