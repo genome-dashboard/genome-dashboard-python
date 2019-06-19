@@ -69,12 +69,12 @@ print("\n... ASSIGNING CONFIGURATION VALUES ...\n")
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-module_version = '0.0.32'
+module_version = '0.0.33'
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
 module_license = "MIT license"
-module_url = 'https://github.com/genomeDashboard/genome-dashboard'
+module_url = 'https://github.com/genomeDashboard/genomedashboard'
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7'
 module_description = description_text
