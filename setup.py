@@ -32,9 +32,8 @@ with open('HISTORY.rst') as history_file:
 
 # Configuration for package when publishing.
 # Edit these values to reflect yourpackage details.
-
+current_version = '0.0.17'    # -->>> !!!! IMPORTANT: BUMP VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  !!!! <<<--
 module_name = 'genome_dashboard'
-current_version = '0.0.16'
 module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
 module_python = '>=2.7'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
