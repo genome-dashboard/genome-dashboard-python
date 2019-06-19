@@ -26,33 +26,44 @@ from io import open
 # Get the current version from a single source of truth.
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 with open('VERSION.rst') as version_file:
-    current_version = version_file.read()
+    module_version = version_file.read()
+    print(module_version)
+    print("----\n")
+
 
 with open('DESCRIPTION.rst') as description_file:
     module_description = description_file.read()
+    print(module_description)
+    print("----\n")
+
 
 with open('README.rst') as readme_file:
     readme = readme_file.read()
+    print(readme)
+    print("----\n")
+
 
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
+    print(history)
+    print("----\n")
 
 
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 
-module_version = current_version
 module_name = 'genomedashboard'     # Using Python convention of a hyphen in package name but an underscore in build name used during installation.
-# module_description = "Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin."
-module_python = '>=2.7'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
-module_long_description = readme + '\n\n' + history
-# 'text/plain', 'text/x-rst', or 'text/markdown'
-module_long_description_content_type = 'text/x-rst'
 module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genome-dashboard'
-module_keywords = 'python biology genomics'
+module_keywords = 'python biology genomics genome dashboard'
+module_python = '>=2.7'
+
+# 'text/plain', 'text/x-rst', or 'text/markdown'
+module_long_description_content_type = 'text/x-rst'
+module_long_description = readme + '\n\n' + history
+
 module_data_included = True
 module_enable_compression = False
 module_test_suite = 'tests'
@@ -124,8 +135,8 @@ setup(
     python_requires=module_python,
     author=module_authors,
     author_email=module_authors_email,
-    long_description=module_long_description,
     long_description_content_type=module_long_description_content_type,
+    long_description=module_long_description,
     license=module_license,
     url=module_url,
     classifiers=module_classifiers,
