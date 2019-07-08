@@ -1,6 +1,7 @@
 To access data from within the module:
 
 >>>  import os
+>>>  import genomedashboard as gd
 >>>  this_dir, this_filename = os.path.split(gd.__file__)
 >>>  DATA_PATH = os.path.join(this_dir, "data", "test_data.txt")
 >>>  print open(DATA_PATH).read()
