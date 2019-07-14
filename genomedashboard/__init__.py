@@ -7,7 +7,8 @@
 # from io import open
 
 from genomedashboard import *
-
+from .hpt import hpt as hpt
+from .ui import ui as ui
 # Get the current version from a single source of truth.
 # with open('../VERSION') as version_file:
 #     current_version = str(version_file.read())
@@ -28,3 +29,5 @@ from genomedashboard import *
 __version__ = '0.0.33'
 __author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 __email__ = 'genome.dashboard@gmail.com'
+
+
