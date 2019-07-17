@@ -2,11 +2,11 @@
 
 """Top-level package for Genome Dashboard"""
 
+# import cli as cli                     # Not Working Yet.
+# import genomedashboard as gd          # Can't access methods in this file...
+from .hpt import hpt as hpt
+from .ui import ui as ui
 
-# from os import path
-# from io import open
-
-from genomedashboard import *
 
 # Get the current version from a single source of truth.
 # with open('../VERSION') as version_file:
@@ -25,6 +25,8 @@ from genomedashboard import *
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # __version__ =  str(current_version)
 
+
+# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 __version__ = '0.0.33'
 __author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 __email__ = 'genome.dashboard@gmail.com'
