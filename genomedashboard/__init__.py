@@ -8,7 +8,7 @@
 
 from genomedashboard import *
 from .io import io as io
-from .src import src as src
+from .converter import converter as converter
 from .ds import ds as ds
 # Get the current version from a single source of truth.
 # with open('../VERSION') as version_file:
