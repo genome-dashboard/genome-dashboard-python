@@ -5,9 +5,11 @@ genomedashboard
 
 .. image:: https://img.shields.io/pypi/v/genomedashboard.svg
         :target: https://pypi.python.org/pypi/genomedashboard
+        :alt: PyPI Status
 
 .. image:: https://img.shields.io/travis/genomeDashboard/genomedashboard.svg
         :target: https://travis-ci.org/genomeDashboard/genomedashboard
+        :alt: Build Status
 
 .. image:: https://readthedocs.org/projects/genomedashboard/badge/?version=latest
         :target: https://genomedashboard.readthedocs.io/en/latest/?badge=latest
