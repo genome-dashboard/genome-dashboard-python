@@ -25,14 +25,20 @@ print("\n... PARSING CONFIG FILES ...\n")
 print("\n... PARSING DESCRIPTION RST ...\n")
 with open('DESCRIPTION.rst') as description_file:
     description_text = str(description_file.read())
+    print(description_text)
+    print('\n')
 
 print("\n... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
     readme = readme_file.read()
+    print(readme)
+    print('\n')
 
 print("\n... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
+    print(history)
+    print('\n')
 
 # For Markdown.
 # here = path.abspath(path.dirname(__file__))
@@ -75,15 +81,27 @@ module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
 module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genomedashboard'
+module_project_urls = {
+    'PyPI': 'https://pypi.org/project/genomedashboard/0.0.34/',
+    'Documentation': 'https://genomedashboard.readthedocs.io/en/latest/readme.html',
+    'Source Code': 'https://github.com/genomeDashboard/genomedashboard',
+    'Issue Tracker': 'https://github.com/genome-dashboard/genome-dashboard-python/issues',
+    'Demo': 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/',
+    # 'Funding': 'https://donate.pypi.org',
+    # 'Say Thanks!': 'http://saythanks.io/to/example',
+}
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=3.5'
 module_description = description_text
 
 # 'text/plain', 'text/x-rst', or 'text/markdown'
-module_long_description_content_type = 'text/x-rst'
+# module_long_description_content_type = 'text/x-rst'
 # module_long_description = readme + '\n\n' + history
 # module_long_description = readme
-module_long_description = "THIS DOESNT WORK IN BUILD"
+module_long_description_content_type = 'text/plain'
+module_long_description = module_description
+# module_long_description = "THIS DOESNT WORK IN BUILD"
+# module_long_description = ""
 
 module_data_included = True
 module_enable_compression = False
@@ -91,8 +109,11 @@ module_test_suite = 'tests'
 
 module_includes = [
     'genomedashboard',
-    'genomedashboard.htp',
-    'genomedashboard.ui',
+    'cli',
+    'genomedashboard.convert',
+    'genomedashboard.data',
+    'genomedashboard.ds',
+    'genomedashboard.io',
 ]
 
 module_excludes = [
@@ -144,9 +165,10 @@ module_extras_require = {
     'test': ['coverage'],
 }
 
-module_options = {
-    'bdist_wheel':{'universal':True}
-}
+# This is now handled in the setup.cfg file.
+# module_options = {
+#     'bdist_wheel':{'universal':True}
+# }
 
 
 print("\n... BUILDING PACKAGE ...\n")
@@ -165,6 +187,7 @@ setup(
     long_description_content_type=module_long_description_content_type,
     license=module_license,
     url=module_url,
+    project_urls=module_project_urls,
     classifiers=module_classifiers,
     keywords=module_keywords,
     install_requires=module_install_requires,
@@ -176,7 +199,7 @@ setup(
     setup_requires=module_setup_requires,
     test_suite=module_test_suite,
     tests_require=module_test_requires,
-    options=module_options,
+    # options=module_options,
 )
 
 print("\n>>> PACKAGE SETUP FINISHED <<<\n")
