@@ -4,11 +4,11 @@
 
 # from os import path
 # from io import open
-from genomedashboard import *
-from cli import *
-from .io import io as io
-from .converter import converter as converter
+from genomedashboard import genomedashboard as gd
+# import cli as cli
+from .convert import convert as cv
 from .ds import ds as ds
+from .io import io as io
 
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
