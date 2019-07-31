@@ -71,7 +71,7 @@ print("... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-module_version                          = '0.0.38'
+module_version                          = '0.0.39'
 
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -90,7 +90,7 @@ module_setup_requires                   = [ ]
 module_test_requires                    = [ ]
 
 module_project_urls                     = {
-                                            'PyPI': 'https://pypi.org/project/genomedashboard/0.0.34/',
+                                            'PyPI': 'https://pypi.org/project/genomedashboard/',
                                             'Documentation': 'https://genomedashboard.readthedocs.io/en/latest/readme.html',
                                             'Source Code': 'https://github.com/genomeDashboard/genomedashboard',
                                             'Issue Tracker': 'https://github.com/genome-dashboard/genome-dashboard-python/issues',
