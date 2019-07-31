@@ -18,23 +18,23 @@ from os import path
 from io import open
 
 
-print("\n>>> STARTING PACKAGE SETUP <<<\n")
+print(">>> STARTING PACKAGE SETUP <<<\n")
 
-print("\n... PARSING CONFIG FILES ...\n")
+print("... PARSING CONFIG FILES ...\n")
 
-print("\n... PARSING DESCRIPTION RST ...\n")
+print("... PARSING DESCRIPTION RST ...\n")
 with open('DESCRIPTION.rst') as description_file:
     description_text = str(description_file.read())
     print(description_text)
     print('\n')
 
-print("\n... PARSING README RST ...\n")
+print("... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
     readme = readme_file.read()
     print(readme)
     print('\n')
 
-print("\n... PARSING HISTORY RST ...\n")
+print("... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
     print(history)
@@ -95,11 +95,11 @@ module_python = '>=3.5'
 module_description = description_text
 
 # 'text/plain', 'text/x-rst', or 'text/markdown'
-# module_long_description_content_type = 'text/x-rst'
-# module_long_description = readme + '\n\n' + history
+module_long_description_content_type = 'text/x-rst'
+module_long_description = readme + '\n\n' + history
 # module_long_description = readme
-module_long_description_content_type = 'text/plain'
-module_long_description = module_description
+# module_long_description_content_type = 'text/plain'
+# module_long_description = module_description
 # module_long_description = "THIS DOESNT WORK IN BUILD"
 # module_long_description = ""
 
@@ -124,7 +124,7 @@ module_excludes = [
 ]
 module_install_requires = [
     'Click>=6.0',
-    # 'peppercorn',
+    'peppercorn',
 ]
 
 module_setup_requires = [ ]
@@ -183,8 +183,8 @@ setup(
     python_requires=module_python,
     author=module_authors,
     author_email=module_authors_email,
-    long_description=module_long_description,
     long_description_content_type=module_long_description_content_type,
+    long_description=module_long_description,
     license=module_license,
     url=module_url,
     project_urls=module_project_urls,
