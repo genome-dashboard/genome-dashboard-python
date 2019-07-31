@@ -71,7 +71,7 @@ print("... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-module_version                          = '0.0.37'
+module_version                          = '0.0.38'
 
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -79,7 +79,7 @@ module_authors_email                    = 'zli007@latech.edu, rsu007@latech.edu,
 module_license                          = "MIT license"
 module_url                              = 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/'
 module_keywords                         = 'python biology genomics genome dashboard'
-module_python                           = '>=3.5'
+module_python                           = '>=2.7'
 module_description                      = filtered_description_lines
 module_long_description_content_type    = 'text/x-rst'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
 module_long_description                 = readme + '\n\n' + history
