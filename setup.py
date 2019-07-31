@@ -69,14 +69,14 @@ print("\n... ASSIGNING CONFIGURATION VALUES ...\n")
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-module_version = '0.0.33'
+module_version = '0.0.34'
 module_name = 'genomedashboard'
 module_authors = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
 module_license = "MIT license"
 module_url = 'https://github.com/genomeDashboard/genomedashboard'
 module_keywords = 'python biology genomics genome dashboard'
-module_python = '>=2.7'
+module_python = '>=3.5'
 module_description = description_text
 
 # 'text/plain', 'text/x-rst', or 'text/markdown'
@@ -144,6 +144,10 @@ module_extras_require = {
     'test': ['coverage'],
 }
 
+module_options = {
+    'bdist_wheel':{'universal':True}
+}
+
 
 print("\n... BUILDING PACKAGE ...\n")
 
@@ -172,6 +176,7 @@ setup(
     setup_requires=module_setup_requires,
     test_suite=module_test_suite,
     tests_require=module_test_requires,
+    options=module_options,
 )
 
 print("\n>>> PACKAGE SETUP FINISHED <<<\n")

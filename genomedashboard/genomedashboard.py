@@ -2,5 +2,6 @@
 
 """genomedashboard root module."""
 
-def hello():
-    print("Hello from genomedashboard.genomedashboard.py.")
+
+def module_name():
+    print("Module: genomedashboard.genomedashboard.py.")
