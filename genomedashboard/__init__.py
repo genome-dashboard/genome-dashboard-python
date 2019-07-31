@@ -7,6 +7,14 @@
 from .hpt import hpt as hpt
 from .ui import ui as ui
 
+# from os import path
+# from io import open
+
+from genomedashboard import *
+from .io import io as io
+from .converter import converter as converter
+from .ds import ds as ds
+
 
 # Get the current version from a single source of truth.
 # with open('../VERSION') as version_file:
