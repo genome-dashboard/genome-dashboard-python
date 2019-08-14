@@ -17,7 +17,6 @@ class HP_intra(object):
         self.buc = buc
         self.pro = pro
         self.ope = ope
-        self.des = des
 
 
 class HP_inter(object):
