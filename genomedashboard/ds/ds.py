@@ -34,9 +34,10 @@ class HP_inter(object):
 class HP(object):
     """Data Structure for Helical Parameters, including intra and inter"""
 
-    def __init__(self, HP_intra, HP_inter):
+    def __init__(self, HP_intra, HP_inter, hptype='3DNA'):
         self.HP_intra = HP_intra
         self.HP_inter = HP_inter
+        self.hptype = hptype
 
 
 class RD(object):
