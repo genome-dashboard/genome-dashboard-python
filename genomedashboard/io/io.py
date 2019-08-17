@@ -51,13 +51,17 @@ class READ(object):
         content = [x.rstrip('\n') for x in f]
         f.close()
         data = [x.split()[1:] for x in content[3:]]
+        seq = ds.SEQ([x.split()[0] for x in content[3:]])
         hps = []
         for i in data:
             hp_intra_tmp = ds.HP_intra(float(i[0]),float(i[1]),float(i[2]),float(i[3]),float(i[4]),float(i[5]))
             hp_inter_tmp = ds.HP_inter(float(i[6]),float(i[7]),float(i[8]),float(i[9]),float(i[10]),float(i[11]))
             hp_tmp = ds.HP(hp_intra_tmp, hp_inter_tmp, hptype)
             hps.append(hp_tmp)
-        return hps
+        sc = ds.SC(HP=hps,SEQ=seq)
+        return sc
+
+
 
 
 

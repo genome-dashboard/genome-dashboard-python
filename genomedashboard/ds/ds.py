@@ -67,22 +67,25 @@ class Mask_2D(object):
 
 
 class Mask_3D(object):
-    """Data Structure/Place Holder for any three dimensional data"""
-    """A 3D Mask does not necessary to be a space curve, but an entry and an exit(could be the same) for a 3D Mask embedding on space curve is required"""
-    """In this case, r, d are inputs as in Mask_3D"""
+    """
+    Data Structure/Place Holder for any three dimensional data.
+    A 3D Mask does not necessary to be a space curve, but an entry and an exit(could be the same) for a 3D Mask embedding on space curve is required
+    In this case, r, d are inputs as in Mask_3D
+    """
     dimension = 3
 
-    def __init__(self, values, r, d, des=None):
+    def __init__(self, values, RD, des=None):
         self.values = values
-        self.r = r
-        self.d = d
+        self.RD = RD
         self.des = des
 
 
 class SC(object):
-    """Data Structure for a Space Curve"""
-    """A Space Curve contains all the information including Helical Parameters(HP), RD, mass(m), moment of inertia(I), Energy const(K)"""
-    """Masks are input here as kwargs, which allows user input any numbers and any types of masks."""
+    """
+    Data Structure for a Space Curve
+    A Space Curve contains all the information including Helical Parameters(HP), RD, mass(m), moment of inertia(I), Energy const(K)
+    Masks are input here as kwargs, which allows user input any numbers and any types of masks.
+    """
 
     def __init__(self, HP=None, RD=None, m=None, I=None, K=None, **kwargs):
         self.HP = HP
@@ -91,3 +94,36 @@ class SC(object):
         self.I = I
         self.K = K
         self.__dict__.update(kwargs)
+
+class SEQ(object):
+    """
+    Data Structure for DNA sequence,
+    GDash model is sequence specified model, sequence has its own data structure as a special 1D Mask.
+    """
+    def __init__(self, seq):
+        self.seq=seq
+
+    def tolist(self):
+        if type(self.seq)==list:
+            return self.seq
+        else:
+            seqlist = list(self.seq)
+            seqlist = ['A-T' if x=='A' else x for x in seqlist]
+            seqlist = ['T-A' if x=='T' else x for x in seqlist]
+            seqlist = ['C-G' if x=='C' else x for x in seqlist]
+            seqlist = ['G-C' if x=='G' else x for x in seqlist]
+            return seqlist
+
+    def tostring(self):
+        if type(self.seq)==str:
+            return self.seq
+        else:
+            seqstr=''.join(x[0] for x in self.seq)
+            return seqstr
+
+    def tostep(self):
+        sequence=self.tostring()
+        step=[]
+        for i in range(len(sequence)-1):
+            step.append(sequence[i]+'-'+sequence[i+1])
+        return step
