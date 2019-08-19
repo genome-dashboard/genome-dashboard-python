@@ -83,8 +83,3 @@ class READ(object):
             step = [x.split()[0] for x in content[i*7+1:i*7+2]]
             k[step[0]] = np.array([x.split()[1:] for x in content[i*7+1:i*7+7]],dtype='float')
         return k
-
-
-
-
-
