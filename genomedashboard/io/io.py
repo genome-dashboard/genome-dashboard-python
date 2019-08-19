@@ -61,8 +61,28 @@ class READ(object):
         sc = ds.SC(HP=hps,SEQ=seq)
         return sc
 
+    def sequence_txt(self):
+        """
+        Given seqin.txt, either with one column of sequence or one/several rows of sequence
+        Return sequence(string) with uppercase 'ACGT's
+        """
+        with open(self.fp) as f:
+            seq=''.join(line.replace('\n', '') for line in f)
+        seq = ds.SEQ(seq.upper())
+        return seq
 
-
+    def K(self):
+        """
+        e.g. MD-B.dat ; 6x6 or 12x12 stiffness matrix
+        """
+        f =  open(self.fp,'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        k = {}
+        for i in range(16):
+            step = [x.split()[0] for x in content[i*7+1:i*7+2]]
+            k[step[0]] = np.array([x.split()[1:] for x in content[i*7+1:i*7+7]],dtype='float')
+        return k
 
 
 

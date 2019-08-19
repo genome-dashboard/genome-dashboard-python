@@ -172,7 +172,7 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         sli=skal(disp,ym)
         ris=skal(disp,zm)
         twi=omega*180.0/np.pi
-        return ds.HP_inter(shi,sli,ris,til,rol,twi)
+        interHP = ds.HP_inter(shi,sli,ris,til,rol,twi)
     elif hptype=='CURVES':
         G1=rd1.d
         G2=rd2.d
@@ -185,6 +185,89 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         trt = -(phi*180/np.pi)*theta/scale
         H = np.real(la.sqrtm(L))
         ssr = np.dot(dq.T,np.dot(G1.T,H.T))
-        return ds.HP_inter(ssr[0],ssr[1],ssr[2],trt[0][0],trt[1][0],trt[2][0])
+        interHP = ds.HP_inter(ssr[0],ssr[1],ssr[2],trt[0][0],trt[1][0],trt[2][0])
     else:
         print('Please provide a valid type, "3DNA" or "CURVES"')
+    return ds.HP(None,interHP,hptype=hptype)
+
+def HP_T(HP,T):
+    T=np.sqrt(T/298.0)
+    HP.HP_inter.shi = np.random.normal(HP.HP_inter.shi, T*0.76)
+    HP.HP_inter.sli = np.random.normal(HP.HP_inter.sli, T*0.68)
+    HP.HP_inter.ris = np.random.normal(HP.HP_inter.ris, T*0.37)
+    HP.HP_inter.til = np.random.normal(HP.HP_inter.til, T*4.6)
+    HP.HP_inter.rol = np.random.normal(HP.HP_inter.rol, T*7.2)
+    HP.HP_inter.twi = np.random.normal(HP.HP_inter.twi, T*7.3)
+    return HP
+
+def SEQ2HP(seq,HP_dic,occ_dic={},T=0):
+    """
+        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP]}), dictionary of occupancy(e.g. {1:oct, 500: oct, 789: tet}), and temperature.
+        Return the HPs associate with the given sequence.
+    """
+    seqstep=seq.tostep()
+    hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
+    j=0
+    while j<len(seqstep):
+        if j in occ_dic.keys():
+            hps.extend(HP_dic[j][1:])
+            j=j+len(HP_dic[j])-1
+        else:
+            hps.append(HP_T(HP_dic[seqstep[j]][0],T))
+            j=j+1
+    return hps
+
+
+def elastic_energy(seq,HP_free,HP_nuc,K):
+    """
+    Given the HP for free DNA, and the HP for nucleosome DNA, and K.
+    Calculate the elastic energy.
+    """
+    seqstep=seq.tostep()
+    Enum = len(HP_free)-len(HP_nuc)+1
+    E = np.zeros(Enum)
+    p = np.array([[i.HP_inter.shi,i.HP_inter.sli,i.HP_inter.ris,i.HP_inter.til,i.HP_inter.rol,i.HP_inter.twi] for i in HP_nuc[1:]])
+    d = np.array([[i.HP_inter.shi,i.HP_inter.sli,i.HP_inter.ris,i.HP_inter.til,i.HP_inter.rol,i.HP_inter.twi] for i in HP_free[1:]])
+    for i in range(0,Enum):
+        pd = p-d[i:i+len(p)]
+        x = [0.5*np.dot(np.dot(j,K[seqstep[i+idx]]),j.T) for idx,j in enumerate(pd)]
+        E[i] = sum(x)
+    return E
+
+def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
+    """
+    Given the length of sequence, number of base pairs of the nucleosome, occupancy percentage,
+    linker length, and phase.
+    Calculate the occupancy according to the Energy.
+    Energy could be replaced by any 1D Mask, and the occupancy of local lowest Energy(1D informatics) in then calculated
+    """
+    denominator = nuc_nbp + lk
+    Etmp=copy.copy(E)
+    if occu==1:
+        numnuc = int((seq_length()-phase+lk)/denominator)
+        occ = np.zeros(numnuc)
+        for i in range(numnuc):
+            occ[i] = phase + i*denominator
+    else:
+        numnuc = int(seq_length()*occu/denominator)
+        occ = np.zeros(numnuc)
+        i=0
+        while i<numnuc:
+            tmpmin=np.argmin(Etmp)
+            if i>0:
+                k=0
+                for x in occ:
+                    if np.abs(tmpmin-x)<denominator:
+                        k+=1
+                        break
+                if k==0:
+                    occ[i]=tmpmin
+                    Etmp[tmpmin]=np.inf
+                    i+=1
+                else:
+                    Etmp[tmpmin]=np.inf
+            else:
+                occ[i]=tmpmin
+                Etmp[tmpmin]=np.inf
+                i+=1
+    return map(int,list(occ+1))
