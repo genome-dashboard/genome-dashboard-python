@@ -217,6 +217,12 @@ def SEQ2HP(seq,HP_dic,occ_dic={},T=0):
             j=j+1
     return hps
 
+def SEQ2RD(seq, RD):
+    """
+    Given sequence and RD,
+    Return RDs associate with the given sequence.
+    """
+    
 
 def elastic_energy(seq,HP_free,HP_nuc,K):
     """
@@ -271,3 +277,40 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 Etmp[tmpmin]=np.inf
                 i+=1
     return map(int,list(occ+1))
+
+
+##########Two Angle Model###########
+
+def deflection(xyz1,xyz2,xyz3):
+    """
+    Calculate deflection angle(alpha)
+    """
+    v1=xyz1-xyz2;
+    v2=xyz3-xyz2;
+    alpha = np.arccos(np.dot(v1,v2)/(np.sqrt(v1[0]**2+v1[1]**2+v1[2]**2)*(np.sqrt(v2[0]**2+v2[1]**2+v2[2]**2))))*180/np.pi
+    return alpha
+
+def dihedral(xyz1,xyz2,xyz3,xyz4):
+    """
+    Calculate dihedral angle(beta)
+    """
+    q1=xyz2-xyz1
+    q2=xyz3-xyz2
+    q3=xyz4-xyz3
+    q1_x_q2 = np.cross(q1,q2)
+    q2_x_q3 = np.cross(q2,q3)
+    n1 = q1_x_q2/np.sqrt(np.dot(q1_x_q2,q1_x_q2))
+    n2 = q2_x_q3/np.sqrt(np.dot(q2_x_q3,q2_x_q3))
+    u1 = n2
+    u3 = q2/(np.sqrt(np.dot(q2,q2)))
+    u2 = np.cross(u3,u1)
+    cos_phi = np.dot(n1,u1)
+    sin_phi = np.dot(n1,u2)
+    beta = -math.atan2(sin_phi,cos_phi)*180/np.pi
+    return beta
+
+def two_angle_plot(Mask_3D):
+    """
+    Given 3D Mask and plot the two angle plot.
+    """
+
