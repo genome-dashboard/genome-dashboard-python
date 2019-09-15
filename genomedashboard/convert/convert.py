@@ -211,13 +211,13 @@ def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     """
     seqstep=seq.tostep()
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
-    j=0
+    j=1
     while j<len(seqstep):
         if j in occ:
             hps.extend(HP_dic[nuc_type[occ.index(j)]][1:])
-            j=j+len(HP_dic[nuc_type[occ.index(j)]])-2
+            j=j+len(HP_dic[nuc_type[occ.index(j)]])-1
         else:
-            hps.append(HP_T(HP_dic[seqstep[j]][0],T))
+            hps.append(HP_T(HP_dic[seqstep[j-1]][0],T))
             j=j+1
     return hps
 
