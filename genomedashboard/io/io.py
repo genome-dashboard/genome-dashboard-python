@@ -7,6 +7,7 @@ import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 from ds import ds as ds
 from urllib.parse import urlparse
+import numpy as np
 
 def module_name():
     print("Module: genomedashboard.io.io.py.")
