@@ -91,14 +91,14 @@ class WRITE(object):
     def __init__(self,fp):
         self.fp = fp
     
-    def HP(self,HP,seq=None):
+    def hp(self,HP,seq=None):
         """Given HP data structure, write into HP files"""
         if seq == None:
             seq = ['L-L']*len(HP)
         else:
             seq = seq.tolist()
         f = open(self.fp,'w')
-        f.write(len(HP) + ' base pairs' +'\n')
+        f.write(str(len(HP)) + ' base pairs' +'\n')
         f.write('   0  ***local base-pair & step parameters***' +'\n')
         f.write('       Shear  Stretch  Stagger Buckle Prop-Tw Opening   Shift  Slide    Rise    Tilt    Roll   Twist' + '\n')
         for i,j in enumrate(HP):
