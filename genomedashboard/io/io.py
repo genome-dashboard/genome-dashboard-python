@@ -116,7 +116,7 @@ class WRITE(object):
 
     def rd(self,RD):
         """Given RD data structure, write into xyz files, this is for dna in base pair level"""
-        f.open(self.fp,'w')
+        f = open(self.fp,'w')
         f.write(str(len(RD)*4)+'\n')
         f.write('COMMENT: zli' + '\n')
         for i in RD:
