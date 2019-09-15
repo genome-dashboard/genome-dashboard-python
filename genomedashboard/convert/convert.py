@@ -134,7 +134,7 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
             pgama=-1.0
         gama=np.arccos(pgama)
         if (z1[0]==z2[0] and z1[1]==z2[1] and z1[2]==z2[2]):
-            rt=0
+            rt=0.0
             x1p=copy.copy(x1)
             x2p=copy.copy(x2)
             y1p=copy.copy(y1)
