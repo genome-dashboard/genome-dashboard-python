@@ -86,5 +86,30 @@ class READ(object):
 
 
 
-
-
+class WRITE(object):
+    """a class to write data into different format"""
+    def __init__(self,fp):
+        self.fp = fp
+    
+    def HP(self,HP,seq=None):
+        """Given HP data structure, write into HP files"""
+        if seq == None:
+            seq = ['L-L']*len(HP)
+        else:
+            seq = seq.tolist()
+        f = open(self.fp,'w')
+        f.write(len(HP) + ' base pairs' +'\n')
+        f.write('   0  ***local base-pair & step parameters***' +'\n')
+        f.write('       Shear  Stretch  Stagger Buckle Prop-Tw Opening   Shift  Slide    Rise    Tilt    Roll   Twist' + '\n')
+        for i,j in enumrate(HP):
+            f.write(seq[i]+' ')
+            if HP.HP_intra == None:
+                f.write(str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8))
+            else:
+                f.write(str("%0.2f" % HP.HP_intra.she).rjust(8)+str("%0.2f" % HP.HP_intra.str).rjust(8)+str("%0.2f" % HP.HP_intra.sta).rjust(8)+str("%0.2f" % HP.HP_intra.buc).rjust(8)+str("%0.2f" % HP.HP_intra.pro).rjust(8)+str("%0.2f" % HP.HP_intra.ope).rjust(8))
+            if HP.HP_inter == None:
+                f.write(str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8))
+            else:
+                f.write(str("%0.2f" % HP.HP_intra.shi).rjust(8)+str("%0.2f" % HP.HP_intra.sli).rjust(8)+str("%0.2f" % HP.HP_intra.ris).rjust(8)+str("%0.2f" % HP.HP_intra.til).rjust(8)+str("%0.2f" % HP.HP_intra.rol).rjust(8)+str("%0.2f" % HP.HP_intra.twi).rjust(8))
+            f.write('\n')
+        f.close()
