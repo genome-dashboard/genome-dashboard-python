@@ -183,7 +183,10 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         phi = np.arccos((np.trace(L)-1.0)/2.0)
         theta = (1.0/(1.0+np.trace(L)))*np.array([[Q[2][1]],[Q[0][2]],[Q[1][0]]])
         scale = np.tan(phi/2.0)
-        trt = -(phi*180/np.pi)*theta/scale
+        if scale==0:
+            trt = np.zeros(3)
+        else:
+            trt = -(phi*180/np.pi)*theta/scale
         H = np.real(la.sqrtm(L))
         ssr = np.dot(dq.T,np.dot(G1.T,H.T))
         interHP = ds.HP_inter(ssr[0],ssr[1],ssr[2],trt[0][0],trt[1][0],trt[2][0])
