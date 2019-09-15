@@ -101,7 +101,7 @@ class WRITE(object):
         f.write(str(len(HP)) + ' base pairs' +'\n')
         f.write('   0  ***local base-pair & step parameters***' +'\n')
         f.write('       Shear  Stretch  Stagger Buckle Prop-Tw Opening   Shift  Slide    Rise    Tilt    Roll   Twist' + '\n')
-        for i,j in enumrate(HP):
+        for i,j in enumerate(HP):
             f.write(seq[i]+' ')
             if HP.HP_intra == None:
                 f.write(str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8))
