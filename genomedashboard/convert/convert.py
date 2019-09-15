@@ -280,7 +280,7 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 occ[i]=tmpmin
                 Etmp[tmpmin]=np.inf
                 i+=1
-    return map(int,list(occ+1))
+    return [int(x+1) for x in occ]
 
 
 ##########Two Angle Model###########
