@@ -204,17 +204,17 @@ def HP_T(HP,T):
     HP.HP_inter.twi = np.random.normal(HP.HP_inter.twi, T*7.3)
     return HP
 
-def SEQ2HP(seq,HP_dic,occ_dic={},T=0):
+def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     """
-        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP]}), dictionary of occupancy(e.g. {1:oct, 500: oct, 789: tet}), and temperature.
+        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP]}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
         Return the HPs associate with the given sequence.
     """
     seqstep=seq.tostep()
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
     j=0
     while j<len(seqstep):
-        if j in occ_dic.keys():
-            hps.extend(HP_dic[j][1:])
+        if j in occ:
+            hps.extend(HP_dic[nuc_type[occ.index(j)]][1:])
             j=j+len(HP_dic[j])-1
         else:
             hps.append(HP_T(HP_dic[seqstep[j]][0],T))
