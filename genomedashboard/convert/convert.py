@@ -91,7 +91,7 @@ def HP2RD(HP, hptype='3DNA'):
     rd = ds.RD(r.T.reshape(3),Ti.T)
     return rd
 
-def RD_stack(rd1, rd2, value=None):
+def RD_stack(rd1, rd2):
     """
     Given two steps of RD, previous one is global RD, and latter one is local one.
     Calculate the global RD for the latter one.
@@ -100,11 +100,14 @@ def RD_stack(rd1, rd2, value=None):
     R = np.dot(rd2.r,rd1.d) + rd1.r
     D = np.dot(rd2.d,rd1.d)
     rd = ds.RD(R,D)
-    if value is None:
-        return rd
-    else:
-        value = np.dot(value,rd1.d) + rd1.r
-        return rd, value
+    return rd
+
+def docking_Mask_3D(rd, value):
+    """
+    Docking 3D Mask values onto rd
+    """
+    value = np.dot(value,rd.d) + rd.r
+    return value
 
 def RD_loc2g(rdlist):
     """
