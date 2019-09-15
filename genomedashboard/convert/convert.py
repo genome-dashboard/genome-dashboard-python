@@ -215,7 +215,7 @@ def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     while j<len(seqstep):
         if j in occ:
             hps.extend(HP_dic[nuc_type[occ.index(j)]][1:])
-            j=j+len(HP_dic[j])-1
+            j=j+len(HP_dic[nuc_type[occ.index(j)]])-1
         else:
             hps.append(HP_T(HP_dic[seqstep[j]][0],T))
             j=j+1
