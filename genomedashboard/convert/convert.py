@@ -184,7 +184,7 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         theta = (1.0/(1.0+np.trace(L)))*np.array([[Q[2][1]],[Q[0][2]],[Q[1][0]]])
         scale = np.tan(phi/2.0)
         if scale==0:
-            trt = np.zeros(3)
+            trt = np.array([np.zeros(3)])
         else:
             trt = -(phi*180/np.pi)*theta/scale
         H = np.real(la.sqrtm(L))
