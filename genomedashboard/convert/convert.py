@@ -254,12 +254,12 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
     denominator = nuc_nbp + lk
     Etmp=copy.copy(E)
     if occu==1:
-        numnuc = int((seq_length()-phase+lk)/denominator)
+        numnuc = int((seq_length-phase+lk)/denominator)
         occ = np.zeros(numnuc)
         for i in range(numnuc):
             occ[i] = phase + i*denominator
     else:
-        numnuc = int(seq_length()*occu/denominator)
+        numnuc = int(seq_length*occu/denominator)
         occ = np.zeros(numnuc)
         i=0
         while i<numnuc:
