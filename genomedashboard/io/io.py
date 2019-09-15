@@ -107,7 +107,7 @@ class WRITE(object):
                 f.write(str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8))
             else:
                 f.write(str("%0.2f" % j.HP_intra.she).rjust(8)+str("%0.2f" % j.HP_intra.str).rjust(8)+str("%0.2f" % j.HP_intra.sta).rjust(8)+str("%0.2f" % j.HP_intra.buc).rjust(8)+str("%0.2f" % j.HP_intra.pro).rjust(8)+str("%0.2f" % j.HP_intra.ope).rjust(8))
-            if HP.HP_inter == None:
+            if j.HP_inter == None:
                 f.write(str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8)+str("%0.2f" % 0.0).rjust(8))
             else:
                 f.write(str("%0.2f" % j.HP_inter.shi).rjust(8)+str("%0.2f" % j.HP_inter.sli).rjust(8)+str("%0.2f" % j.HP_inter.ris).rjust(8)+str("%0.2f" % j.HP_inter.til).rjust(8)+str("%0.2f" % j.HP_inter.rol).rjust(8)+str("%0.2f" % j.HP_inter.twi).rjust(8))
