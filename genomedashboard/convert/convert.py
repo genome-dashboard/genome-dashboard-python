@@ -216,7 +216,7 @@ def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
         hps.append(HP_T(HP_dic[seqstep[j]][0],T))
         j=j+1
     for i in occ:
-        hps[occ:occ+len(HP_dic[nuc_type[occ.index(i)]])-1] = HP_dic[nuc_type[occ.index(i)]][1:]
+        hps[i:i+len(HP_dic[nuc_type[occ.index(i)]])-1] = HP_dic[nuc_type[occ.index(i)]][1:]
     return hps
 
 def SEQ2RD(seq, RD):
