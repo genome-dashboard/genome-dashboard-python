@@ -113,3 +113,16 @@ class WRITE(object):
                 f.write(str("%0.2f" % j.HP_inter.shi).rjust(8)+str("%0.2f" % j.HP_inter.sli).rjust(8)+str("%0.2f" % j.HP_inter.ris).rjust(8)+str("%0.2f" % j.HP_inter.til).rjust(8)+str("%0.2f" % j.HP_inter.rol).rjust(8)+str("%0.2f" % j.HP_inter.twi).rjust(8))
             f.write('\n')
         f.close()
+
+    def rd(self,fp,RD):
+        """Given RD data structure, write into xyz files, this is for dna in base pair level"""
+        f.open(self.fp,'w')
+        f.write(str(len(RD)*4)+'\n')
+        f.write('COMMENT: zli' + '\n')
+        for i in RD:
+            f.write('CA'.ljust(7)+str("%0.5f" % i.r[0]).rjust(20)+str("%0.5f" % i.r[1]).rjust(20)+str("%0.5f" % i.r[2]).rjust(20)+'\n')
+            f.write('H1'.ljust(7)+str("%0.5f" % (i.r+i.d[0])[0]).rjust(20)+str("%0.5f" % (i.r+i.d[0])[1]).rjust(20)+str("%0.5f" % (i.r+i.d[0])[2]).rjust(20)+'\n')
+            f.write('H2'.ljust(7)+str("%0.5f" % (i.r+i.d[1])[0]).rjust(20)+str("%0.5f" % (i.r+i.d[1])[1]).rjust(20)+str("%0.5f" % (i.r+i.d[1])[2]).rjust(20)+'\n')
+            f.write('H3'.ljust(7)+str("%0.5f" % (i.r+i.d[2])[0]).rjust(20)+str("%0.5f" % (i.r+i.d[2])[1]).rjust(20)+str("%0.5f" % (i.r+i.d[2])[2]).rjust(20)+'\n')
+        f.close()
+
