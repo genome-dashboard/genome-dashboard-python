@@ -127,3 +127,26 @@ class WRITE(object):
             f.write('H3'.ljust(7)+str("%0.5f" % (i.r+i.d[2])[0]).rjust(20)+str("%0.5f" % (i.r+i.d[2])[1]).rjust(20)+str("%0.5f" % (i.r+i.d[2])[2]).rjust(20)+'\n')
         f.close()
 
+    def xyz(self,Masks_3D):
+        """
+        xyz is for 3D Masks, not limited by DNA, but it does not specific direction frames.
+        Given a list of Masks, the atom/element name should provided in Mask_3D.des,
+        if there is no des, ATOM will be the name,
+        des should be a list, e.g. ['O','CA',...]
+        """
+        content=[]
+        for i in Mask_3D:
+            if i.values.size==3:
+                i.values=i.values.reshape(1,3)
+            for x,j in enumerate(i.values):
+                if i.des is None:
+                    atom='ATOM'
+                else:
+                    atom=i.des[x]
+                content.append(atom.ljust(7)+str("%0.5f" % j[0]).rjust(20)+str("%0.5f" % j[1]).rjust(20)+str("%0.5f" % j[2]).rjust(20)+'\n')
+        f.open(self.fp,'w')
+        f.write(str(len(content)))
+        f.write('COMMENT: zli' + '\n')
+        for i in content:
+            f.write(i)
+        f.close()
