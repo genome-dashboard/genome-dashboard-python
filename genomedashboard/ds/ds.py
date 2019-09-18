@@ -2,6 +2,7 @@
 
 """ds (data structure) module."""
 
+import numpy as np
 
 def module_name():
     print("Module: genomedashboard.ds.ds.py.")
