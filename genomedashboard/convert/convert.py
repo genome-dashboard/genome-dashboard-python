@@ -106,9 +106,9 @@ def docking_Mask_3D(rd, Mask_3D):
     """
     Docking 3D Mask values onto rd
     """
-    entry = Mask_3D.RD_entry
-    exit = Mask_3D.RD_exit
-    value = Mask_3D.values
+    entry = copy.copy(Mask_3D.RD_entry)
+    exit = copy.copy(Mask_3D.RD_exit)
+    value = copy.copy(Mask_3D.values)
     entrydT = entry.d.T
     value = np.dot(value,entrydT) - entry.r
     exit.r = np.dot(exit.r,entrydT) -entry.r
