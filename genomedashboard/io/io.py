@@ -144,7 +144,7 @@ class WRITE(object):
                 else:
                     atom=i.des[x]
                 content.append(atom.ljust(7)+str("%0.5f" % j[0]).rjust(20)+str("%0.5f" % j[1]).rjust(20)+str("%0.5f" % j[2]).rjust(20)+'\n')
-        f.open(self.fp,'w')
+        f=open(self.fp,'w')
         f.write(str(len(content)))
         f.write('COMMENT: zli' + '\n')
         for i in content:
