@@ -135,7 +135,7 @@ class WRITE(object):
         des should be a list, e.g. ['O','CA',...]
         """
         content=[]
-        for i in Mask_3D:
+        for i in Masks_3D:
             if i.values.size==3:
                 i.values=i.values.reshape(1,3)
             for x,j in enumerate(i.values):
