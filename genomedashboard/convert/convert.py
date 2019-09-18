@@ -102,12 +102,24 @@ def RD_stack(rd1, rd2):
     rd = ds.RD(R,D)
     return rd
 
-def docking_Mask_3D(rd, value):
+def docking_Mask_3D(rd, Mask_3D):
     """
     Docking 3D Mask values onto rd
     """
+    entry = Mask_3D.RD_entry
+    exit = Mask_3D.RD_exit
+    value = Mask_3D.value
+    entrydT = entry.d.T
+    value = np.dot(value,entrydT) - entry.r
+    exit.r = np.dot(exit.r,entrydT) -entry.r
+    exit.d = np.dot(exit.d,entrydT)
     value = np.dot(value,rd.d) + rd.r
-    return value
+    entry.r = rd.r
+    entry.d = rd.d
+    exit.r = np.dot(exit.r,rd.d) +rd.r
+    exit.d = np.dot(exit.d,rd.d)
+    Mask_new = ds.Mask_3D(value,RD_entry=entry,RD_exit=exit,skip=Mask_3D.skip,des=Mask_3D.des)
+    return Mask_new
 
 def RD_loc2g(rdlist):
     """

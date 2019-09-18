@@ -74,9 +74,11 @@ class Mask_3D(object):
     """
     dimension = 3
 
-    def __init__(self, values, RD, des=None):
+    def __init__(self, values, RD_entry=RD(np.zeros(3),np.eye(3)), RD_exit=RD(np.zeros(3),np.eye(3)), skip=0, des=None):
         self.values = values
-        self.RD = RD
+        self.RD_entry = RD_entry
+        self.RD_exit = RD_exit
+        self.skip = skip
         self.des = des
 
 
