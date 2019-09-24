@@ -74,7 +74,7 @@ class READ(object):
         data = [x.split()[1:] for x in content[2:]]
         rd = []
         for i in range(int(len(data)/4)):
-            rdtmp = ds.RD(np.array(data[i*4],dtype=float),np.array(data[(i*4+1):(i*4+4)],dtype=float))
+            rdtmp = ds.RD(np.array(data[i*4],dtype=float),np.array(data[(i*4+1):(i*4+4)],dtype=float)-np.array(data[i*4],dtype=float))
             rd.append(rdtmp)
         sc = ds.SC(RD=rd)
         return sc
