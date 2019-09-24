@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 from ds import ds as ds
 from urllib.parse import urlparse
 import numpy as np
+import twobitreader
 
 def module_name():
     print("Module: genomedashboard.io.io.py.")
@@ -62,6 +63,22 @@ class READ(object):
         sc = ds.SC(HP=hps,SEQ=seq)
         return sc
 
+    def rd(self):
+        """
+        Read rd from xyz file, specifically for xyz only contains 'CA' and 'H1,H2,H3' in base pair resolution
+        Read into SC class, as the rd for the space curve.
+        """
+        f = open(self.fp,'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split()[1:] for x in content[2:]]
+        rd = []
+        for i in range(int(len(data)/4)):
+            rdtmp = ds.RD(np.array(data[i*4],dtype=float),np.array(data[(i*4+1):(i*4+4)],dtype=float))
+            rd.append(rdtmp)
+        sc = ds.SC(RD=rd)
+        return sc
+        
     def sequence_txt(self):
         """
         Given seqin.txt, either with one column of sequence or one/several rows of sequence
@@ -71,7 +88,18 @@ class READ(object):
             seq=''.join(line.replace('\n', '') for line in f)
         seq = ds.SEQ(seq.upper())
         return seq
-
+        
+    def sequence_2bit(self,chromatin,start,end):
+        """
+        Given 2bit file, chromatin, start position, end position.
+        Return sequence with uppercase 'ACGT's
+        url is not work, need 2bit file
+        """
+        tbf = twobitreader.TwoBitFile(str(self.fp))
+        seq = tbf[str(chromatin)][int(start):int(end)]
+        seq = ds.SEQ(seq.upper())
+        return seq
+        
     def K(self):
         """
         e.g. MD-B.dat ; 6x6 or 12x12 stiffness matrix
