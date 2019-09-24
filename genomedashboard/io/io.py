@@ -79,6 +79,22 @@ class READ(object):
         sc = ds.SC(RD=rd)
         return sc
         
+    def xyz(self):
+        """
+        Read general xyz file, which contains:
+        the first row as base-pair numbers
+        the second row as comments
+        data from the third row, with the first column as atom names, the 2-4 column as xyz coordinates
+        Data will read into a 3D Mask.
+        """
+        f = open(self.fp,'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split()[1:] for x in content[2:]]
+        atoms = [x.split()[0] for x in content[2:]]
+        return ds.Mask_3D(np.array(data,dtype=float),des=atoms)
+        
+    
     def sequence_txt(self):
         """
         Given seqin.txt, either with one column of sequence or one/several rows of sequence
