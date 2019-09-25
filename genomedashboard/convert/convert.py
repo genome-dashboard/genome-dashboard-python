@@ -244,7 +244,7 @@ def SEQ2RD(seq, RD_dic,occ=[],nuc_type=[]):
     Return RDs associate with the given sequence.
     """
     seqstep=seq.tostep()
-    rd=[ds.RD(np.zeros(3),np.eye(3)]
+    rd=[ds.RD(np.zeros(3),np.eye(3))]
     j=0
     while j<len(seqstep):
         rd.append(RD_dic[seqstep[j]][-1])
