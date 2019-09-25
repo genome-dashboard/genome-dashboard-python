@@ -210,6 +210,9 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
     return ds.HP(None,interHP,hptype=hptype)
 
 def HP_T(HP,T):
+    """
+    Temperature
+    """
     T=np.sqrt(T/298.0)
     HP.HP_inter.shi = np.random.normal(HP.HP_inter.shi, T*0.76)
     HP.HP_inter.sli = np.random.normal(HP.HP_inter.sli, T*0.68)
@@ -221,7 +224,7 @@ def HP_T(HP,T):
 
 def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     """
-        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP]}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
+        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP],...}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
         Return the HPs associate with the given sequence.
     """
     seqstep=seq.tostep()
@@ -234,12 +237,21 @@ def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
         hps[i:i+len(HP_dic[nuc_type[occ.index(i)]])-1] = HP_dic[nuc_type[occ.index(i)]][1:]
     return hps
 
-def SEQ2RD(seq, RD):
+def SEQ2RD(seq, RD_dic,occ=[],nuc_type=[]):
     """
-    Given sequence and RD,
+    Given sequence, dictionary of local RD(e.g. {A-A: [RD], oct:[RD...RD],...}),
+    occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex'])
     Return RDs associate with the given sequence.
     """
-    
+    seqstep=seq.tostep()
+    rd=[ds.RD(np.zeros(3),np.eye(3)]
+    j=0
+    while j<len(seqstep):
+        rd.append(RD_dic[seqstep[j]][-1])
+        j=j+1
+    for i in occ:
+        rd[i:i+len(RD_dic[nuc_type[occ.index(i)]])-1] = RD_dic[nuc_type[occ.index(i)]][1:]
+    return rd
 
 def elastic_energy(seq,HP_free,HP_nuc,K):
     """
