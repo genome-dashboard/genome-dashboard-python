@@ -150,9 +150,9 @@ class READ(object):
         conn_list=[]
         for i in conn:
             tmp=[]
-            for j in range(int((len(i)-6)/5)):
+            for j in range(int((len(i)-11)/5)):
                 if i[j*5+6:j*5+12]!='     ':
-                    tmp.append(int(i[j*5+6:j*5+12]))
+                    tmp.append(int(i[j*5+6:j*5+11]))
         pdb_list = []
         for i in atoms:
             tmppdb = ds.PDB_std(atom=i[0:6],serial=i[6:11],name=i[12:16],altLoc=i[16],resName=i[17:20],chainID=i[21],resSeq=i[22:26],iCode=i[26],x=i[30:38],y=i[38:46],z=i[46:54],occupancy=i[54:60],tempFactor=i[60:66],segID=i[72:76],element=i[76:78],charge=i[78:80])
