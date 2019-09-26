@@ -130,3 +130,28 @@ class SEQ(object):
         for i in range(len(sequence)-1):
             step.append(sequence[i]+'-'+sequence[i+1])
         return step
+
+class PDB_std(object):
+    """
+    Data structure for standard pdb format.
+    ATOM and CONECT are the only two components that take consider in current version.
+    PDB_std is a container that hold two lines of PDB information(atom+connection)
+    """
+    def __init__(self, atom=None, serial=None, name=None, altLoc=None, resName=None, chainID=None, resSeq=None, iCode=None, x=None, y=None, z=None, occupancy=None, tempFactor=None, segID=None,element=None, charge=None, CONECT=None):
+        self.atom=atom
+        self.serial=serial
+        self.name=name
+        self.altLoc=altLoc
+        self.resName=resName
+        self.chainID=chainID
+        self.resSeq=resSeq
+        self.iCode=iCode
+        self.x=x
+        self.y=y
+        self.z=z
+        self.occupancy=occupancy
+        self.tempFactor=tempFactor
+        self.segID=segID
+        self.element=element
+        self.charge=charge
+        self.CONECT=CONECT
