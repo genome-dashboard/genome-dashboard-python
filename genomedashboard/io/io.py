@@ -151,7 +151,7 @@ class READ(object):
         for i in conn:
             tmp=[]
             for j in range(int((len(i)-11)/5)):
-                if i[j*5+6:j*5+12]!='     ':
+                if i[j*5+6:j*5+11]!='     ':
                     tmp.append(int(i[j*5+6:j*5+11]))
         pdb_list = []
         for i in atoms:
