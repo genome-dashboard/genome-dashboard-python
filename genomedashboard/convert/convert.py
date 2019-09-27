@@ -361,7 +361,7 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
     This function will input a list of pdb, docking the x y z values to the desired location,
     then output the pdb format list with all other information unchanged.
     """
-    l = [[i.x,i.y,i.z] for x in pdb_list]
+    l = [[i.x,i.y,i.z] for i in pdb_list]
     values = np.array(l,dtype=float)
     values_new = docking_Mask_3D(rd,ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=skip)).values
     if values_new.size==3:
