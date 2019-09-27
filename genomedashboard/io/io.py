@@ -248,3 +248,14 @@ class WRITE(object):
                 f.write('\n')
         f.write('END')
         f.close()
+
+    def pdb2xyz(self,pdb_list):
+        """
+        Given a list of pdb(class PDB_std), write into xyz file.
+        """
+        f=open(self.fp,'w')
+        f.write(str(len(pdb_list))+'\n')
+        f.write('COMMENT: zli' + '\n')
+        for i in pdb_list:
+            f.write(i.name.strip()[0].ljust(7)+str("%0.5f" % float(i.x)).rjust(20)+str("%0.5f" % float(i.y)).rjust(20)+str("%0.5f" % float(i.z)).rjust(20)+'\n')
+        f.close()

@@ -223,8 +223,8 @@ def HP_T(HP,T):
 
 def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     """
-        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP],...}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
-        Return the HPs associate with the given sequence.
+    Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP],...}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
+    Return the HPs associate with the given sequence.
     """
     seqstep=seq.tostep()
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
