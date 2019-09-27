@@ -237,7 +237,7 @@ class WRITE(object):
             if i>0:
                 if j.chainID != pdb_list[i-1].chainID:
                     f.write('TER'+'\n')
-            f.write(j.atom.ljust(6)+str(j.serial).rjust(5)+' '+j.name.ljust(4)+j.altLoc+j.resName.rjust(3)+' '+j.chainID+j.resSeq.rjust(4)+j.iCode+' '.rjust(3)+str("%0.3f" % float(j.x)).rjust(8)+str("%0.3f" % float(j.y)).rjust(8)+str("%0.3f" % float(j.z)).rjust(8)+j.occupancy.rjust(6)+j.tempFactor.rjust(6)+' '.rjust(6)+j.segID.ljust(4)+j.element.ljust(2)+j.charge.ljust(2))
+            f.write(j.atom.ljust(6)+str(j.serial).rjust(5)+' '+j.name.ljust(4)+j.altLoc+j.resName.rjust(3)+' '+j.chainID+str(j.resSeq).rjust(4)+j.iCode+' '.rjust(3)+str("%0.3f" % float(j.x)).rjust(8)+str("%0.3f" % float(j.y)).rjust(8)+str("%0.3f" % float(j.z)).rjust(8)+j.occupancy.rjust(6)+j.tempFactor.rjust(6)+' '.rjust(6)+j.segID.ljust(4)+j.element.ljust(2)+j.charge.ljust(2))
             f.write('\n')
         f.write('TER'+'\n')
         for k in pdb_list:
