@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
+import matplotlib.pyplot as plt
 import copy
 
 def module_name():
@@ -337,10 +338,6 @@ def dihedral(xyz1,xyz2,xyz3,xyz4):
     beta = -math.atan2(sin_phi,cos_phi)*180/np.pi
     return beta
 
-def two_angle_plot(Mask_3D):
-    """
-    Given 3D Mask and plot the two angle plot.
-    """
 
 ##########################
 ######Specical Usages#####
@@ -424,3 +421,19 @@ def DNA_allatom_pdb_combine(pdb_list):
             ser+=1
         res+=1
     return combined_pdb
+
+
+#########Plotting##########
+
+def two_angle_plot(alpha,beta,filename):
+    """
+    Given list of alpha and beta and plot the two angle plot.
+    """
+    fig, ax = plt.subplots(figsize=(3,3))
+    cm = plt.cm.get_cmap('RdYlBu')
+    z = [float(x)/len(alpha) for x in range(len(alpha)]
+    sc = plt.scatter(alpha,beta,c=z,cmap=cm)
+    cbar = fig.colorbar(sc, tick=[0, 1, 15])
+    plt.xlim(0,np.pi)
+    ax.set_xticks[0,np.pi/2,np.pi]
+    
