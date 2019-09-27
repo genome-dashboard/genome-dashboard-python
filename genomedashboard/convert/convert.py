@@ -435,7 +435,7 @@ def two_angle_plot(alpha,beta,filename):
     sc = plt.scatter(alpha,beta,c=z,cmap=cm)
     cbar = fig.colorbar(sc, ticks=[0, 1, 15])
     plt.xlim(0,np.pi)
-    ax.set_xticks[0,np.pi/2,np.pi]
+    ax.set_xticks([0,np.pi/2,np.pi])
     ax.set_xticklabels(['0', '$\pi$/2', '$\pi$'], fontsize=12)
     ax.set_yticks([-np.pi, 0, np.pi])
     ax.set_yticklabels(['-$\pi$','0', '$\pi$'], fontsize=12)
