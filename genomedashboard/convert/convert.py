@@ -338,6 +338,17 @@ def dihedral(xyz1,xyz2,xyz3,xyz4):
     beta = -math.atan2(sin_phi,cos_phi)*180/np.pi
     return beta
 
+def alpha_beta_list(xyz_list):
+    """
+    Given a list of ordered xyz coord, return alpha and beta
+    """
+    alpha=[]
+    beta=[]
+    for i in range(len(xyz_list)-3):
+        alpha.append(deflection(xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+        beta.append(dihedral(xyz_list[i],xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+    return alpha,beta
+
 
 ##########################
 ######Specical Usages#####
@@ -351,6 +362,27 @@ def RD_loc2g(rdlist):
     for i in range(1,len(rdlist)):
         rd.append(RD_stack(rd[i-1],rdlist[i]))
     return rd
+
+def atom_extract(Mask_3D, atom):
+    """
+    Given (a list of) 3D Mask, extract the coord's of needed atom.
+    """
+    xyz_list=[]
+    if type(Mask_3D) is list:
+        for i in Mask_3D:
+            for x,y in enumerate(i.des):
+                if y==atom:
+                    if i.values.size==3:
+                        i.values.reshape(1,3)
+                    xyz_list.append(i.values[x])
+    else:
+        for x,y in enumerate(Mask_3D.des):
+            if y==atom:
+                if Mask_3D.values.size==3:
+                    Mask_3D.values.reshape(1,3)
+                xyz_list.append(Mask_3D.values[x])
+    return xyz_list
+                    
 
 def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(np.zeros(3),np.eye(3)),skip=0):
     """
