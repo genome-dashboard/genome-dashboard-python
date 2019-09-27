@@ -13,6 +13,10 @@ import copy
 def module_name():
     print("Module: genomedashboard.convert.convert.py.")
 
+##########################
+####Preprocessor macro####
+##########################
+
 def Ry(theta):
     ry=np.array([[np.cos(theta),0.,np.sin(theta)],[0.,1.,0.],[-np.sin(theta),0.,np.cos(theta)]])
     return ry
@@ -55,6 +59,10 @@ def vrot(v,vn,fir):
     for k in range(3):
         vout[k]=v[k]*np.cos(fir)+vn[k]*skal(vn,v)*(1.0-np.cos(fir))+vpom[k]*np.sin(fir)
     return vout
+
+##########################
+######Basic Functions#####
+##########################
 
 def HP2RD(HP, hptype='3DNA'):
     """
@@ -120,15 +128,6 @@ def docking_Mask_3D(rd, Mask_3D):
     exit.d = np.dot(exit.d,rd.d)
     Mask_new = ds.Mask_3D(value,RD_entry=entry,RD_exit=exit,skip=Mask_3D.skip,des=Mask_3D.des)
     return Mask_new
-
-def RD_loc2g(rdlist):
-    """
-    Given a list of local RD, generate the global RD used in SC(Space Curve).
-    """
-    rd = [rdlist[0]]
-    for i in range(1,len(rdlist)):
-        rd.append(RD_stack(rd[i-1],rdlist[i]))
-    return rd
 
 def RD2HP(rd1,rd2,hptype='3DNA'):
     """
@@ -343,3 +342,33 @@ def two_angle_plot(Mask_3D):
     Given 3D Mask and plot the two angle plot.
     """
 
+##########################
+######Specical Usages#####
+##########################
+
+def RD_loc2g(rdlist):
+    """
+    Given a list of local RD, generate the global RD used in SC(Space Curve).
+    """
+    rd = [rdlist[0]]
+    for i in range(1,len(rdlist)):
+        rd.append(RD_stack(rd[i-1],rdlist[i]))
+    return rd
+
+def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(np.zeros(3),np.eye(3)),skip=0):
+    """
+    A usage of docking_Mask_3D, but pdb has its own format.
+    This function will input a list of pdb, docking the x y z values to the desired location,
+    then output the pdb format list with all other information unchanged.
+    """
+    l = [[i.x,i.y,i.z] for x in pdb_list]
+    values = np.array(l,dtype=float)
+    values_new = docking_Mask_3D(rd,ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=skip)).values
+    if values_new.size==3:
+        values_new.reshape(1,3)
+    for i,j in enumerate(values_new):
+        pdb_list[i].x = j[0]
+        pdb_list[i].y = j[1]
+        pdb_list[i].z = j[2]
+    return pdb_list
+        
