@@ -433,7 +433,7 @@ def two_angle_plot(alpha,beta,filename):
     cm = plt.cm.get_cmap('RdYlBu')
     z = [float(x)/len(alpha) for x in range(len(alpha))]
     sc = plt.scatter(alpha,beta,c=z,cmap=cm)
-    cbar = fig.colorbar(sc, tick=[0, 1, 15])
+    cbar = fig.colorbar(sc, ticks=[0, 1, 15])
     plt.xlim(0,np.pi)
     ax.set_xticks[0,np.pi/2,np.pi]
     ax.set_xticklabels(['0', '$\pi$/2', '$\pi$'], fontsize=12)
