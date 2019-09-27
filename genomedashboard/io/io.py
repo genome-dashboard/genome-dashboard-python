@@ -226,3 +226,25 @@ class WRITE(object):
         for i in content:
             f.write(i)
         f.close()
+
+    def pdb(self,pdb_list):
+        """
+        Given a list of pdb(class PDB_std), write into a standard pdb file.
+        Current version supports ATOM and CONECT
+        """
+        f=open(self.fp,'w')
+        for i,j in enumerate(pdb_list):
+            if i>0:
+                if j.chainID != pdb_list[i-1].chainID:
+                    f.write('TER'+'\n')
+            f.write(j.atom.ljust(6)+str(j.serial).rjust(5)+' '+j.name.ljust(4)+j.altLoc+j.resName.rjust(3)+' '+j.chainID+j.resSeq.rjust(4)+j.iCode+' '.rjust(3)+str("%0.3f" % float(j.x)).rjust(8)+str("%0.3f" % float(j.y)).rjust(8)+str("%0.3f" % float(j.z)).rjust(8)+j.occupancy.rjust(6)+j.tempFactor.rjust(6)+' '.rjust(6)+j.segID.ljust(4)+j.element.ljust(2)+j.charge.ljust(2))
+            f.write('\n')
+        f.write('TER'+'\n')
+        for k in pdb_list:
+            if k.CONECT is not None:
+                f.write('CONECT')
+                for x in k.CONECT:
+                    f.write(str(x).rjust(5))
+                f.write('\n')
+        f.write('END')
+        f.close()
