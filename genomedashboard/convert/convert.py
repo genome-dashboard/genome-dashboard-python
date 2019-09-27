@@ -372,4 +372,55 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
         pdb_list_new[i].y = j[1]
         pdb_list_new[i].z = j[2]
     return pdb_list_new
-        
+    
+def DNA_allatom_pdb_combine(pdb_list):
+    """
+    Given a list of DNA pdb list, return a combined DNA pdb format data.
+    Works only for double stranded DNA.
+    """
+    ###Identify the name for chain A and B
+    chainA_name = pdb_list[0][0].chainID
+    chainB_name = pdb_list[0][-1].chainID
+    ###Separate chain A and B
+    chainA=[]
+    chainB=[]
+    for i in pdb_list:
+        chainA.append([x for x in i if x.chainID==chainA_name])
+        chainB.append([x for x in i if x.chainID==chainB_name])
+    ###Initialize serial and resSeq
+    ser=1
+    res=1
+    ###Holder for combined DNA_pdb
+    combined_pdb=[]
+    ###Start combine chainA, tmp is for store the number of connection between O3' and P(next base pair)
+    tmp=None
+    for i in chainA:
+        for j in i:
+            j.serial=ser
+            j.resSeq=res
+            j.CONECT=[x-j.CONECT[0]+ser for x in j.CONECT]
+            if j.name.split()[0]=="O3'":
+                tmp=copy.copy(ser)
+            if j.name.split()[0]=="P" and tmp is not None:
+                j.CONECT.insert(1,tmp)
+                combined_pdb[tmp-1].CONECT.append(ser)
+            combined_pdb.append(j)
+            ser+=1
+        res+=1
+    ###Start combine chainB, it is reverse.
+    chainB.reverse()
+    tmp=None
+    for i in chainB:
+        for j in i:
+            j.serial=ser
+            j.resSeq=res
+            j.CONECT=[x-j.CONECT[0]+ser for x in j.CONECT]
+            if j.name.split()[0]=="O3'":
+                tmp=copy.copy(ser)
+            if j.name.split()[0]=="P" and tmp is not None:
+                j.CONECT.insert(1,tmp)
+                combined_pdb[tmp-1].CONECT.append(ser)
+            combined_pdb.append(j)
+            ser+=1
+        res+=1
+    return combined_pdb
