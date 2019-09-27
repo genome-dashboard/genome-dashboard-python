@@ -369,7 +369,7 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
         pdb_list_new[i].y = j[1]
         pdb_list_new[i].z = j[2]
     return pdb_list_new
-    
+
 def DNA_allatom_pdb_combine(pdb_list):
     """
     Given a list of DNA pdb list, return a combined DNA pdb format data.
@@ -436,4 +436,11 @@ def two_angle_plot(alpha,beta,filename):
     cbar = fig.colorbar(sc, tick=[0, 1, 15])
     plt.xlim(0,np.pi)
     ax.set_xticks[0,np.pi/2,np.pi]
-    
+	ax.set_xticklabels(['0', '$\pi$/2', '$\pi$'], fontsize=12)
+	ax.set_yticks([-np.pi, 0, np.pi])
+	ax.set_yticklabels(['-$\pi$','0', '$\pi$'], fontsize=12)
+	plt.ylim(-np.pi,np.pi)
+	plt.xlabel(r'$\alpha$', fontsize=12)
+	plt.ylabel(r'$\beta$', fontsize=12)
+	plt.subplots_adjust(left=0.25, bottom=0.25)
+	fig.savefig(filename)
