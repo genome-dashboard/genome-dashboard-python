@@ -9,6 +9,7 @@ from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
 import matplotlib.pyplot as plt
+import math
 import copy
 
 def module_name():
@@ -373,13 +374,13 @@ def atom_extract(Mask_3D, atom):
             for x,y in enumerate(i.des):
                 if y==atom:
                     if i.values.size==3:
-                        i.values.reshape(1,3)
+                        i.values = i.values.reshape(1,3)
                     xyz_list.append(i.values[x])
     else:
         for x,y in enumerate(Mask_3D.des):
             if y==atom:
                 if Mask_3D.values.size==3:
-                    Mask_3D.values.reshape(1,3)
+                    Mask_3D.values=Mask_3D.values.reshape(1,3)
                 xyz_list.append(Mask_3D.values[x])
     return xyz_list
                     
@@ -395,7 +396,7 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
     values = np.array(l,dtype=float)
     values_new = docking_Mask_3D(rd,ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=skip)).values
     if values_new.size==3:
-        values_new.reshape(1,3)
+        values_new=values_new.reshape(1,3)
     for i,j in enumerate(values_new):
         pdb_list_new[i].x = j[0]
         pdb_list_new[i].y = j[1]
