@@ -366,9 +366,10 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
     values_new = docking_Mask_3D(rd,ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=skip)).values
     if values_new.size==3:
         values_new.reshape(1,3)
+    pdb_list_new=copy.copy(pdb_list)
     for i,j in enumerate(values_new):
-        pdb_list[i].x = j[0]
-        pdb_list[i].y = j[1]
-        pdb_list[i].z = j[2]
-    return pdb_list
+        pdb_list_new[i].x = j[0]
+        pdb_list_new[i].y = j[1]
+        pdb_list_new[i].z = j[2]
+    return pdb_list_new
         
