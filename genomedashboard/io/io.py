@@ -162,6 +162,18 @@ class READ(object):
                     tmppdb.CONECT = j
             pdb_list.append(tmppdb)
         return pdb_list
+        
+    def chrom(self):
+        """
+        Read chrom.bin file that provides chromosome length.
+        Output the format that will feed to pyBigWig headers.
+        """
+        f = open(self.fp,'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split() for x in content]
+        chrom_header=[(i[0],int(i[1])) for i in data]
+        return chrom_header
 
 class WRITE(object):
     """a class to write data into different format"""
