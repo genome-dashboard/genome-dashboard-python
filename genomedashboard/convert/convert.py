@@ -308,7 +308,6 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 i+=1
     return [int(x+1) for x in occ]
 
-
 ##########Two Angle Model###########
 
 def deflection(xyz1,xyz2,xyz3):
@@ -343,13 +342,37 @@ def alpha_beta_list(xyz_list):
     """
     Given a list of ordered xyz coord, return alpha and beta
     """
-    alpha=[]
-    beta=[]
-    for i in range(len(xyz_list)-3):
-        alpha.append(deflection(xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
-        beta.append(dihedral(xyz_list[i],xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+    if len(xyz_list)<4:
+        print('At least four elements required.')
+        sys.exit(0)
+    else:
+        alpha=[]
+        beta=[]
+        for i in range(len(xyz_list)-3):
+            alpha.append(deflection(xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+            beta.append(dihedral(xyz_list[i],xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
     return alpha,beta
 
+######Distance Matrix#####
+
+def distance_matrix(xyz_list, cut=0):
+    """
+    Given a list of ordered xyz coord, return distance matrix.
+    cut is the minimal value that treat as colliding.
+    """
+    if len(xyz_list)<2:
+        print('At least two elements required.')
+        sys.exit(0)
+    else:
+        distance_matrix = np.zeros((len(xyz_list),len(xyz_list)))
+        for i in range(len(xyz_list)):
+            for j in range(len(xyz_list)):
+                v = xyz_list[i]-xyz_list[j]
+                distance_matrix[i][j] = np.sqrt(v[0]**2+v[1]**2+v[2]**2)
+                if distance_matrix[i][j]<cut:
+                    distance_matrix[i][j]=0.0
+    return distance_matrix
+                
 
 ##########################
 ######Specical Usages#####
@@ -477,3 +500,9 @@ def two_angle_plot(alpha,beta,filename):
     plt.ylabel(r'$\beta$', fontsize=12)
     plt.subplots_adjust(left=0.25, bottom=0.25)
     fig.savefig(filename)
+
+def distance_matrix_plot(distance_matrix):
+    """
+    Input distance matrix, plot a heatmap of it.
+    """
+    
