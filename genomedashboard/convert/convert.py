@@ -121,7 +121,7 @@ def docking_Mask_3D(rd, Mask_3D):
     value = copy.copy(Mask_3D.values)
     entrydT = entry.d.T
     value = np.dot(value - entry.r,entrydT)
-    exit.r = np.dot(exit.r - entry.r,entrydT) 
+    exit.r = np.dot(exit.r - entry.r,entrydT)
     exit.d = np.dot(exit.d,entrydT)
     value = np.dot(value,rd.d) + rd.r
     entry.r = rd.r
@@ -306,7 +306,7 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 occ[i]=tmpmin
                 Etmp[tmpmin]=np.inf
                 i+=1
-    return [int(x+1) for x in occ]
+    return [int(x+1) for x in occ].sort()
 
 ##########Two Angle Model###########
 
