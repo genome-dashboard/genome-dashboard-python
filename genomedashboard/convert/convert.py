@@ -306,7 +306,9 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 occ[i]=tmpmin
                 Etmp[tmpmin]=np.inf
                 i+=1
-    return [int(x+1) for x in occ].sort()
+    occ_out=[int(x+1) for x in occ]
+    occ_out.sort()
+    return occ_out
 
 ##########Two Angle Model###########
 
