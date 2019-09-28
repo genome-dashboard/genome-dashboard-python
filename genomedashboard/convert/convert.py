@@ -406,7 +406,15 @@ def atom_extract(Mask_3D, atom):
                     Mask_3D.values=Mask_3D.values.reshape(1,3)
                 xyz_list.append(Mask_3D.values[x])
     return xyz_list
-                    
+
+def RD2Mask_3D(RD):
+    """
+    Given a list of RD(global), convert it into a 3D Mask.
+    """
+    entry=RD[0]
+    exit=RD[-1]
+    values=np.array([x.r for x in RD])
+    return ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=len(RD),des=['CA']*len(RD))
 
 def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(np.zeros(3),np.eye(3)),skip=0):
     """
@@ -425,6 +433,15 @@ def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(
         pdb_list_new[i].y = j[1]
         pdb_list_new[i].z = j[2]
     return pdb_list_new
+
+def Mask_3D_stack(Mask_3D_1,Mask_3D_2):
+    """
+    Given two 3D Masks, the first one is global positioned, the latter one is local.
+    calculate the latter one to the global position.
+    """
+    rd=Mask_3D_1.RD_exit
+    new_Mask = docking_Mask_3D(rd, Mask_3D_2)
+    return new_Mask
 
 def DNA_allatom_pdb_combine(pdb_list):
     """
