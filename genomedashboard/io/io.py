@@ -282,4 +282,11 @@ class WRITE(object):
         bw.addEntries(np.array([chrom]*len(start)),start,ends=end,values=values)
         bw.close()
         
-
+    def sequence_txt(self,SEQ):
+        """
+        Given a (class SEQ) sequence, output the txt sequence file.
+        """
+        f=open(self.fp,'w')
+        for i in SEQ.tostring():
+            f.write(i+'\n')
+        f.close()
