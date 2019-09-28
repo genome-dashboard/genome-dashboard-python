@@ -441,6 +441,8 @@ def Mask_3D_stack(Mask_3D_1,Mask_3D_2):
     """
     rd=Mask_3D_1.RD_exit
     new_Mask = docking_Mask_3D(rd, Mask_3D_2)
+    des=Mask_3D_1.des.extend(Mask_3D_2.des)
+    new_Mask.des=des
     return new_Mask
 
 def DNA_allatom_pdb_combine(pdb_list):
