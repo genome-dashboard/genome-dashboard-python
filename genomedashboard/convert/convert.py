@@ -500,9 +500,14 @@ def two_angle_plot(alpha,beta,filename):
     plt.ylabel(r'$\beta$', fontsize=12)
     plt.subplots_adjust(left=0.25, bottom=0.25)
     fig.savefig(filename)
+    plt.close()
 
-def distance_matrix_plot(distance_matrix):
+def distance_matrix_plot(distance_matrix,filename,cut=0):
     """
     Input distance matrix, plot a heatmap of it.
     """
-    
+    fig, ax = plt.subplots(figsize=(3,3))
+    sc = plt.imshow(distance_matrix,cmap='gist_heat',interpolation='nearest')
+    cbar = fig.colorbar(sc, ticks=[0,cut])
+    fig.savefig(filename)
+    plt.close()
