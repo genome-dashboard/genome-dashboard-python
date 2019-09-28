@@ -278,7 +278,7 @@ class WRITE(object):
         chrom_len can be obtained by chrom.bin file from UCSC
         """
         bw = pyBigWig.open(self.fp,'w')
-        bw.addHeader(chrom_len)
+        bw.addHeader(chrom_len,maxZooms=0)
         bw.addEntries(np.array([chrom]*len(start)),start,ends=end,values=values)
         bw.close()
         
