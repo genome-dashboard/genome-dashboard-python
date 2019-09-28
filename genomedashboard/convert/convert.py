@@ -508,6 +508,8 @@ def distance_matrix_plot(distance_matrix,filename,cut=0):
     """
     fig, ax = plt.subplots(figsize=(3,3))
     sc = plt.imshow(distance_matrix,cmap='gist_heat',interpolation='nearest')
-    cbar = fig.colorbar(sc, ticks=[0,cut])
+    cbar = fig.colorbar(sc, ticks=[0])
+    if cut>0:
+        cbar.ax.set_yticklabels(['<'+str(cut)])
     fig.savefig(filename)
     plt.close()
