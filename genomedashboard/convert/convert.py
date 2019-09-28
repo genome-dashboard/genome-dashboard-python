@@ -120,8 +120,8 @@ def docking_Mask_3D(rd, Mask_3D):
     exit = copy.copy(Mask_3D.RD_exit)
     value = copy.copy(Mask_3D.values)
     entrydT = entry.d.T
-    value = np.dot(value,entrydT) - entry.r
-    exit.r = np.dot(exit.r,entrydT) -entry.r
+    value = np.dot(value - entry.r,entrydT)
+    exit.r = np.dot(exit.r - entry.r,entrydT) 
     exit.d = np.dot(exit.d,entrydT)
     value = np.dot(value,rd.d) + rd.r
     entry.r = rd.r
