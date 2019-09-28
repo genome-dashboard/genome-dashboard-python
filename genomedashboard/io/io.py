@@ -272,4 +272,14 @@ class WRITE(object):
             f.write(i.name.strip()[0].ljust(7)+str("%0.5f" % float(i.x)).rjust(20)+str("%0.5f" % float(i.y)).rjust(20)+str("%0.5f" % float(i.z)).rjust(20)+'\n')
         f.close()
         
-    
+    def bigwig(self,chrom_len,chrom,start,end,values):
+        """
+        Write bigwig format file.
+        chrom_len can be obtained by chrom.bin file from UCSC
+        """
+        bw = pyBigWig.open(self.fp,'w')
+        bw.addHeader(chrom_len)
+        bw.addEntries(np.array([chrom]*len(start)),start,ends=end,values=values)
+        bw.close()
+        
+
