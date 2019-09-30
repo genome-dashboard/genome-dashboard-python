@@ -214,14 +214,15 @@ def HP_T(HP,T):
     """
     Temperature
     """
+    HP_new=copy.deepcopy(HP)
     T=np.sqrt(T/298.0)
-    HP.HP_inter.shi = np.random.normal(HP.HP_inter.shi, T*0.76)
-    HP.HP_inter.sli = np.random.normal(HP.HP_inter.sli, T*0.68)
-    HP.HP_inter.ris = np.random.normal(HP.HP_inter.ris, T*0.37)
-    HP.HP_inter.til = np.random.normal(HP.HP_inter.til, T*4.6)
-    HP.HP_inter.rol = np.random.normal(HP.HP_inter.rol, T*7.2)
-    HP.HP_inter.twi = np.random.normal(HP.HP_inter.twi, T*7.3)
-    return HP
+    HP_new.HP_inter.shi = np.random.normal(HP_new.HP_inter.shi, T*0.76)
+    HP_new.HP_inter.sli = np.random.normal(HP_new.HP_inter.sli, T*0.68)
+    HP_new.HP_inter.ris = np.random.normal(HP_new.HP_inter.ris, T*0.37)
+    HP_new.HP_inter.til = np.random.normal(HP_new.HP_inter.til, T*4.6)
+    HP_new.HP_inter.rol = np.random.normal(HP_new.HP_inter.rol, T*7.2)
+    HP_new.HP_inter.twi = np.random.normal(HP_new.HP_inter.twi, T*7.3)
+    return HP_new
 
 def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
     """
