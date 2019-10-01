@@ -144,9 +144,9 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         y2 = vnormal(rd2.d[1])
         z2 = vnormal(rd2.d[2])
         pgama=skal(z1,z2)
-        if (pgama>0.99999):
+        if (pgama>0.999999999):
             pgama=1.0
-        if (pgama<-0.99999):
+        if (pgama<-0.999999999):
             pgama=-1.0
         gama=np.arccos(pgama)
         if (z1[0]==z2[0] and z1[1]==z2[1] and z1[2]==z2[2]):
@@ -165,18 +165,18 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         ym=vnormal(y1p+y2p)
         zm=vnormal(z1+z2)
         pomega=skal(y1p,y2p)
-        if (pomega>0.99999):
+        if (pomega>0.999999999):
             pomega=1.0
-        if (pomega<-0.99999):
+        if (pomega<-0.999999999):
             pomega=-1.0
         omega=np.arccos(pomega)
         ypom=vprod(y1p,y2p)
         if (skal(ypom,zm)<0.0):
             omega=-omega
         pfi=skal(rt,ym)
-        if (pfi>0.99999):
+        if (pfi>0.999999999):
             pfi=1.0
-        if (pfi<-0.99999):
+        if (pfi<-0.999999999):
             pfi=-1.0
         fi=np.arccos(pfi)
         rpom=vprod(rt,ym)
