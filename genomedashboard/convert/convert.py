@@ -412,7 +412,7 @@ def HP2SC(hp_list,hptype='3DNA'):
         y0[1:4]=np.eye(3)
         t=[i for i in range(len(hp_list))]
         y = odeint(odeSC,y0.reshape(12,),t,args=(hp_list,))
-        return y
+        rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
