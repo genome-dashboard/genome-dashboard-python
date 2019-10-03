@@ -63,7 +63,7 @@ def vrot(v,vn,fir):
         vout[k]=v[k]*np.cos(fir)+vn[k]*skal(vn,v)*(1.0-np.cos(fir))+vpom[k]*np.sin(fir)
     return vout
 
-def odeSC(s,y,hp_list):
+def odeSC(y,s,hp_list):
     """
     The set up for the ode function of Space Curve. dr/ds=D*Gamma and ddi/ds=(D*Omega)xdi.
     Gamma = [Shift, Slide, Rise], Omega=[Tilt, Roll, Twist]
