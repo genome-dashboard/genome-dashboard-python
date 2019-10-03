@@ -79,7 +79,7 @@ def odeSC(s,y,hp_list):
     dydt = np.zeros((4,3))
     dydt[0] = gamma.reshape(1,3)
     dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
-    return dydt.reshape(12,1)
+    return dydt.reshape(12,)
 
 ##########################
 ######Basic Functions#####
@@ -411,7 +411,7 @@ def HP2SC(hp_list,hptype='3DNA'):
         y0=np.zeros((4,3))
         y0[1:4]=np.eye(3)
         t=[i for i in range(len(hp_list))]
-        y = odeint(odeSC,y0.reshape(12,1),t,args=(hp_list,))
+        y = odeint(odeSC,y0.reshape(12,),t,args=(hp_list,))
         return y
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
