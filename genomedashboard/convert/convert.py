@@ -74,11 +74,11 @@ def odeSC(y,s,hp_list):
     rol=hp.HP_inter.rol*pi
     twi=hp.HP_inter.twi*pi
     Dmat=y.reshape(12,1)[3:12].reshape(3,3)
-    gamma = np.dot(Dmat,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
-    omega = np.dot(Dmat,np.array([[til],[rol],[twi]]))
+    gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+    omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
     dydt = np.zeros((4,3))
     dydt[0] = gamma.reshape(1,3)
-    dydt[1:4] = np.cross(omega.reshape(1,3),Dmat).T
+    dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
     return dydt.reshape(12,)
 
 ##########################
