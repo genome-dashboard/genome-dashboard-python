@@ -410,7 +410,7 @@ def HP2SC(hp_list,hptype='3DNA'):
     elif hptype=='MATH':
         y0=np.zeros((4,3))
         y0[1:4]=np.eye(3)
-        t=[i for i in range(1,len(hp_list)+1)]
+        t=[i for i in range(1,len(hp_list))]
         y = odeint(odeSC,y0.reshape(12,),t,args=(hp_list,))
         rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
     else:
