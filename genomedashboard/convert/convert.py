@@ -69,7 +69,7 @@ def odeSC(y,s,hp_list):
     Gamma = [Shift, Slide, Rise], Omega=[Tilt, Roll, Twist]
     """
     pi=np.pi/180
-    hp=hp_list[s]
+    hp=hp_list[int(s)]
     til=hp.HP_inter.til*pi
     rol=hp.HP_inter.rol*pi
     twi=hp.HP_inter.twi*pi
