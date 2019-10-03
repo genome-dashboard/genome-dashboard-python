@@ -408,10 +408,12 @@ def HP2SC(hp_list,hptype='3DNA'):
         local_rd = [HP2RD(hp_list[i],hptype) for i in range(len(hp_list))]
         rd_list = RD_loc2g(local_rd)
     elif hptype=='MATH':
+        new_list=hp_list[1:]
+        new_list.append(hp_list[0])
         y0=np.zeros((4,3))
         y0[1:4]=np.eye(3)
-        t=[i for i in range(1,len(hp_list))]
-        y = odeint(odeSC,y0.reshape(12,),t,args=(hp_list,))
+        t=[i for i in range(len(hp_list))]
+        y = odeint(odeSC,y0.reshape(12,),t,args=(new_list,))
         rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
