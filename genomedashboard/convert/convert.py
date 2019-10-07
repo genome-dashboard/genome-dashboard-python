@@ -87,7 +87,7 @@ def odeSC(y,s,hp_list):
 
 def HP2RD(HP, hptype='3DNA'):
     """
-    Convert HP to RD, which require inputs of 6 inter HPs, and outputs R and D.
+    Convert HP to RD, which require inputs of HPs(HP_inter is required, HP_intra could be None), and outputs R and D.
     Options of 3DNA and CURVES are provided in use of different types of HPs.
     """
     pi=np.pi/180
@@ -415,6 +415,18 @@ def HP2SC(hp_list,hptype='3DNA'):
         t=[i for i in range(len(hp_list))]
         y = odeint(odeSC,y0.reshape(12,),t,args=(new_list,))
         rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
+    else:
+        print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
+        sys.exit(0)
+    return ds.SC(HP=hp_list,RD=rd_list)
+
+def RD2SC(rd_list,hptype='3DNA'):
+    """
+    Given a list of global RD, calculate HP.
+    Return the Space Curve with both HP and RD
+    """
+    if hptype=='3DNA' or hptype=='CURVES':
+        hp_list = [RD2HP(rd_list[i],rd_list[i],hptype) if i==0 else RD2HP(rd_list[i-1],rd_list[i],hptype) for i in range(len(rd_list))]
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
