@@ -186,6 +186,7 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         if (skal(ypom,zm)<0.0):
             omega=-omega
         pfi=skal(rt,ym)
+        print(pfi)
         fi=np.arccos(pfi)
         rpom=vprod(rt,ym)
         if (skal(rpom,zm)<0.0):
