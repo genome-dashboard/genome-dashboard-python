@@ -7,7 +7,12 @@
 import unittest
 from click.testing import CliRunner
 
-from genomedashboard import genomedashboard
+# Need to improve testing.
+# from genomedashboard import genomedashboard
+# from genomedashboard import convert
+# from genomedashboard import data
+# from genomedashboard import ds
+# from genomedashboard import io
 from genomedashboard import cli
 
 
