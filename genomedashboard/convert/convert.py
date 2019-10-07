@@ -8,6 +8,7 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
+from scipy.integrate import odeint
 import matplotlib.pyplot as plt
 import math
 import copy
@@ -62,13 +63,31 @@ def vrot(v,vn,fir):
         vout[k]=v[k]*np.cos(fir)+vn[k]*skal(vn,v)*(1.0-np.cos(fir))+vpom[k]*np.sin(fir)
     return vout
 
+def odeSC(y,s,hp_list):
+    """
+    The set up for the ode function of Space Curve. dr/ds=D*Gamma and ddi/ds=(D*Omega)xdi.
+    Gamma = [Shift, Slide, Rise], Omega=[Tilt, Roll, Twist]
+    """
+    pi=np.pi/180
+    hp=hp_list[int(s)]
+    til=hp.HP_inter.til*pi
+    rol=hp.HP_inter.rol*pi
+    twi=hp.HP_inter.twi*pi
+    Dmat=y.reshape(12,1)[3:12].reshape(3,3)
+    gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+    omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+    dydt = np.zeros((4,3))
+    dydt[0] = gamma.reshape(1,3)
+    dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
+    return dydt.reshape(12,)
+
 ##########################
 ######Basic Functions#####
 ##########################
 
 def HP2RD(HP, hptype='3DNA'):
     """
-    Convert HP to RD, which require inputs of 6 inter HPs, and outputs R and D.
+    Convert HP to RD, which require inputs of HPs(HP_inter is required, HP_intra could be None), and outputs R and D.
     Options of 3DNA and CURVES are provided in use of different types of HPs.
     """
     pi=np.pi/180
@@ -98,6 +117,7 @@ def HP2RD(HP, hptype='3DNA'):
         r = r + np.dot(H,D)
     else:
         print ('Please provide a valid type, "3DNA" or "CURVES"')
+        sys.exit(0)
     rd = ds.RD(r.T.reshape(3),Ti.T)
     return rd
 
@@ -144,10 +164,10 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         y2 = vnormal(rd2.d[1])
         z2 = vnormal(rd2.d[2])
         pgama=skal(z1,z2)
-        #if (pgama>0.999999999):
-        #    pgama=1.0
-        #if (pgama<-0.999999999):
-        #    pgama=-1.0
+        if (pgama>1.0):
+            pgama=1.0
+        if (pgama<-1.0):
+            pgama=-1.0
         gama=np.arccos(pgama)
         if (z1[0]==z2[0] and z1[1]==z2[1] and z1[2]==z2[2]):
             rt=np.zeros(3)
@@ -165,19 +185,19 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         ym=vnormal(y1p+y2p)
         zm=vnormal(z1+z2)
         pomega=skal(y1p,y2p)
-        #if (pomega>0.999999999):
-        #    pomega=1.0
-        #if (pomega<-0.999999999):
-        #    pomega=-1.0
+        if (pomega>1.0):
+            pomega=1.0
+        if (pomega<-1.0):
+            pomega=-1.0
         omega=np.arccos(pomega)
         ypom=vprod(y1p,y2p)
         if (skal(ypom,zm)<0.0):
             omega=-omega
         pfi=skal(rt,ym)
-        #if (pfi>0.999999999):
-        #    pfi=1.0
-        #if (pfi<-0.999999999):
-        #    pfi=-1.0
+        if (pfi>1.0):
+            pfi=1.0
+        if (pfi<-1.0):
+            pfi=-1.0
         fi=np.arccos(pfi)
         rpom=vprod(rt,ym)
         if (skal(rpom,zm)<0.0):
@@ -208,6 +228,7 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         interHP = ds.HP_inter(ssr[0],ssr[1],ssr[2],trt[0][0],trt[1][0],trt[2][0])
     else:
         print('Please provide a valid type, "3DNA" or "CURVES"')
+        sys.exit(0)
     return ds.HP(None,interHP,hptype=hptype)
 
 def HP_T(HP,T):
@@ -390,6 +411,39 @@ def RD_loc2g(rdlist):
         rd.append(RD_stack(rd[i-1],rdlist[i]))
     return rd
 
+def HP2SC(hp_list,hptype='3DNA'):
+    """
+    Given a list of HP, calculate global RD.
+    Return the Space Curve with both HP and RD.
+    """
+    if hptype=='3DNA' or hptype=='CURVES':
+        local_rd = [HP2RD(hp_list[i],hptype) for i in range(len(hp_list))]
+        rd_list = RD_loc2g(local_rd)
+    elif hptype=='MATH':
+        new_list=hp_list[1:]
+        new_list.append(hp_list[0])
+        y0=np.zeros((4,3))
+        y0[1:4]=np.eye(3)
+        t=[i for i in range(len(hp_list))]
+        y = odeint(odeSC,y0.reshape(12,),t,args=(new_list,))
+        rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
+    else:
+        print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
+        sys.exit(0)
+    return ds.SC(HP=hp_list,RD=rd_list)
+
+def RD2SC(rd_list,hptype='3DNA'):
+    """
+    Given a list of global RD, calculate HP.
+    Return the Space Curve with both HP and RD
+    """
+    if hptype=='3DNA' or hptype=='CURVES':
+        hp_list = [RD2HP(rd_list[i],rd_list[i],hptype) if i==0 else RD2HP(rd_list[i-1],rd_list[i],hptype) for i in range(len(rd_list))]
+    else:
+        print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
+        sys.exit(0)
+    return ds.SC(HP=hp_list,RD=rd_list)
+
 def atom_extract(Mask_3D, atom):
     """
     Given (a list of) 3D Mask, extract the coord's of needed atom.
@@ -497,7 +551,6 @@ def DNA_allatom_pdb_combine(pdb_list):
             ser+=1
         res+=1
     return combined_pdb
-
 
 #########Plotting##########
 
