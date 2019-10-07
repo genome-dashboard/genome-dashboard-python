@@ -79,7 +79,7 @@ class READ(object):
             rd.append(rdtmp)
         sc = ds.SC(RD=rd)
         return sc
-        
+
     def xyz(self):
         """
         Read general xyz file, which contains:
@@ -94,8 +94,8 @@ class READ(object):
         data = [x.split()[1:] for x in content[2:]]
         atoms = [x.split()[0] for x in content[2:]]
         return ds.Mask_3D(np.array(data,dtype=float),des=atoms)
-        
-    
+
+
     def sequence_txt(self):
         """
         Given seqin.txt, either with one column of sequence or one/several rows of sequence
@@ -105,7 +105,7 @@ class READ(object):
             seq=''.join(line.replace('\n', '') for line in f)
         seq = ds.SEQ(seq.upper())
         return seq
-        
+
     def sequence_2bit(self,chromatin,start,end):
         """
         Given 2bit file, chromatin, start position, end position.
@@ -116,7 +116,7 @@ class READ(object):
         seq = tbf[str(chromatin)][int(start):int(end)]
         seq = ds.SEQ(seq.upper())
         return seq
-        
+
     def K(self):
         """
         e.g. MD-B.dat ; 6x6 or 12x12 stiffness matrix
@@ -129,7 +129,7 @@ class READ(object):
             step = [x.split()[0] for x in content[i*7+1:i*7+2]]
             k[step[0]] = np.array([x.split()[1:] for x in content[i*7+1:i*7+7]],dtype='float')
         return k
-        
+
     def bigwig(self,chrom,start,end):
         """
         Read BigWig files, given chromosome number, start location and end location, return values
@@ -162,7 +162,7 @@ class READ(object):
                     tmppdb.CONECT = j
             pdb_list.append(tmppdb)
         return pdb_list
-        
+
     def chrom(self):
         """
         Read chrom.bin file that provides chromosome length.
@@ -179,7 +179,7 @@ class WRITE(object):
     """a class to write data into different format"""
     def __init__(self,fp):
         self.fp = fp
-    
+
     def hp(self,HP,seq=None):
         """Given HP data structure, write into HP files"""
         if seq == None:
@@ -271,7 +271,7 @@ class WRITE(object):
         for i in pdb_list:
             f.write(i.name.strip()[0].ljust(7)+str("%0.5f" % float(i.x)).rjust(20)+str("%0.5f" % float(i.y)).rjust(20)+str("%0.5f" % float(i.z)).rjust(20)+'\n')
         f.close()
-        
+
     def bigwig(self,chrom_len,chrom,start,end,values):
         """
         Write bigwig format file.
@@ -281,7 +281,7 @@ class WRITE(object):
         bw.addHeader(chrom_len,maxZooms=0)
         bw.addEntries(np.array([chrom]*len(start)),start,ends=end,values=values)
         bw.close()
-        
+
     def sequence_txt(self,SEQ):
         """
         Given a (class SEQ) sequence, output the txt sequence file.
