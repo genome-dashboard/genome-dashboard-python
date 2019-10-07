@@ -71,7 +71,7 @@ print("... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-module_version                          = '0.0.39'
+module_version                          = '0.0.40'
 
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -105,7 +105,7 @@ module_includes                         = [
                                             'genomedashboard.convert',
                                             'genomedashboard.data',
                                             'genomedashboard.ds',
-                                            'genomedashboard.io',
+                                            'genomedashboard.io'
                                         ]
 
 module_excludes                         = [
@@ -165,8 +165,8 @@ setup(
     description                     = module_description,
     # packages                        = find_packages(),
     # packages                        = find_packages(exclude = module_excludes),
-    packages                        = find_packages('genomedashboard', exclude = module_excludes),
-    # packages                        = find_packages(include = module_includes, exclude = module_excludes),
+    # packages                        = find_packages('genomedashboard', exclude = module_excludes),
+    packages                        = find_packages(include = module_includes, exclude = module_excludes),
     python_requires                 = module_python,
     author                          = module_authors,
     author_email                    = module_authors_email,

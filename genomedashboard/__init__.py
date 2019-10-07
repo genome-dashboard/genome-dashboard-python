@@ -25,6 +25,6 @@ import genomedashboard.io as io
 # __all__ = ["cli", "convert", "ds", "io"]
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-__version__ = '0.0.39'   # This value MUST be aligned with the value in .genome-dashboard-python/setup.py!!!
+__version__ = '0.0.40'   # This value MUST be aligned with the value in .genome-dashboard-python/setup.py!!!
 __author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 __email__ = 'genome.dashboard@gmail.com'
