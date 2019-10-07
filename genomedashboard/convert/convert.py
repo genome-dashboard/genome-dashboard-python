@@ -8,10 +8,17 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
+from scipy.integrate import odeint
+import matplotlib.pyplot as plt
+import math
 import copy
 
 def module_name():
     print("Module: genomedashboard.convert.convert.py.")
+
+##########################
+####Preprocessor macro####
+##########################
 
 def Ry(theta):
     ry=np.array([[np.cos(theta),0.,np.sin(theta)],[0.,1.,0.],[-np.sin(theta),0.,np.cos(theta)]])
@@ -56,9 +63,31 @@ def vrot(v,vn,fir):
         vout[k]=v[k]*np.cos(fir)+vn[k]*skal(vn,v)*(1.0-np.cos(fir))+vpom[k]*np.sin(fir)
     return vout
 
+def odeSC(y,s,hp_list):
+    """
+    The set up for the ode function of Space Curve. dr/ds=D*Gamma and ddi/ds=(D*Omega)xdi.
+    Gamma = [Shift, Slide, Rise], Omega=[Tilt, Roll, Twist]
+    """
+    pi=np.pi/180
+    hp=hp_list[int(s)]
+    til=hp.HP_inter.til*pi
+    rol=hp.HP_inter.rol*pi
+    twi=hp.HP_inter.twi*pi
+    Dmat=y.reshape(12,1)[3:12].reshape(3,3)
+    gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+    omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+    dydt = np.zeros((4,3))
+    dydt[0] = gamma.reshape(1,3)
+    dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
+    return dydt.reshape(12,)
+
+##########################
+######Basic Functions#####
+##########################
+
 def HP2RD(HP, hptype='3DNA'):
     """
-    Convert HP to RD, which require inputs of 6 inter HPs, and outputs R and D.
+    Convert HP to RD, which require inputs of HPs(HP_inter is required, HP_intra could be None), and outputs R and D.
     Options of 3DNA and CURVES are provided in use of different types of HPs.
     """
     pi=np.pi/180
@@ -88,10 +117,11 @@ def HP2RD(HP, hptype='3DNA'):
         r = r + np.dot(H,D)
     else:
         print ('Please provide a valid type, "3DNA" or "CURVES"')
+        sys.exit(0)
     rd = ds.RD(r.T.reshape(3),Ti.T)
     return rd
 
-def RD_stack(rd1, rd2, value=None):
+def RD_stack(rd1, rd2):
     """
     Given two steps of RD, previous one is global RD, and latter one is local one.
     Calculate the global RD for the latter one.
@@ -100,20 +130,26 @@ def RD_stack(rd1, rd2, value=None):
     R = np.dot(rd2.r,rd1.d) + rd1.r
     D = np.dot(rd2.d,rd1.d)
     rd = ds.RD(R,D)
-    if value is None:
-        return rd
-    else:
-        value = np.dot(value,rd1.d) + rd1.r
-        return rd, value
-
-def RD_loc2g(rdlist):
-    """
-    Given a list of local RD, generate the global RD used in SC(Space Curve).
-    """
-    rd = [rdlist[0]]
-    for i in range(1,len(rdlist)):
-        rd.append(RD_stack(rd[i-1],rdlist[i]))
     return rd
+
+def docking_Mask_3D(rd, Mask_3D):
+    """
+    Docking 3D Mask values onto rd
+    """
+    entry = copy.copy(Mask_3D.RD_entry)
+    exit = copy.copy(Mask_3D.RD_exit)
+    value = copy.copy(Mask_3D.values)
+    entrydT = entry.d.T
+    value = np.dot(value - entry.r,entrydT)
+    exit.r = np.dot(exit.r - entry.r,entrydT)
+    exit.d = np.dot(exit.d,entrydT)
+    value = np.dot(value,rd.d) + rd.r
+    entry.r = rd.r
+    entry.d = rd.d
+    exit.r = np.dot(exit.r,rd.d) +rd.r
+    exit.d = np.dot(exit.d,rd.d)
+    Mask_new = ds.Mask_3D(value,RD_entry=entry,RD_exit=exit,skip=Mask_3D.skip,des=Mask_3D.des)
+    return Mask_new
 
 def RD2HP(rd1,rd2,hptype='3DNA'):
     """
@@ -128,12 +164,13 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         y2 = vnormal(rd2.d[1])
         z2 = vnormal(rd2.d[2])
         pgama=skal(z1,z2)
-        if (pgama>0.99999):
+        if (pgama>1.0):
             pgama=1.0
-        if (pgama<-0.99999):
+        if (pgama<-1.0):
             pgama=-1.0
         gama=np.arccos(pgama)
         if (z1[0]==z2[0] and z1[1]==z2[1] and z1[2]==z2[2]):
+            rt=np.zeros(3)
             x1p=copy.copy(x1)
             x2p=copy.copy(x2)
             y1p=copy.copy(y1)
@@ -148,18 +185,18 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         ym=vnormal(y1p+y2p)
         zm=vnormal(z1+z2)
         pomega=skal(y1p,y2p)
-        if (pomega>0.99999):
+        if (pomega>1.0):
             pomega=1.0
-        if (pomega<-0.99999):
+        if (pomega<-1.0):
             pomega=-1.0
         omega=np.arccos(pomega)
         ypom=vprod(y1p,y2p)
         if (skal(ypom,zm)<0.0):
             omega=-omega
         pfi=skal(rt,ym)
-        if (pfi>0.99999):
+        if (pfi>1.0):
             pfi=1.0
-        if (pfi<-0.99999):
+        if (pfi<-1.0):
             pfi=-1.0
         fi=np.arccos(pfi)
         rpom=vprod(rt,ym)
@@ -182,41 +219,62 @@ def RD2HP(rd1,rd2,hptype='3DNA'):
         phi = np.arccos((np.trace(L)-1.0)/2.0)
         theta = (1.0/(1.0+np.trace(L)))*np.array([[Q[2][1]],[Q[0][2]],[Q[1][0]]])
         scale = np.tan(phi/2.0)
-        trt = -(phi*180/np.pi)*theta/scale
+        if scale==0:
+            trt = np.zeros((3,1))
+        else:
+            trt = -(phi*180/np.pi)*theta/scale
         H = np.real(la.sqrtm(L))
         ssr = np.dot(dq.T,np.dot(G1.T,H.T))
         interHP = ds.HP_inter(ssr[0],ssr[1],ssr[2],trt[0][0],trt[1][0],trt[2][0])
     else:
         print('Please provide a valid type, "3DNA" or "CURVES"')
+        sys.exit(0)
     return ds.HP(None,interHP,hptype=hptype)
 
 def HP_T(HP,T):
-    T=np.sqrt(T/298.0)
-    HP.HP_inter.shi = np.random.normal(HP.HP_inter.shi, T*0.76)
-    HP.HP_inter.sli = np.random.normal(HP.HP_inter.sli, T*0.68)
-    HP.HP_inter.ris = np.random.normal(HP.HP_inter.ris, T*0.37)
-    HP.HP_inter.til = np.random.normal(HP.HP_inter.til, T*4.6)
-    HP.HP_inter.rol = np.random.normal(HP.HP_inter.rol, T*7.2)
-    HP.HP_inter.twi = np.random.normal(HP.HP_inter.twi, T*7.3)
-    return HP
-
-def SEQ2HP(seq,HP_dic,occ_dic={},T=0):
     """
-        Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP]}), dictionary of occupancy(e.g. {1:oct, 500: oct, 789: tet}), and temperature.
-        Return the HPs associate with the given sequence.
+    Temperature
+    """
+    HP_new=copy.deepcopy(HP)
+    T=np.sqrt(T/298.0)
+    HP_new.HP_inter.shi = np.random.normal(HP_new.HP_inter.shi, T*0.76)
+    HP_new.HP_inter.sli = np.random.normal(HP_new.HP_inter.sli, T*0.68)
+    HP_new.HP_inter.ris = np.random.normal(HP_new.HP_inter.ris, T*0.37)
+    HP_new.HP_inter.til = np.random.normal(HP_new.HP_inter.til, T*4.6)
+    HP_new.HP_inter.rol = np.random.normal(HP_new.HP_inter.rol, T*7.2)
+    HP_new.HP_inter.twi = np.random.normal(HP_new.HP_inter.twi, T*7.3)
+    return HP_new
+
+def SEQ2HP(seq,HP_dic,occ=[],nuc_type=[],T=0):
+    """
+    Given sequence, dictionary of HP(e.g. {A-A: [HP], oct: [HP...HP],...}), occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex']), and temperature.
+    Return the HPs associate with the given sequence.
     """
     seqstep=seq.tostep()
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
     j=0
     while j<len(seqstep):
-        if j in occ_dic.keys():
-            hps.extend(HP_dic[j][1:])
-            j=j+len(HP_dic[j])-1
-        else:
-            hps.append(HP_T(HP_dic[seqstep[j]][0],T))
-            j=j+1
+        hps.append(HP_T(HP_dic[seqstep[j]][0],T))
+        j=j+1
+    for i in occ:
+        hps[i:i+len(HP_dic[nuc_type[occ.index(i)]])-1] = HP_dic[nuc_type[occ.index(i)]][1:]
     return hps
 
+def SEQ2RD(seq, RD_dic,occ=[],nuc_type=[]):
+    """
+    Given sequence, dictionary of local RD(e.g. {A-A: [RD], oct:[RD...RD],...}),
+    occupancy(e.g. [1, 500 , 789]), nucleosome type at each occupancy(e.g. ['oct','tet','hex'])
+    Return RDs associate with the given sequence.
+    """
+    seqstep=seq.tostep()
+    rd=[ds.RD(np.zeros(3),np.eye(3))]
+    j=0
+    while j<len(seqstep):
+        rd.append(RD_dic[seqstep[j]][-1])
+        j=j+1
+    for i in occ:
+        rd[i:i+len(RD_dic[nuc_type[occ.index(i)]])-1] = RD_dic[nuc_type[occ.index(i)]][1:]
+    return rd
 
 def elastic_energy(seq,HP_free,HP_nuc,K):
     """
@@ -244,12 +302,12 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
     denominator = nuc_nbp + lk
     Etmp=copy.copy(E)
     if occu==1:
-        numnuc = int((seq_length()-phase+lk)/denominator)
+        numnuc = int((seq_length-phase+lk)/denominator)
         occ = np.zeros(numnuc)
         for i in range(numnuc):
             occ[i] = phase + i*denominator
     else:
-        numnuc = int(seq_length()*occu/denominator)
+        numnuc = int(seq_length*occu/denominator)
         occ = np.zeros(numnuc)
         i=0
         while i<numnuc:
@@ -270,4 +328,261 @@ def E2Occ(seq_length, nuc_nbp, E, occu, lk, phase=0):
                 occ[i]=tmpmin
                 Etmp[tmpmin]=np.inf
                 i+=1
-    return map(int,list(occ+1))
+    occ_out=[int(x+1) for x in occ]
+    occ_out.sort()
+    return occ_out
+
+##########Two Angle Model###########
+
+def deflection(xyz1,xyz2,xyz3):
+    """
+    Calculate deflection angle(alpha)
+    """
+    v1=xyz1-xyz2;
+    v2=xyz3-xyz2;
+    alpha = np.arccos(np.dot(v1,v2)/(np.sqrt(v1[0]**2+v1[1]**2+v1[2]**2)*(np.sqrt(v2[0]**2+v2[1]**2+v2[2]**2))))*180/np.pi
+    return alpha
+
+def dihedral(xyz1,xyz2,xyz3,xyz4):
+    """
+    Calculate dihedral angle(beta)
+    """
+    q1=xyz2-xyz1
+    q2=xyz3-xyz2
+    q3=xyz4-xyz3
+    q1_x_q2 = np.cross(q1,q2)
+    q2_x_q3 = np.cross(q2,q3)
+    n1 = q1_x_q2/np.sqrt(np.dot(q1_x_q2,q1_x_q2))
+    n2 = q2_x_q3/np.sqrt(np.dot(q2_x_q3,q2_x_q3))
+    u1 = n2
+    u3 = q2/(np.sqrt(np.dot(q2,q2)))
+    u2 = np.cross(u3,u1)
+    cos_phi = np.dot(n1,u1)
+    sin_phi = np.dot(n1,u2)
+    beta = -math.atan2(sin_phi,cos_phi)*180/np.pi
+    return beta
+
+def alpha_beta_list(xyz_list):
+    """
+    Given a list of ordered xyz coord, return alpha and beta
+    """
+    if len(xyz_list)<4:
+        print('At least four elements required.')
+        sys.exit(0)
+    else:
+        alpha=[]
+        beta=[]
+        for i in range(len(xyz_list)-3):
+            alpha.append(deflection(xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+            beta.append(dihedral(xyz_list[i],xyz_list[i+1],xyz_list[i+2],xyz_list[i+3])*np.pi/180)
+    return alpha,beta
+
+######Distance Matrix#####
+
+def distance_matrix(xyz_list, cut=0):
+    """
+    Given a list of ordered xyz coord, return distance matrix.
+    cut is the minimal value that treat as colliding.
+    """
+    if len(xyz_list)<2:
+        print('At least two elements required.')
+        sys.exit(0)
+    else:
+        distance_matrix = np.zeros((len(xyz_list),len(xyz_list)))
+        for i in range(len(xyz_list)):
+            for j in range(len(xyz_list)):
+                v = xyz_list[i]-xyz_list[j]
+                distance_matrix[i][j] = np.sqrt(v[0]**2+v[1]**2+v[2]**2)
+                if distance_matrix[i][j]<cut:
+                    distance_matrix[i][j]=0.0
+    return distance_matrix
+                
+
+##########################
+######Specical Usages#####
+##########################
+
+def RD_loc2g(rdlist):
+    """
+    Given a list of local RD, generate the global RD used in SC(Space Curve).
+    """
+    rd = [rdlist[0]]
+    for i in range(1,len(rdlist)):
+        rd.append(RD_stack(rd[i-1],rdlist[i]))
+    return rd
+
+def HP2SC(hp_list,hptype='3DNA'):
+    """
+    Given a list of HP, calculate global RD.
+    Return the Space Curve with both HP and RD.
+    """
+    if hptype=='3DNA' or hptype=='CURVES':
+        local_rd = [HP2RD(hp_list[i],hptype) for i in range(len(hp_list))]
+        rd_list = RD_loc2g(local_rd)
+    elif hptype=='MATH':
+        new_list=hp_list[1:]
+        new_list.append(hp_list[0])
+        y0=np.zeros((4,3))
+        y0[1:4]=np.eye(3)
+        t=[i for i in range(len(hp_list))]
+        y = odeint(odeSC,y0.reshape(12,),t,args=(new_list,))
+        rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
+    else:
+        print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
+        sys.exit(0)
+    return ds.SC(HP=hp_list,RD=rd_list)
+
+def RD2SC(rd_list,hptype='3DNA'):
+    """
+    Given a list of global RD, calculate HP.
+    Return the Space Curve with both HP and RD
+    """
+    if hptype=='3DNA' or hptype=='CURVES':
+        hp_list = [RD2HP(rd_list[i],rd_list[i],hptype) if i==0 else RD2HP(rd_list[i-1],rd_list[i],hptype) for i in range(len(rd_list))]
+    else:
+        print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
+        sys.exit(0)
+    return ds.SC(HP=hp_list,RD=rd_list)
+
+def atom_extract(Mask_3D, atom):
+    """
+    Given (a list of) 3D Mask, extract the coord's of needed atom.
+    """
+    xyz_list=[]
+    if type(Mask_3D) is list:
+        for i in Mask_3D:
+            for x,y in enumerate(i.des):
+                if y==atom:
+                    if i.values.size==3:
+                        i.values = i.values.reshape(1,3)
+                    xyz_list.append(i.values[x])
+    else:
+        for x,y in enumerate(Mask_3D.des):
+            if y==atom:
+                if Mask_3D.values.size==3:
+                    Mask_3D.values=Mask_3D.values.reshape(1,3)
+                xyz_list.append(Mask_3D.values[x])
+    return xyz_list
+
+def RD2Mask_3D(RD):
+    """
+    Given a list of RD(global), convert it into a 3D Mask.
+    """
+    entry=RD[0]
+    exit=RD[-1]
+    values=np.array([x.r for x in RD])
+    return ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=len(RD),des=['CA']*len(RD))
+
+def docking_Mask_pdb(rd,pdb_list,entry=ds.RD(np.zeros(3),np.eye(3)), exit=ds.RD(np.zeros(3),np.eye(3)),skip=0):
+    """
+    A usage of docking_Mask_3D, but pdb has its own format.
+    This function will input a list of pdb, docking the x y z values to the desired location,
+    then output the pdb format list with all other information unchanged.
+    """
+    pdb_list_new=copy.deepcopy(pdb_list)
+    l = [[i.x,i.y,i.z] for i in pdb_list_new]
+    values = np.array(l,dtype=float)
+    values_new = docking_Mask_3D(rd,ds.Mask_3D(values,RD_entry=entry,RD_exit=exit,skip=skip)).values
+    if values_new.size==3:
+        values_new=values_new.reshape(1,3)
+    for i,j in enumerate(values_new):
+        pdb_list_new[i].x = j[0]
+        pdb_list_new[i].y = j[1]
+        pdb_list_new[i].z = j[2]
+    return pdb_list_new
+
+def Mask_3D_stack(Mask_3D_1,Mask_3D_2):
+    """
+    Given two 3D Masks, the first one is global positioned, the latter one is local.
+    calculate the latter one to the global position.
+    """
+    rd=Mask_3D_1.RD_exit
+    new_Mask = docking_Mask_3D(rd, Mask_3D_2)
+    return new_Mask
+
+def DNA_allatom_pdb_combine(pdb_list):
+    """
+    Given a list of DNA pdb list, return a combined DNA pdb format data.
+    Works only for double stranded DNA.
+    """
+    ###Identify the name for chain A and B
+    chainA_name = pdb_list[0][0].chainID
+    chainB_name = pdb_list[0][-1].chainID
+    ###Separate chain A and B
+    chainA=[]
+    chainB=[]
+    for i in pdb_list:
+        chainA.append([x for x in i if x.chainID==chainA_name])
+        chainB.append([x for x in i if x.chainID==chainB_name])
+    ###Initialize serial and resSeq
+    ser=1
+    res=1
+    ###Holder for combined DNA_pdb
+    combined_pdb=[]
+    ###Start combine chainA, tmp is for store the number of connection between O3' and P(next base pair)
+    tmp=None
+    for i in chainA:
+        for j in i:
+            j.serial=ser
+            j.resSeq=res
+            j.CONECT=[x-j.CONECT[0]+ser for x in j.CONECT]
+            if j.name.split()[0]=="O3'":
+                tmp=copy.copy(ser)
+            if j.name.split()[0]=="P" and tmp is not None:
+                j.CONECT.insert(1,tmp)
+                combined_pdb[tmp-1].CONECT.append(ser)
+            combined_pdb.append(j)
+            ser+=1
+        res+=1
+    ###Start combine chainB, it is reverse.
+    chainB.reverse()
+    tmp=None
+    for i in chainB:
+        for j in i:
+            j.serial=ser
+            j.resSeq=res
+            j.CONECT=[x-j.CONECT[0]+ser for x in j.CONECT]
+            if j.name.split()[0]=="O3'":
+                tmp=copy.copy(ser)
+            if j.name.split()[0]=="P" and tmp is not None:
+                j.CONECT.insert(1,tmp)
+                combined_pdb[tmp-1].CONECT.append(ser)
+            combined_pdb.append(j)
+            ser+=1
+        res+=1
+    return combined_pdb
+
+#########Plotting##########
+
+def two_angle_plot(alpha,beta,filename):
+    """
+    Given list of alpha and beta and plot the two angle plot.
+    """
+    fig, ax = plt.subplots(figsize=(3,3))
+    cm = plt.cm.get_cmap('RdYlBu')
+    z = [float(x)/len(alpha) for x in range(len(alpha))]
+    sc = plt.scatter(alpha,beta,c=z,cmap=cm)
+    cbar = fig.colorbar(sc, ticks=[0, 1, 15])
+    plt.xlim(0,np.pi)
+    ax.set_xticks([0,np.pi/2,np.pi])
+    ax.set_xticklabels(['0', '$\pi$/2', '$\pi$'], fontsize=12)
+    ax.set_yticks([-np.pi, 0, np.pi])
+    ax.set_yticklabels(['-$\pi$','0', '$\pi$'], fontsize=12)
+    plt.ylim(-np.pi,np.pi)
+    plt.xlabel(r'$\alpha$', fontsize=12)
+    plt.ylabel(r'$\beta$', fontsize=12)
+    plt.subplots_adjust(left=0.25, bottom=0.25)
+    fig.savefig(filename)
+    plt.close()
+
+def distance_matrix_plot(distance_matrix,filename,cut=0):
+    """
+    Input distance matrix, plot a heatmap of it.
+    """
+    fig, ax = plt.subplots(figsize=(3,3))
+    sc = plt.imshow(distance_matrix,cmap='gist_heat',interpolation='nearest')
+    cbar = fig.colorbar(sc, ticks=[0])
+    if cut>0:
+        cbar.ax.set_yticklabels(['<'+str(cut)])
+    fig.savefig(filename)
+    plt.close()
