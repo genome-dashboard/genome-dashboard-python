@@ -16,6 +16,7 @@ importlib-metadata==0.23
 Jinja2==2.10.3
 MarkupSafe==1.1.1
 mccabe==0.6.1
+numpy==1.17.2
 packaging==19.2
 pathtools==0.1.2
 peppercorn==0.6
