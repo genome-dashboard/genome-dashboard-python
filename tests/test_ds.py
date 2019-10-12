@@ -38,6 +38,19 @@ class Testds(unittest.TestCase):
         self.assertEqual(rd.r.tolist(), np.zeros(3).tolist())
         self.assertEqual(rd.d.tolist(),np.eye(3).tolist())
         
+    def  test_Mask_3D(self):
+        values = np.array([1.2,2.7,8.9])
+        self.assertEqual(ds.Mask_3D(values).values.tolist(),values.tolist())
+        self.assertEqual(ds.Mask_3D(values).dimension,3)
         
+    def test_SC(self):
+        self.assertIs(ds.SC(HP=ds.HP(self.hp_intra,self.hp_inter)).HP.HP_intra, self.hp_intra)
+        self.assertIs(ds.SC(somevalue=2).somevalue,2)
+        
+    def test_SEQ(self):
+        self.assertEqual(ds.SEQ('ACGT').tolist(),['A-T','C-G','G-C','T-A'])
+        self.assertEqual(ds.SEQ('ACGT').tostring(),'ACGT')
+        self.assertEqual(ds.SEQ('ACGT').tostep(),['A-C','C-G','G-T'])
+    
 if __name__ == '__main__':
     unittest.main()
