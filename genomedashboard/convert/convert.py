@@ -9,9 +9,26 @@ from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
 from scipy.integrate import odeint
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import math
 import copy
+
+
+"""
+NOTE: There are good reasons for why scientific libraries don't usually have matplotlib as a direct dependency:
+it is very platform dependent and it is usually not essential for what these libraries are trying to accomplish.
+In our case we can try and handle the OS X sidecases with a try/except block (see below).
+"""
+try:
+   import matplotlib.pyplot as plt
+except RuntimeError as e:
+    # Handle OSX exceptions fopr matplotlib.
+   if 'Python is not installed as a framework.' in e.message:
+     # warnings.warn(.. some warning about disabled plotting...)
+     import matplotlib
+     matplotlib.use('PS')
+     import matplotlib.pyplot as plt
+
 
 def module_name():
     print("Module: genomedashboard.convert.convert.py.")
@@ -396,7 +413,7 @@ def distance_matrix(xyz_list, cut=0):
                 if distance_matrix[i][j]<cut:
                     distance_matrix[i][j]=0.0
     return distance_matrix
-                
+
 
 ##########################
 ######Specical Usages#####

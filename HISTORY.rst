@@ -3,6 +3,14 @@ History
 =======
 
 
+0.0.41 - 0.0.43
+------
+
+Date: 2019-10-14
+
+* Fixing errors in the build pipeline.
+
+
 0.0.41
 ------
 
