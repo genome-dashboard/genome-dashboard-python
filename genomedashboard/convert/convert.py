@@ -9,25 +9,30 @@ from ds import ds as ds
 import numpy as np
 import scipy.linalg as la
 from scipy.integrate import odeint
-# import matplotlib.pyplot as plt
-import math
-import copy
-
+import matplotlib.pyplot as plt
 
 """
 NOTE: There are good reasons for why scientific libraries don't usually have matplotlib as a direct dependency:
 it is very platform dependent and it is usually not essential for what these libraries are trying to accomplish.
 In our case we can try and handle the OS X sidecases with a try/except block (see below).
 """
-try:
-   import matplotlib.pyplot as plt
-except RuntimeError as e:
-    # Handle OSX exceptions fopr matplotlib.
-   if 'Python is not installed as a framework.' in e.message:
-     # warnings.warn(.. some warning about disabled plotting...)
-     import matplotlib
-     matplotlib.use('PS')
-     import matplotlib.pyplot as plt
+# try:
+#    import matplotlib.pyplot as plt
+# except RuntimeError as e:
+#     # Handle OSX exceptions fopr matplotlib.
+#    if 'Python is not installed as a framework.' in e.message:
+#      # warnings.warn(.. some warning about disabled plotting...)
+#      import matplotlib
+#      # matplotlib.use('PS')
+#      matplotlib.use('TkAgg')
+#      import matplotlib.pyplot as plt
+"""
+Solution is to get users to include an rc config file in the pip library after installaiton:
+Create a file $VENV/../site-packages/matplotlib/matplotlibrc there and add the following code: `backend: TkAgg`
+"""
+
+import math
+import copy
 
 
 def module_name():

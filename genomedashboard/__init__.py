@@ -10,7 +10,7 @@ from genomedashboard.ds import *
 from genomedashboard.io import *
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-__version__ = '0.0.43'   # This value MUST be aligned with the value in .genome-dashboard-python/setup.py!!!
+__version__ = '0.0.45'   # This value MUST be aligned with the value in .genome-dashboard-python/setup.py!!!
 __author__ = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 __email__ = 'genome.dashboard@gmail.com'
 __name__ = 'genomedashboard'

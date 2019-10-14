@@ -3,12 +3,14 @@ History
 =======
 
 
-0.0.41 - 0.0.43
+0.0.41 - 0.0.45
 ---------------
 
 Date: 2019-10-14
 
 * Fixing errors in the build pipeline.
+* Eliminating matplotlib exceptions for OSX.
+  -- Need to be handled by the user locally.
 
 
 0.0.41
