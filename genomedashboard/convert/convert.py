@@ -78,7 +78,8 @@ def odeSC(y,s,hp_list):
     omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
     dydt = np.zeros((4,3))
     dydt[0] = gamma.reshape(1,3)
-    dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
+    #dydt[1:4] = np.cross(omega.reshape(1,3),Dmat)
+    dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
     return dydt.reshape(12,)
 
 ##########################
