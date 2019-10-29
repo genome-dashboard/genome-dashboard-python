@@ -478,7 +478,7 @@ def RD2SC(rd_list,hptype='3DNA',step_size=1):
         Twist = [np.dot(np.dot(deltad2[i],rd_list[i].d.T),np.array([0,0,1]))*180/np.pi for i in range(len(s)-1)]
         hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
         for i in range(len(s)-1):
-            hps.append([ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(ssr[i][0],ssr[i][1],ssr[i][2],Tilt[i],Roll[i],Twist[i]))])
+            hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(ssr[i][0],ssr[i][1],ssr[i][2],Tilt[i],Roll[i],Twist[i])))
         hp_list=hps
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
