@@ -434,13 +434,52 @@ def HP2SC(hp_list,hptype='3DNA'):
         sys.exit(0)
     return ds.SC(HP=hp_list,RD=rd_list)
 
-def RD2SC(rd_list,hptype='3DNA'):
+def RD2SC(rd_list,hptype='3DNA',step_size=1):
     """
     Given a list of global RD, calculate HP.
+    step_size is the step size between two steps.
     Return the Space Curve with both HP and RD
     """
     if hptype=='3DNA' or hptype=='CURVES':
         hp_list = [RD2HP(rd_list[i],rd_list[i],hptype) if i==0 else RD2HP(rd_list[i-1],rd_list[i],hptype) for i in range(len(rd_list))]
+    elif hptype=='MATH':
+        s = np.linspace(0,(len(rd_list)-1)*step_size,len(rd_list))
+        rx = np.array([x.r[0] for x in rd_list])
+        ry = np.array([x.r[1] for x in rd_list])
+        rz = np.array([x.r[2] for x in rd_list])
+        tx = np.diff(rx)/np.diff(s)
+        ty = np.diff(ry)/np.diff(s)
+        tz = np.diff(rz)/np.diff(s)
+        t = np.array([tx,ty,tz]).T
+        ssr = np.array([np.dot(t[i],rd_list[i].d.T) for i in range(len(s)-1)])
+        d1x = np.array([x.d[0][0] for x in rd_list])
+        d1y = np.array([x.d[0][1] for x in rd_list])
+        d1z = np.array([x.d[0][2] for x in rd_list])
+        d2x = np.array([x.d[1][0] for x in rd_list])
+        d2y = np.array([x.d[1][1] for x in rd_list])
+        d2z = np.array([x.d[1][2] for x in rd_list])
+        d3x = np.array([x.d[2][0] for x in rd_list])
+        d3y = np.array([x.d[2][1] for x in rd_list])
+        d3z = np.array([x.d[2][2] for x in rd_list])
+        td1x = np.diff(d1x)/np.diff(s)
+        td1y = np.diff(d1y)/np.diff(s)
+        td1z = np.diff(d1z)/np.diff(s)
+        td2x = np.diff(d2x)/np.diff(s)
+        td2y = np.diff(d2y)/np.diff(s)
+        td2z = np.diff(d2z)/np.diff(s)
+        td3x = np.diff(d3x)/np.diff(s)
+        td3y = np.diff(d3y)/np.diff(s)
+        td3z = np.diff(d3z)/np.diff(s)
+        deltad1 = np.array([td1x,td1y,td1z]).T
+        deltad2 = np.array([td2x,td2y,td2z]).T
+        deltad3 = np.array([td3x,td3y,td3z]).T
+        Tilt = [np.dot(np.dot(deltad1[i],rd_list[i].d.T),np.array([0,1,0]))*180/np.pi for i in range(len(s)-1)]
+        Roll = [np.dot(np.dot(deltad3[i],rd_list[i].d.T),np.array([1,0,0]))*180/np.pi for i in range(len(s)-1)]
+        Twist = [np.dot(np.dot(deltad2[i],rd_list[i].d.T),np.array([0,0,1]))*180/np.pi for i in range(len(s)-1)]
+        hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
+        for i in range(len(s)-1):
+            hps.append([ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(ssr[i][0],ssr[i][1],ssr[i][2],Tilt[i],Roll[i],Twist[i]))])
+        hp_list=hps
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
