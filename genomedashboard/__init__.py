@@ -6,7 +6,7 @@
 # from io import open
 # from genomedashboard import genomedashboard as gd
 
-from genomedashboard.cli import cli as cli
+from genomedashboard import cli as cli
 from genomedashboard.convert import convert as cv
 from genomedashboard.ds import ds as ds
 from genomedashboard.io import io as io
