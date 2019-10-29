@@ -473,9 +473,9 @@ def RD2SC(rd_list,hptype='3DNA',step_size=1):
         deltad1 = np.array([td1x,td1y,td1z]).T
         deltad2 = np.array([td2x,td2y,td2z]).T
         deltad3 = np.array([td3x,td3y,td3z]).T
-        Tilt = [np.dot(np.dot(deltad1[i],rd_list[i].d.T),np.array([0,1,0]))*180/np.pi for i in range(len(s)-1)]
+        Twist = [np.dot(np.dot(deltad1[i],rd_list[i].d.T),np.array([0,1,0]))*180/np.pi for i in range(len(s)-1)]
         Roll = [np.dot(np.dot(deltad3[i],rd_list[i].d.T),np.array([1,0,0]))*180/np.pi for i in range(len(s)-1)]
-        Twist = [np.dot(np.dot(deltad2[i],rd_list[i].d.T),np.array([0,0,1]))*180/np.pi for i in range(len(s)-1)]
+        Tilt = [np.dot(np.dot(deltad2[i],rd_list[i].d.T),np.array([0,0,1]))*180/np.pi for i in range(len(s)-1)]
         hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
         for i in range(len(s)-1):
             hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(ssr[i][0],ssr[i][1],ssr[i][2],Tilt[i],Roll[i],Twist[i])))
