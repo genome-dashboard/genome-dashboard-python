@@ -10,6 +10,7 @@ from genomedashboard import cli as cli
 from genomedashboard.convert import convert as cv
 from genomedashboard.ds import ds as ds
 from genomedashboard.io import io as io
+from genomedashboard.mathfunction import mathfunction as mf
 
 # from . import cli, convert, ds, io
 # from . import cli
