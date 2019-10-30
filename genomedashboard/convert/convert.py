@@ -83,6 +83,43 @@ def odeSC(y,s,hp_list):
     #dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
     return dydt.reshape(12,)
 
+def odeSC_d(y,s,hp_list):
+"""
+The set up for the ode function of Space Curve. ddi/ds=(D*Omega)xdi.
+Omega=[Tilt, Roll, Twist]
+"""
+pi=np.pi/180
+hp=hp_list[int(s)]
+til=hp.HP_inter.til*pi
+rol=hp.HP_inter.rol*pi
+twi=hp.HP_inter.twi*pi
+Dmat=y.reshape(9,1).reshape(3,3)
+#gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+#omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
+dydt = np.cross(omega.reshape(1,3),Dmat)
+#dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
+return dydt.reshape(9,)
+
+def odeSC_r(y,s,hp_list,d):
+"""
+The set up for the ode function of Space Curve. dr/ds=D*Gamma
+Gamma = [Shift, Slide, Rise]
+"""
+pi=np.pi/180
+hp=hp_list[int(s)]
+til=hp.HP_inter.til*pi
+rol=hp.HP_inter.rol*pi
+twi=hp.HP_inter.twi*pi
+Dmat=np.dot(np.real(la.sqrtm(np.dot(d[int(s+1)],d[int(s)].T))),d[int(s)])
+gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+#omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+#omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
+dydt = gamma.reshape(1,3)
+#dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
+return dydt.reshape(3,)
+
+
 ##########################
 ######Basic Functions#####
 ##########################
@@ -424,11 +461,14 @@ def HP2SC(hp_list,hptype='3DNA'):
     elif hptype=='MATH':
         new_list=hp_list[1:]
         new_list.append(hp_list[0])
-        y0=np.zeros((4,3))
-        y0[1:4]=np.eye(3)
+        y0d = np.eye(3)
         t=[i for i in range(len(hp_list))]
-        y = odeint(odeSC,y0.reshape(12,),t,args=(new_list,))
-        rd_list = [ds.RD(i[0:3],i[3:12].reshape(3,3)) for i in y]
+        yd = odeint(odeSC,y0d.reshape(9,),t,args=(new_list,))
+        d = [i.reshape(3,3) for i in yd]
+        y0r = np.zeros((1,3))
+        tr=[i for i in range(len(hp_list)-1)]
+        yr = odeint(odeSC,y0r.reshape(3,),tr,args=(new_list,d))
+        rd_list = [ds.RD(yr[i],d[i]) for i in range(len(yr))]
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
