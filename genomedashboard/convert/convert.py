@@ -488,6 +488,7 @@ def HP2SC(hp_list,hptype='3DNA'):
         yd = odeint(odeSC_d,y0d.reshape(9,),t,args=(new_list_d_half,))
         d = [j.reshape(3,3) for i,j in enumerate(yd) if i%2==1]
         d_half = [j.reshape(3,3) for i,j in enumerate(yd) if i%2==0]
+        print(len(d),len(d_half))
         y0r = np.zeros((1,3))
         tr=[i for i in range(len(hp_list))]
         yr = odeint(odeSC_r,y0r.reshape(3,),tr,args=(new_list,d_half))
