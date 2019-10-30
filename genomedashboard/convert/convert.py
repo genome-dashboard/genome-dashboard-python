@@ -107,13 +107,13 @@ def odeSC_r(y,s,hp_list,d):
     Gamma = [Shift, Slide, Rise]
     """
     pi=np.pi/180
+    print(s,len(hp_list))
     hp=hp_list[int(s)]
     til=hp.HP_inter.til*pi
     rol=hp.HP_inter.rol*pi
     twi=hp.HP_inter.twi*pi
     #Dmat=np.dot(np.real(la.sqrtm(np.dot(d[int(s+1)],d[int(s)].T))),d[int(s)])
     Dmat=d[int(s)]
-    print(s)
     gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
     #omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
     #omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
