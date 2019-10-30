@@ -107,7 +107,8 @@ def odeSC_r(y,s,hp_list,d):
     Gamma = [Shift, Slide, Rise]
     """
     pi=np.pi/180
-    print(s,len(hp_list))
+    if int(s)>len(hp_list):
+        s=len(hp_list)
     hp=hp_list[int(s)]
     til=hp.HP_inter.til*pi
     rol=hp.HP_inter.rol*pi
