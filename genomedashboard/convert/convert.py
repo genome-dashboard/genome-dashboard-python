@@ -474,6 +474,7 @@ def HP2SC(hp_list,hptype='3DNA'):
         tr=[i for i in range(len(hp_list))]
         yr = odeint(odeSC_r,y0r.reshape(3,),tr,args=(new_list,d_half,))
         rd_list = [ds.RD(yr[i],d[i]) for i in range(len(yr))]
+        '''
     elif hptype=='MATH_3DNA':
         new_list=hp_list[1:]
         new_list.append(hp_list[0])
@@ -494,6 +495,7 @@ def HP2SC(hp_list,hptype='3DNA'):
         tr=[i for i in range(len(hp_list))]
         yr = odeint(odeSC_r,y0r.reshape(3,),tr,args=(new_list,d_half,))
         rd_list = [ds.RD(yr[i],d[i]) for i in range(len(yr))]
+        '''
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
