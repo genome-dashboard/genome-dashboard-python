@@ -84,40 +84,40 @@ def odeSC(y,s,hp_list):
     return dydt.reshape(12,)
 
 def odeSC_d(y,s,hp_list):
-"""
-The set up for the ode function of Space Curve. ddi/ds=(D*Omega)xdi.
-Omega=[Tilt, Roll, Twist]
-"""
-pi=np.pi/180
-hp=hp_list[int(s)]
-til=hp.HP_inter.til*pi
-rol=hp.HP_inter.rol*pi
-twi=hp.HP_inter.twi*pi
-Dmat=y.reshape(9,1).reshape(3,3)
-#gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
-omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
-#omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
-dydt = np.cross(omega.reshape(1,3),Dmat)
-#dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
-return dydt.reshape(9,)
+    """
+    The set up for the ode function of Space Curve. ddi/ds=(D*Omega)xdi.
+    Omega=[Tilt, Roll, Twist]
+    """
+    pi=np.pi/180
+    hp=hp_list[int(s)]
+    til=hp.HP_inter.til*pi
+    rol=hp.HP_inter.rol*pi
+    twi=hp.HP_inter.twi*pi
+    Dmat=y.reshape(9,1).reshape(3,3)
+    #gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+    omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+    #omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
+    dydt = np.cross(omega.reshape(1,3),Dmat)
+    #dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
+    return dydt.reshape(9,)
 
 def odeSC_r(y,s,hp_list,d):
-"""
-The set up for the ode function of Space Curve. dr/ds=D*Gamma
-Gamma = [Shift, Slide, Rise]
-"""
-pi=np.pi/180
-hp=hp_list[int(s)]
-til=hp.HP_inter.til*pi
-rol=hp.HP_inter.rol*pi
-twi=hp.HP_inter.twi*pi
-Dmat=np.dot(np.real(la.sqrtm(np.dot(d[int(s+1)],d[int(s)].T))),d[int(s)])
-gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
-#omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
-#omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
-dydt = gamma.reshape(1,3)
-#dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
-return dydt.reshape(3,)
+    """
+    The set up for the ode function of Space Curve. dr/ds=D*Gamma
+    Gamma = [Shift, Slide, Rise]
+    """
+    pi=np.pi/180
+    hp=hp_list[int(s)]
+    til=hp.HP_inter.til*pi
+    rol=hp.HP_inter.rol*pi
+    twi=hp.HP_inter.twi*pi
+    Dmat=np.dot(np.real(la.sqrtm(np.dot(d[int(s+1)],d[int(s)].T))),d[int(s)])
+    gamma = np.dot(Dmat.T,np.array([[hp.HP_inter.shi],[hp.HP_inter.sli],[hp.HP_inter.ris]]))
+    #omega = np.dot(Dmat.T,np.array([[til],[rol],[twi]]))
+    #omega = np.dot(Dmat.T,np.sin(np.array([[til],[rol],[twi]])))
+    dydt = gamma.reshape(1,3)
+    #dydt[1:4] = 2*np.sin(np.cross(omega.reshape(1,3),Dmat)/2)
+    return dydt.reshape(3,)
 
 
 ##########################
