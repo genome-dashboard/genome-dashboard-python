@@ -464,10 +464,12 @@ def HP2SC(hp_list,hptype='3DNA'):
         new_list.append(hp_list[0])
         y0d = np.eye(3)
         t=[i for i in range(len(hp_list))]
+        print(t)
         yd = odeint(odeSC_d,y0d.reshape(9,),t,args=(new_list,))
         d = [i.reshape(3,3) for i in yd]
         y0r = np.zeros((1,3))
         tr=[i for i in range(len(hp_list)-1)]
+        print(tr)
         yr = odeint(odeSC_r,y0r.reshape(3,),tr,args=(new_list,d))
         rd_list = [ds.RD(yr[i],d[i]) for i in range(len(yr))]
     else:
