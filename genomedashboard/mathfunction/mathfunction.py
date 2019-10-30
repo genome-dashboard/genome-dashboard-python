@@ -23,9 +23,11 @@ def circular_DNA(Rise, V1, V2, step_number, step_size=1.0):
     Given
     """
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
+    V1=V1/step_size
+    Rise = Rise*step_size
     Twist = 360.0*V2/V1
     for i in range(step_number):
-        s = i*step_size
+        s = i
         Tilt = np.sin(Twist*s*np.pi/180.0)*360.0/V1
         Roll = np.cos(Twist*s*np.pi/180.0)*360.0/V1
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,Rise,Tilt,Roll,Twist)))
