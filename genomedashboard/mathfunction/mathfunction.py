@@ -63,7 +63,7 @@ def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0):
 
 def circular_DNA_RD(Radius, V1, V2, step_number, step_size=1.0):
     V1 = V1/step_size
-    Twist = 360.0*V2/V1
+    Twist = 2*np.pi*V2/V1
     rd=[]
     for s in range(step_number):
         r = np.array([-Radius*np.cos(s*2*np.pi/V1),0,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
