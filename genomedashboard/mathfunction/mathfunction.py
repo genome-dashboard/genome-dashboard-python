@@ -53,7 +53,7 @@ def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0):
     Rise=Rise*step_size
     V2=V2*step_size
     for i in range(step_number):
-        s = i*step_size
+        s = i
         Tilt = np.sin(Twist*s*np.pi/180.0)*360.0/V1
         Roll = np.cos(Twist*s*np.pi/180.0)*360.0/V1
         Shift = V2*np.sin(Twist*s*np.pi/180)
