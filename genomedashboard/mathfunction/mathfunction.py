@@ -48,6 +48,10 @@ def helix_torsion(Rise, Twist, V1, V2, step_number, step_size=1.0):
 
 def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0):
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
+    V1=V1/step_size
+    Twist=Twist*step_size
+    Rise=Rise*step_size
+    V2=V2*step_size
     for i in range(step_number):
         s = i*step_size
         Tilt = np.sin(Twist*s*np.pi/180.0)*360.0/V1
