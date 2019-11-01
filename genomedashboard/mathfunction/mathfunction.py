@@ -83,7 +83,7 @@ def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
         r = np.array([-Radius*np.cos(s*2*np.pi/V1),h*s,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
         phi = V2*np.pi/180
         Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
-        Z = np.array([[np.cos((Twist-phi)*s),-np.sin((Twist-phi)*s),0],[np.sin((Twist-phi)*s),np.cos((Twist-phi)*s),0],[0,0,1]])
+        Z = np.array([[np.cos((Twist+phi)*s),-np.sin((Twist+phi)*s),0],[np.sin((Twist+phi)*s),np.cos((Twist+phi)*s),0],[0,0,1]])
         d = np.dot(Z.T,Y)
         rd.append(ds.RD(r,d))
     return rd
