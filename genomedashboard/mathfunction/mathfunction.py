@@ -98,6 +98,7 @@ def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
         d2 = -N*np.sin(Twist*s)+B*np.cos(Twist*s)
         d3 = T
         d = np.array([d1,d2,d3])
+        print(d)
         rd.append(ds.RD(r,d))
     return rd
 
