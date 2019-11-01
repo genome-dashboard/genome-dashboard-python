@@ -99,10 +99,9 @@ def helix_shear_RD(Rise,Twist,V1,V2,step_number,step_size):
     for s in range(step_number):
         r = np.array([-Radius*np.cos(s*2*np.pi/V1),s*V2,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
         phi = np.arcsin(V2/Rise)
-        X = np.array([[1,0,0],[0,np.cos(s*phi),-np.sin(s*phi)],[0,np.sin(s*phi),np.cos(s*phi)]])
+        X = np.array([[1,0,0],[0,np.cos(phi),-np.sin(phi)],[0,np.sin(phi),np.cos(phi)]])
         Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
         Z = np.array([[np.cos(Twist*s),-np.sin(Twist*s),0],[np.sin(Twist*s),np.cos(Twist*s),0],[0,0,1]])
-        #d = np.dot(Z.T,np.dot(Y,X.T))
-        d = Y
+        d = np.dot(Z.T,np.dot(X,Y))
         rd.append(ds.RD(r,d))
     return rd
