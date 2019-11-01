@@ -71,14 +71,21 @@ def circular_DNA_RD(Radius, V1, V2, step_number, step_size=1.0):
         rd.append(ds.RD(r,d))
     return rd
 
-def helix_torsion_RD(Radius, Twist, V1, V2, step_number, step_size):
+def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
     V1 = V1/step_size
     V2 = V2*step_size
+    Rise = Rise*step_size
     Twist = Twist*step_size
+    Radius = np.sqrt(Rise**2/(4*(np.sin(np.pi/V1))**2+(np.tan(V2))**2))
+    h = Radius*np.tan(V2)
     rd=[]
     for s in range(step_number):
-        r = np.array([-Radius*np.cos(s*2*np.pi/V1),0,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
-        
+        r = np.array([-Radius*np.cos(s*2*np.pi/V1),h*s,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
+        X = np.array([[np.cos(V2),-np.sin(V2),0],[np.sin(V2),np.cos(V2),0],[0,0,1]])
+        Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
+        Z = np.array([[np.cos(Twist*s),-np.sin(Twist*s),0],[np.sin(Twist*s),np.cos(Twist*s),0],[0,0,1]])
+        d = np.dot(X,np.dot(Z.T,Y))
+        rd.append(ds.RD(r,d))
     return rd
 
 def helix_shear_RD(Rise,Twist,V1,V2,step_number,step_size):
