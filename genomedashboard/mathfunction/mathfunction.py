@@ -78,14 +78,26 @@ def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
     Twist = Twist*step_size*np.pi/180
     Radius = np.sqrt(Rise**2/(4*(np.sin(np.pi/V1))**2+(np.tan(V2*np.pi/180))**2))
     h = Radius*np.tan(V2*np.pi/180)
+    k = Radius/(Radius**2+h**2)
+    t = h/(Radius**2+h**2)
+    A = k/(k**2+t**2)
+    B = t/(k**2+t**2)
+    C = 1/(k**2+t**2)
     rd=[]
     for s in range(step_number):
         r = np.array([-Radius*np.cos(s*2*np.pi/V1),h*s,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
-        phi = V2*np.pi/180
-        X = np.array([[np.cos(phi*s),-np.sin(phi*s),0],[np.sin(phi*s),np.cos(phi*s),0],[0,0,1]])
-        Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
-        Z = np.array([[np.cos((Twist)*s),-np.sin((Twist)*s),0],[np.sin((Twist)*s),np.cos((Twist)*s),0],[0,0,1]])
-        d = np.dot(Z.T,np.dot(X,Y))
+        #phi = V2*np.pi/180
+        #X = np.array([[np.cos(phi*s),-np.sin(phi*s),0],[np.sin(phi*s),np.cos(phi*s),0],[0,0,1]])
+        #Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
+        #Z = np.array([[np.cos((Twist)*s),-np.sin((Twist)*s),0],[np.sin((Twist)*s),np.cos((Twist)*s),0],[0,0,1]])
+        #d = np.dot(Z.T,np.dot(X,Y))
+        T = np.array([-A*np.sin(s/C)/C,B/C,A*np.cos(s/C)/C])
+        N = np.array([-np.cos(s/C),0,-np.sin(s/C)])
+        B = np.array([B*np.sin(s/C)/C,A/C,-B*np.cos(s/C)/C])
+        d1 = N*np.cos(Twist*s)+B*np.sin(Twist*s)
+        d2 = -N*np.sin(Twist*s)+B*np.cos(Twist*s)
+        d3 = T
+        d = np.array([d1,d2,d3])
         rd.append(ds.RD(r,d))
     return rd
 
@@ -102,6 +114,6 @@ def helix_shear_RD(Rise,Twist,V1,V2,step_number,step_size):
         X = np.array([[1,0,0],[0,np.cos(s*phi),-np.sin(s*phi)],[0,np.sin(s*phi),np.cos(s*phi)]])
         Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
         Z = np.array([[np.cos(Twist*s),-np.sin(Twist*s),0],[np.sin(Twist*s),np.cos(Twist*s),0],[0,0,1]])
-        d = np.dot(Z.T,np.dot(X.T,Y))
+        d = np.dot(Z.T,np.dot(X.T,Y.T))
         rd.append(ds.RD(r,d))
     return rd
