@@ -61,7 +61,9 @@ def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0):
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(Shift,Slide,Rise,Tilt,Roll,Twist)))
     return hps
 
-def circular_DNA_RD(Radius, V1, V2, step_number, step_size=1.0):
+def circular_DNA_RD(Rise, V1, V2, step_number, step_size=1.0):
+    Rise = Rise*step_size
+    Radius = (Rise/2)/np.sin(np.pi/V1)
     V1 = V1/step_size
     Twist = 2*np.pi*V2/V1
     rd=[]
