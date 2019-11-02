@@ -88,6 +88,8 @@ def odeSC_d(y,s,hp_list):
     The set up for the ode function of Space Curve. ddi/ds=(D*Omega)xdi.
     Omega=[Tilt, Roll, Twist]
     """
+    if s>len(hp_list):
+        s = len(hp_list)-1
     pi=np.pi/180
     hp=hp_list[int(s)]
     til=hp.HP_inter.til*pi
