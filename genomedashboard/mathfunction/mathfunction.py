@@ -81,10 +81,11 @@ def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
     rd=[]
     for s in range(step_number):
         r = np.array([-Radius*np.cos(s*2*np.pi/V1),h*s,Radius*np.sin(s*2*np.pi/V1)])+np.array([Radius,0,0])
-        phi = V2*np.pi/180
-        X = np.array([[np.cos(phi*s),-np.sin(phi*s),0],[np.sin(phi*s),np.cos(phi*s),0],[0,0,1]])
+        tor = V2*np.pi/180
+        phi = np.arcsin(h/Rise)
+        X = np.array([[1,0,0],[0,np.cos(phi),-np.sin(phi)],[0,np.sin(phi),np.cos(phi)]])
         Y = np.array([[np.cos(s*2*np.pi/V1),0,-np.sin(s*2*np.pi/V1)],[0,1,0],[np.sin(s*2*np.pi/V1),0,np.cos(s*2*np.pi/V1)]])
-        Z = np.array([[np.cos((Twist)*s),-np.sin((Twist)*s),0],[np.sin((Twist)*s),np.cos((Twist)*s),0],[0,0,1]])
+        Z = np.array([[np.cos((Twist-tor)*s),-np.sin((Twist-tor)*s),0],[np.sin((Twist-tor)*s),np.cos((Twist-tor)*s),0],[0,0,1]])
         d = np.dot(Z.T,np.dot(X,Y))
         rd.append(ds.RD(r,d))
     return rd
