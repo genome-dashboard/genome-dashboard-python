@@ -18,7 +18,7 @@ def straight_twisted_line(Rise, Twist, step_number):
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,Rise,0.0,0.0,Twist)))
     return hps
 
-def circular_DNA(Rise, V1, V2, step_number, step_size=1.0，phase=0):
+def circular_DNA(Rise, V1, V2, step_number, step_size=1.0，phases=0):
     """
     Given
     """
@@ -27,7 +27,7 @@ def circular_DNA(Rise, V1, V2, step_number, step_size=1.0，phase=0):
     Rise = Rise*step_size
     Twist = 360.0*V2/V1
     for s in range(step_number):
-        s = s+phase
+        s = s+phases
         Tilt = np.sin(Twist*s*np.pi/180.0)*360.0/V1
         Roll = np.cos(Twist*s*np.pi/180.0)*360.0/V1
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,Rise,Tilt,Roll,Twist)))
