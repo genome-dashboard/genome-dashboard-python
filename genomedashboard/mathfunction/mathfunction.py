@@ -33,25 +33,27 @@ def circular_DNA(Rise, V1, V2, step_number, step_size=1.0, phase=0):
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,Rise,Tilt,Roll,Twist)))
     return hps
 
-def helix_torsion(Rise, Twist, V1, V2, step_number, step_size=1.0):
+def helix_torsion(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
     V1=V1/step_size
     Twist=Twist*step_size
     Rise=Rise*step_size
     V2=V2*step_size
     for s in range(step_number):
+        s = s+phase
         Tilt = np.sin((Twist+V2)*s*np.pi/180.0)*360.0/V1
         Roll = np.cos((Twist+V2)*s*np.pi/180.0)*360.0/V1
         hps.append(ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,Rise,Tilt,Roll,Twist)))
     return hps
 
-def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0):
+def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
     hps=[ds.HP(ds.HP_intra(0.0,0.0,0.0,0.0,0.0,0.0),ds.HP_inter(0.0,0.0,0.0,0.0,0.0,0.0))]
     V1=V1/step_size
     Twist=Twist*step_size
     Rise=Rise*step_size
     V2=V2*step_size
     for s in range(step_number):
+        s = s+phase
         Tilt = np.sin(Twist*s*np.pi/180.0)*360.0/V1
         Roll = np.cos(Twist*s*np.pi/180.0)*360.0/V1
         Shift = V2*np.sin(Twist*s*np.pi/180)
