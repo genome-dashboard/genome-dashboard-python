@@ -3,10 +3,18 @@ History
 =======
 
 
+0.0.53
+---------------
+
+Date: 2019-11-04
+
+* Added the mathfunction submodule.
+
+
 0.0.46 - 0.0.52
 ---------------
 
-Date: 2019-10-14
+Date: 2019-11-04
 
 * Fixing missing submodules in the package build.
 
