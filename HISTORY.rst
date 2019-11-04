@@ -3,6 +3,14 @@ History
 =======
 
 
+0.0.46 - 0.0.52
+---------------
+
+Date: 2019-10-14
+
+* Fixing missing submodules in the package build.
+
+
 0.0.41 - 0.0.45
 ---------------
 

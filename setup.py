@@ -71,8 +71,7 @@ print("... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-module_version                          = '0.0.45'
-
+module_version                          = '0.0.52'
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email                    = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
