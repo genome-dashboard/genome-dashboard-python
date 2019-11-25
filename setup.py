@@ -27,6 +27,11 @@ def read_text_lines(fname):
     with io.open(os.path.join(current_dir, fname)) as fd:
         return fd.readlines()
 
+# Get version info.
+version_file = open(os.path.join(current_dir, 'VERSION'))
+version = version_file.read().strip()
+print("*** Current Version: ", version, "\n")
+
 
 print(">>> STARTING PACKAGE SETUP <<<\n")
 
@@ -71,7 +76,9 @@ print("... ASSIGNING CONFIGURATION VALUES ...\n")
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-module_version                          = '0.0.54'
+# module_version                          = '0.0.54'
+# Get value form VERSION file.
+module_version                          = version
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
 module_authors_email                    = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
