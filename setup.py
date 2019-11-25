@@ -10,31 +10,45 @@ https://github.com/pypa/sampleproject
 
 # Always use setuptools over distutils.
 from setuptools import setup, find_packages
+import pkgutil
 import os
+
 # from os import path
 # io.open is needed for projects that support Python 2.7
 # It ensures open() defaults to text mode with universal newlines,
 # and accepts an argument to specify the text encoding
 # Python 3 only projects can skip this import
-from io import open
 
+from io import open
 from sphinx_content_filter import *
 
 
-current_dir = os.path.dirname(os.path.abspath(__file__))
-
+# Helper method.
 def read_text_lines(fname):
     with io.open(os.path.join(current_dir, fname)) as fd:
         return fd.readlines()
 
+# Get ref to current dir.
+current_dir = os.path.dirname(os.path.abspath(__file__))
+
 # Get version info.
 version_file = open(os.path.join(current_dir, 'VERSION'))
 version = version_file.read().strip()
-print("*** Current Version: ", version, "\n")
+print("*** setup.py - Current Version: ", version, "\n")
+
+# Define modules to include in package.
+modules_including = []
+
+
+for loader, module_name, is_pkg in pkgutil.walk_packages(current_dir):
+    modules_including.append(module_name)
+    _module = loader.find_module(module_name).load_module(module_name)
+    globals()[module_name] = _module
+
+print("Module Packages: ", modules_including)
 
 
 print(">>> STARTING PACKAGE SETUP <<<\n")
-
 print("... PARSING CONFIG FILES ...\n")
 
 """
@@ -52,32 +66,27 @@ You can check the syntax of your build using these commands:
 """
 
 print("... PARSING DESCRIPTION RST ...\n")
-
 description_lines = read_text_lines('DESCRIPTION.rst')
 filtered_description_lines = ''.join(yield_sphinx_only_markup(description_lines)),
 
-
 print("... PARSING README RST ...\n")
-
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
-
 print("... PARSING HISTORY RST ...\n")
-
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 
 print("... ASSIGNING CONFIGURATION VALUES ...\n")
-
 # Configuration for package when publishing.
 # Edit these values to reflect your package details.
 
 # -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
 # This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
 # module_version                          = '0.0.54'
-# Get value form VERSION file.
+
+# Get value form VERSION file. Avoids syncing between multiple locations problem.
 module_version                          = version
 module_name                             = 'genomedashboard'
 module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -121,6 +130,11 @@ module_excludes                         = [
 
                                         ]
 
+# module_packages                         = find_packages()
+# module_packages                         = find_packages(exclude = module_excludes)
+# module_packages                         = find_packages('genomedashboard', exclude = module_excludes)
+module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
+
 module_install_requires                 = [
                                             'Click>=6.0',
                                             'peppercorn',
@@ -162,17 +176,13 @@ module_extras_require                   = {
 
 
 print("... BUILDING PACKAGE ...\n")
-
 # Setup method to publish package.
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name                            = module_name,
     version                         = module_version,
     description                     = module_description,
-    # packages                        = find_packages(),
-    # packages                        = find_packages(exclude = module_excludes),
-    # packages                        = find_packages('genomedashboard', exclude = module_excludes),
-    packages                        = find_packages(include = module_includes, exclude = module_excludes),
+    packages                        = module_packages,
     python_requires                 = module_python,
     author                          = module_authors,
     author_email                    = module_authors_email,
@@ -194,4 +204,5 @@ setup(
     tests_require                   = module_test_requires,
 )
 
-print(">>> PACKAGE SETUP FINISHED <<<\n")
+print(">>> PACKAGE BUILT. SETUP COMPLETED. <<<\n")
+print(">>>PLEASE TEST AND PUBLISH. <<<\n")

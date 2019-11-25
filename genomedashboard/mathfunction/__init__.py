@@ -2,4 +2,6 @@
 
 """genomedashboard.mathfunction"""
 
-__all__ = ["mathfunction"]
+# from genomedashboard.mathfunction import mathfunction as mf
+#
+# __all__ = ["mf"]

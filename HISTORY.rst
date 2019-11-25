@@ -3,12 +3,12 @@ History
 =======
 
 
-0.0.55 - 0.0.56
+0.0.55 - 0.0.59
 ---------------
 
 Date: 2019-11-25
 
-* Added missing submodules back.
+* Adding missing submodules back into package.
 
 
 0.0.53 - 0.0.54

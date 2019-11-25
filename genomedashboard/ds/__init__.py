@@ -2,4 +2,6 @@
 
 """genomedashboard.ds"""
 
-__all__ = ["ds"]
+# from genomedashboard.ds import ds as ds
+#
+# __all__ = ["ds"]

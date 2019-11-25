@@ -2,4 +2,6 @@
 
 """genomedashboard.convert"""
 
-__all__ = ["convert"]
+# from genomedashboard.convert import convert as cv
+#
+# __all__ = ["cv"]
