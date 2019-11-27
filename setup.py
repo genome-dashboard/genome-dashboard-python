@@ -30,6 +30,7 @@ from io import open
 from pathlib import Path
 from sphinx_content_filter import *
 
+# RST parsing.
 # import docutils.nodes
 # import docutils.parsers.rst
 # import docutils.utils
@@ -51,13 +52,11 @@ here = path.abspath(path.dirname(__file__))
 if debug:
     print("\n here: ", here)
 
-# current_dir = path.abspath(path.dirname(__file__))
 current_dir = Path(here)
 
 if debug:
     print("\n current dir: ", current_dir)
 
-# parent_dir = path.abspath(path.dirname(__file__)).parent
 parent_dir = current_dir.parent
 
 if debug:
@@ -66,8 +65,8 @@ if debug:
 if debug:
     print("\n>>> PARSING VERSION <<<\n")
 
-# with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
-with open('VERSION') as version_file:
+# with open('VERSION') as version_file:
+with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
 
 if debug:
@@ -76,8 +75,8 @@ if debug:
 if debug:
     print("\n>>> PARSING AUTHORS <<<\n")
 
-# with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
-with open('AUTHORS.rst') as authors_file:
+# with open('AUTHORS.rst') as authors_file:
+with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
 
 if debug:
@@ -86,20 +85,8 @@ if debug:
 if debug:
     print("\n>>> PARSING DESCRIPTION RST <<<\n")
 
-# ver 1.
-# def read_text_lines(fname):
-#     with open(path.join(current_dir, fname)) as fd:
-#         return fd.readlines()
-#
-# description = read_text_lines('DESCRIPTION.rst')
-# print(description)
-# filtered_description = ''.join(yield_sphinx_only_markup(description)),
-# print(filtered_description)
-# print(str(filtered_description))
-
-# ver 2.
-# with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
-with open('DESCRIPTION.rst') as description_file:
+# with open('DESCRIPTION.rst') as description_file:
+with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
     description = description_file.read()
 
 if debug:
@@ -108,8 +95,9 @@ if debug:
 if debug:
     print("\n>>> PARSING README RST <<<\n")
 
-# with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
-with open('README.rst') as readme_file:
+# with open('README.rst') as readme_file:
+# with open(path.join(current_dir, 'README.md'), encoding='utf-8') as readme_file:
+with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
 if debug:
@@ -124,8 +112,8 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 if debug:
     print("\n>>> PARSING HISTORY RST <<<\n")
 
-# with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
-with open('HISTORY.rst') as history_file:
+# with open('HISTORY.rst') as history_file:
+with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
     history = history_file.read()
 
 if debug:
@@ -157,9 +145,9 @@ module_download_url                     = 'https://pypi.org/project/genomedashbo
 module_keywords                         = 'python biology genomics genome dashboard'
 module_python                           = '>=2.7'
 module_description                      = description
-module_long_description                 = description
 # module_long_description                 = description + '\n\n' + readme + '\n\n' + history
 # module_long_description                 = long_description
+module_long_description                 = description   # Cant get text syntax to pass properly.
 module_long_description_content_type    = 'text/x-rst'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
 module_data_included                    = True
 module_enable_compression               = False

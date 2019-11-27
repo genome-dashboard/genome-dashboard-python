@@ -109,3 +109,4 @@ scratch/
 
 # Packaging Files.
 tox.ini.alt
+README.md.alt
