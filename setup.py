@@ -8,9 +8,12 @@ https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
+print("\n>>> STARTING SETUP SCRIPT <<<\n")
+
 from setuptools import setup, find_packages
 from os import path
 from io import open
+from pathlib import Path
 from sphinx_content_filter import *
 
 # import docutils.nodes
@@ -26,22 +29,27 @@ from sphinx_content_filter import *
 #     parser.parse(text, document)
 #     return document
 
-current_dir = path.abspath(path.dirname(__file__))
-parent_dir = path.abspath(path.dirname(__file__)).parent
+print("\n>>> GETTING PATHS <<<\n")
+here = path.abspath(path.dirname(__file__))
+print(here)
+# current_dir = path.abspath(path.dirname(__file__))
+current_dir = Path(here)
+print(current_dir)
+# parent_dir = path.abspath(path.dirname(__file__)).parent
+parent_dir = current_dir.parent
+print(parent_dir)
 
-print("\n>>> STARTING SETUP INIT ...\n")
-
-print("\n>>> PARSING VERSION ...\n")
+print("\n>>> PARSING VERSION <<<\n")
 with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
 print(current_version)
 
-print("\n>>> PARSING AUTHORS ...\n")
+print("\n>>> PARSING AUTHORS <<<\n")
 with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
 print(authors)
 
-print("\n>>> PARSING DESCRIPTION RST ...\n")
+print("\n>>> PARSING DESCRIPTION RST <<<\n")
 # ver 1.
 # def read_text_lines(fname):
 #     with open(path.join(current_dir, fname)) as fd:
@@ -57,7 +65,7 @@ with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as descri
     description = description_file.read()
 print(description)
 
-print("\n>>> PARSING README RST ...\n")
+print("\n>>> PARSING README RST <<<\n")
 with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 print(readme)
