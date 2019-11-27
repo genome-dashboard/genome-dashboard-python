@@ -8,12 +8,22 @@ https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
-debug = True
-print(debug)
+# debug = True
+debug = False
+
+if debug:
+    print("\n Debug: ", debug)
+
+# print_config = True
+print_config = False
+
+if print_config:
+    print("\n Print Config: ", print_config)
 
 if debug:
     print("\n>>> STARTING SETUP SCRIPT <<<\n")
 
+import sys
 from setuptools import setup, find_packages
 from os import path
 from io import open
@@ -39,24 +49,25 @@ if debug:
 here = path.abspath(path.dirname(__file__))
 
 if debug:
-    print(here)
+    print("\n here: ", here)
 
 # current_dir = path.abspath(path.dirname(__file__))
 current_dir = Path(here)
 
 if debug:
-    print(current_dir)
+    print("\n current dir: ", current_dir)
 
 # parent_dir = path.abspath(path.dirname(__file__)).parent
 parent_dir = current_dir.parent
 
 if debug:
-    print(parent_dir)
+    print("\n parent dir: ", parent_dir)
 
 if debug:
     print("\n>>> PARSING VERSION <<<\n")
 
-with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
+# with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
+with open('VERSION') as version_file:
     current_version = version_file.read().strip()
 
 if debug:
@@ -65,7 +76,8 @@ if debug:
 if debug:
     print("\n>>> PARSING AUTHORS <<<\n")
 
-with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
+# with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
+with open('AUTHORS.rst') as authors_file:
     authors = authors_file.read().strip()
 
 if debug:
@@ -86,7 +98,8 @@ if debug:
 # print(str(filtered_description))
 
 # ver 2.
-with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
+# with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
+with open('DESCRIPTION.rst') as description_file:
     description = description_file.read()
 
 if debug:
@@ -95,7 +108,8 @@ if debug:
 if debug:
     print("\n>>> PARSING README RST <<<\n")
 
-with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
+# with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
+with open('README.rst') as readme_file:
     readme = readme_file.read()
 
 if debug:
@@ -110,7 +124,8 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 if debug:
     print("\n>>> PARSING HISTORY RST <<<\n")
 
-with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
+# with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
+with open('HISTORY.rst') as history_file:
     history = history_file.read()
 
 if debug:
@@ -185,10 +200,10 @@ module_package_dir                      = {'': 'src'}  # Optional
 # module_packages                         = find_packages(exclude = module_excludes)
 # module_packages                         = find_packages('genomedashboard', exclude = module_excludes)
 # module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
-module_packages                         = find_packages(where='src'),  # Required
+module_packages                         = find_packages(where = 'src')  # Required
 
-# module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
-module_scripts                          = ['cli.py','convert.py','ds.py','io.py','mathfunction.py']
+module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
+# module_scripts                          = ['cli.py','convert.py','ds.py','io.py','mathfunction.py']
 
 module_install_requires                 = [
                                             'docutils>=0.3',
@@ -238,6 +253,38 @@ module_extras_require                   = {
                                             'test': ['coverage'],
                                         }
 
+if print_config:
+    print("\n=== === === Module Configuration Values === === ===")
+    print("\n name: ", module_name)
+    print("\n version: ", module_version)
+    print("\n description: ", module_description)
+    print("\n package_dir: ", module_package_dir)
+    print("\n packages: ", module_packages)
+    print("\n scripts: ", module_scripts)
+    print("\n python_requires: ", module_python)
+    print("\n author: ", module_authors)
+    print("\n author_email: ", module_authors_email)
+    print("\n long_description_content_type: ", module_long_description_content_type)
+    print("\n long_description: ", module_long_description)
+    print("\n license: ", module_license_type)
+    print("\n url: ", module_url)
+    print("\n download_url: ", module_download_url)
+    print("\n project_urls: ", module_project_urls)
+    print("\n classifiers: ", module_classifiers)
+    print("\n keywords: ", module_keywords)
+    print("\n install_requires: ", module_install_requires)
+    print("\n extras_require: ", module_extras_require)
+    print("\n package_data: ", module_package_data)
+    print("\n entry_points: ", module_entry_points)
+    print("\n include_package_data: ", module_data_included)
+    print("\n zip_safe: ", module_enable_compression)
+    print("\n setup_requires: ", module_setup_requires)
+    print("\n test_suite: ", module_test_suite)
+    print("\n tests_require: ", module_test_requires)
+
+    # Bail to check values.
+    sys.exit()
+
 if debug:
     print("\n>>> RUNNING SETUP METHOD <<<\n")
 
@@ -268,7 +315,7 @@ setup(
     zip_safe                        = module_enable_compression,
     setup_requires                  = module_setup_requires,
     test_suite                      = module_test_suite,
-    tests_require                   = module_test_requires,
+    tests_require                   = module_test_requires
 )
 
 if debug:
