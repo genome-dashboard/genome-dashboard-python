@@ -35,12 +35,12 @@ current_dir = os.path.abspath(os.path.dirname(__file__))
 # parent_dir = (current_dir).parent
 
 # print("... PARSING VERSION ...\n")
-with open(os.path.join(current_dir, 'VERSION')) as version_file:
+with open(os.path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
 # print(current_version)
 
 # print("... PARSING VERSION ...\n")
-with open(os.path.join(current_dir, 'AUTHORS.rst')) as authors_file:
+with open(os.path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
 # print(authors)
 
@@ -52,17 +52,23 @@ with open(os.path.join(current_dir, 'AUTHORS.rst')) as authors_file:
 # print(filtered_description)
 # print(str(filtered_description))
 # ver 2.
-with open('DESCRIPTION.rst') as description_file:
+with open('DESCRIPTION.rst', encoding='utf-8') as description_file:
     description = description_file.read()
 # print(description)
 
 # print("... PARSING README RST ...\n")
-with open('README.rst') as readme_file:
+with open('README.rst', encoding='utf-8') as readme_file:
     readme = readme_file.read()
 # print(readme)
 
+"""
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+"""
+
 # print("... PARSING HISTORY RST ...\n")
-with open('HISTORY.rst') as history_file:
+with open('HISTORY.rst', encoding='utf-8') as history_file:
     history = history_file.read()
 # print(history)
 
@@ -108,20 +114,24 @@ module_project_urls                     = {
                                             # 'Say Thanks!': 'http://saythanks.io/to/example',
                                         }
 
-module_includes                         = [
-                                            # 'genomedashboard',
-                                            'cli',
-                                            'genomedashboard.convert',
-                                            'genomedashboard.data',
-                                            'genomedashboard.ds',
-                                            'genomedashboard.io'
-                                        ]
+# module_includes                         = [
+#                                             # 'genomedashboard',
+#                                             'cli',
+#                                             'genomedashboard.convert',
+#                                             'genomedashboard.data',
+#                                             'genomedashboard.ds',
+#                                             'genomedashboard.io'
+#                                         ]
 
-module_excludes                         = [
-                                            'contrib',
-                                            'docs',
-                                            'tests'
-                                        ]
+# module_excludes                         = [
+#                                             'contrib',
+#                                             'docs',
+#                                             'tests'
+#                                         ]
+
+# When your source code is in a subdirectory under the project root, e.g.
+# `src/`, it is necessary to specify the `package_dir` argument.
+module_package_dir                      = {'': 'src'}  # Optional
 
 module_packages                         = find_packages()
 # module_packages                         = find_packages(exclude = module_excludes)
@@ -181,6 +191,7 @@ setup(
     name                            = module_name,
     version                         = module_version,
     description                     = module_description,
+    package_dir                     = module_package_dir,                   # new
     packages                        = module_packages,
     scripts                         = module_scripts,                       # new
     python_requires                 = module_python,
