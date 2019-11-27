@@ -2,6 +2,14 @@
 History
 =======
 
+0.0.62
+---------------
+
+Date: 2019-11-27
+
+* Update of master release branch with proper integration.
+
+
 0.0.60 - 0.0.61
 ---------------
 
