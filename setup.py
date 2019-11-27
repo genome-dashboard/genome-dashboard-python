@@ -8,9 +8,8 @@ https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
-import os
-# import pkgutil
 from setuptools import setup, find_packages
+from os import path
 from io import open
 from sphinx_content_filter import *
 
@@ -27,39 +26,41 @@ from sphinx_content_filter import *
 #     parser.parse(text, document)
 #     return document
 
-def read_text_lines(fname):
-    with io.open(os.path.join(current_dir, fname)) as fd:
-        return fd.readlines()
+current_dir = path.abspath(path.dirname(__file__))
+parent_dir = path.abspath(path.dirname(__file__)).parent
 
-current_dir = os.path.abspath(os.path.dirname(__file__))
-# parent_dir = (current_dir).parent
+print("\n>>> STARTING SETUP INIT ...\n")
 
-# print("... PARSING VERSION ...\n")
-with open(os.path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
+print("\n>>> PARSING VERSION ...\n")
+with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
-# print(current_version)
+print(current_version)
 
-# print("... PARSING VERSION ...\n")
-with open(os.path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
+print("\n>>> PARSING AUTHORS ...\n")
+with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
-# print(authors)
+print(authors)
 
-# print("... PARSING DESCRIPTION RST ...\n")
+print("\n>>> PARSING DESCRIPTION RST ...\n")
 # ver 1.
+# def read_text_lines(fname):
+#     with open(path.join(current_dir, fname)) as fd:
+#         return fd.readlines()
+#
 # description = read_text_lines('DESCRIPTION.rst')
 # print(description)
 # filtered_description = ''.join(yield_sphinx_only_markup(description)),
 # print(filtered_description)
 # print(str(filtered_description))
 # ver 2.
-with open('DESCRIPTION.rst', encoding='utf-8') as description_file:
+with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
     description = description_file.read()
-# print(description)
+print(description)
 
-# print("... PARSING README RST ...\n")
-with open('README.rst', encoding='utf-8') as readme_file:
+print("\n>>> PARSING README RST ...\n")
+with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
-# print(readme)
+print(readme)
 
 """
 # Get the long description from the README file
@@ -67,22 +68,23 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 """
 
-# print("... PARSING HISTORY RST ...\n")
-with open('HISTORY.rst', encoding='utf-8') as history_file:
+print("\n>>> PARSING HISTORY RST <<<\n")
+with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
     history = history_file.read()
-# print(history)
+print(history)
 
+print("\n>>> PARSING LONG_DESCRIPTION <<<\n")
 linebreak = str('\n')
 # long_description = description + linebreak + readme + linebreak + history
 long_description = str(description + linebreak + readme + linebreak + history)
 # long_description = parse_rst(description + linebreak + readme + linebreak + history)
 # long_description = str(description + readme + history)
 # print("LONG DESCRIPTION: ")
-# print(long_description)
+print(long_description)
 # print("\n")pythonn str() retruns a string of type plantext
 
 
-# print("... ASSIGNING CONFIGURATION VALUES ...\n")
+print("\n>>> ASSIGNING CONFIGURATION VALUES <<<\n")
 module_name                             = 'genomedashboard'
 module_version                          = current_version
 # module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -170,14 +172,17 @@ module_classifiers                      = [
 
 module_entry_points                     = {
                                             'console_scripts': [
-                                                'genomedashboard=genomedashboard.cli:main',
+                                                # 'genomedashboard=genomedashboard.cli:main',
+                                                'genomedashboard=src.cli:main',
                                             ],
                                         }
 
 module_package_data                     = {
                                             '': ['*.txt', '*.rst'],
-                                            'genomedashboard': ['*.msg'],
-                                            'genomedashboard': ['data/*.dat'],
+                                            # 'genomedashboard': ['*.msg'],
+                                            'src': ['*.msg'],
+                                            # 'genomedashboard': ['data/*.dat'],
+                                            'src': ['data/*.dat'],
                                         }
 
 module_extras_require                   = {
@@ -185,7 +190,7 @@ module_extras_require                   = {
                                             'test': ['coverage'],
                                         }
 
-# print("... RUNNING SETUP ...\n")
+print("\n>>> RUNNING SETUP METHOD <<<\n")
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name                            = module_name,
@@ -215,8 +220,9 @@ setup(
     test_suite                      = module_test_suite,
     tests_require                   = module_test_requires,
 )
-# print(">>> SETUP COMPLETED. <<<\n")
-# print(">>> PLEASE TEST AND PUBLISH. <<<\n")
+print("\n>>> SETUP COMPLETED. <<<\n")
+print("\n>>> PLEASE TEST AND PUBLISH. <<<\n")
+
 """
 # USAGE
 # Build the package:    > python setup.standard.py sdist bdist
