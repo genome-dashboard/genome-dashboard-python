@@ -8,7 +8,11 @@ https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
-print("\n>>> STARTING SETUP SCRIPT <<<\n")
+debug = True
+print(debug)
+
+if debug:
+    print("\n>>> STARTING SETUP SCRIPT <<<\n")
 
 from setuptools import setup, find_packages
 from os import path
@@ -29,27 +33,47 @@ from sphinx_content_filter import *
 #     parser.parse(text, document)
 #     return document
 
-print("\n>>> GETTING PATHS <<<\n")
+if debug:
+    print("\n>>> GETTING PATHS <<<\n")
+
 here = path.abspath(path.dirname(__file__))
-print(here)
+
+if debug:
+    print(here)
+
 # current_dir = path.abspath(path.dirname(__file__))
 current_dir = Path(here)
-print(current_dir)
+
+if debug:
+    print(current_dir)
+
 # parent_dir = path.abspath(path.dirname(__file__)).parent
 parent_dir = current_dir.parent
-print(parent_dir)
 
-print("\n>>> PARSING VERSION <<<\n")
+if debug:
+    print(parent_dir)
+
+if debug:
+    print("\n>>> PARSING VERSION <<<\n")
+
 with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
-print(current_version)
 
-print("\n>>> PARSING AUTHORS <<<\n")
+if debug:
+    print(current_version)
+
+if debug:
+    print("\n>>> PARSING AUTHORS <<<\n")
+
 with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
-print(authors)
 
-print("\n>>> PARSING DESCRIPTION RST <<<\n")
+if debug:
+    print(authors)
+
+if debug:
+    print("\n>>> PARSING DESCRIPTION RST <<<\n")
+
 # ver 1.
 # def read_text_lines(fname):
 #     with open(path.join(current_dir, fname)) as fd:
@@ -60,15 +84,22 @@ print("\n>>> PARSING DESCRIPTION RST <<<\n")
 # filtered_description = ''.join(yield_sphinx_only_markup(description)),
 # print(filtered_description)
 # print(str(filtered_description))
+
 # ver 2.
 with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
     description = description_file.read()
-print(description)
 
-print("\n>>> PARSING README RST <<<\n")
+if debug:
+    print(description)
+
+if debug:
+    print("\n>>> PARSING README RST <<<\n")
+
 with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
-print(readme)
+
+if debug:
+    print(readme)
 
 """
 # Get the long description from the README file
@@ -76,23 +107,30 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 """
 
-print("\n>>> PARSING HISTORY RST <<<\n")
+if debug:
+    print("\n>>> PARSING HISTORY RST <<<\n")
+
 with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
     history = history_file.read()
-print(history)
 
-print("\n>>> PARSING LONG_DESCRIPTION <<<\n")
+if debug:
+    print(history)
+
+if debug:
+    print("\n>>> PARSING LONG_DESCRIPTION <<<\n")
+
 linebreak = str('\n')
 # long_description = description + linebreak + readme + linebreak + history
 long_description = str(description + linebreak + readme + linebreak + history)
 # long_description = parse_rst(description + linebreak + readme + linebreak + history)
 # long_description = str(description + readme + history)
-# print("LONG DESCRIPTION: ")
-print(long_description)
-# print("\n")pythonn str() retruns a string of type plantext
 
+if debug:
+    print(long_description)
 
-print("\n>>> ASSIGNING CONFIGURATION VALUES <<<\n")
+if debug:
+    print("\n>>> ASSIGNING CONFIGURATION VALUES <<<\n")
+
 module_name                             = 'genomedashboard'
 module_version                          = current_version
 # module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -143,12 +181,14 @@ module_project_urls                     = {
 # `src/`, it is necessary to specify the `package_dir` argument.
 module_package_dir                      = {'': 'src'}  # Optional
 
-module_packages                         = find_packages()
+# module_packages                         = find_packages()
 # module_packages                         = find_packages(exclude = module_excludes)
 # module_packages                         = find_packages('genomedashboard', exclude = module_excludes)
 # module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
+module_packages                         = find_packages(where='src'),  # Required
 
-module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
+# module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
+module_scripts                          = ['cli.py','convert.py','ds.py','io.py','mathfunction.py']
 
 module_install_requires                 = [
                                             'docutils>=0.3',
@@ -198,7 +238,9 @@ module_extras_require                   = {
                                             'test': ['coverage'],
                                         }
 
-print("\n>>> RUNNING SETUP METHOD <<<\n")
+if debug:
+    print("\n>>> RUNNING SETUP METHOD <<<\n")
+
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name                            = module_name,
@@ -228,8 +270,10 @@ setup(
     test_suite                      = module_test_suite,
     tests_require                   = module_test_requires,
 )
-print("\n>>> SETUP COMPLETED. <<<\n")
-print("\n>>> PLEASE TEST AND PUBLISH. <<<\n")
+
+if debug:
+    print("\n>>> SETUP COMPLETED. <<<\n")
+    print("\n>>> PLEASE TEST AND PUBLISH. <<<\n")
 
 """
 # USAGE

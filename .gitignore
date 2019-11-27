@@ -106,3 +106,6 @@ scratch/
 
 # OS X cruft.
 .DS_Store
+
+# Packaging Files.
+tox.ini.alt
