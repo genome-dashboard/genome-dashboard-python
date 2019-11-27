@@ -1,103 +1,97 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+
 """
-A setuptools based setup module.
-See:
+A setuptools based setup module (replaces disutils).
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
-# Always use setuptools over distutils.
-from setuptools import setup, find_packages
-import pkgutil
 import os
-
-# from os import path
-# io.open is needed for projects that support Python 2.7
-# It ensures open() defaults to text mode with universal newlines,
-# and accepts an argument to specify the text encoding
-# Python 3 only projects can skip this import
-
+# import pkgutil
+from setuptools import setup, find_packages
 from io import open
 from sphinx_content_filter import *
 
+import docutils.nodes
+import docutils.parsers.rst
+import docutils.utils
+import docutils.frontend
 
-# Helper method.
+def parse_rst(text:str) -> docutils.nodes.document:
+    parser = docutils.parsers.rst.Parser()
+    components = (docutils.parsers.rst.Parser,)
+    settings = docutils.frontend.OptionParser(components=components).get_default_values()
+    document = docutils.utils.new_document('<rst-doc>', settings=settings)
+    parser.parse(text, document)
+    return document
+
 def read_text_lines(fname):
     with io.open(os.path.join(current_dir, fname)) as fd:
         return fd.readlines()
 
-# Get ref to current dir.
-current_dir = os.path.dirname(os.path.abspath(__file__))
+current_dir = os.path.abspath(os.path.dirname(__file__))
+# parent_dir = (current_dir).parent
 
-# Get version info.
-version_file = open(os.path.join(current_dir, 'VERSION'))
-version = version_file.read().strip()
-print("*** setup.py - Current Version: ", version, "\n")
+# print("... PARSING VERSION ...\n")
+with open(os.path.join(current_dir, 'VERSION')) as version_file:
+    current_version = version_file.read().strip()
+# print(current_version)
 
-# Define modules to include in package.
-modules_including = []
+# print("... PARSING VERSION ...\n")
+with open(os.path.join(current_dir, 'AUTHORS.rst')) as authors_file:
+    authors = authors_file.read().strip()
+# print(authors)
 
+# print("... PARSING DESCRIPTION RST ...\n")
+# ver 1.
+# description = read_text_lines('DESCRIPTION.rst')
+# print(description)
+# filtered_description = ''.join(yield_sphinx_only_markup(description)),
+# print(filtered_description)
+# print(str(filtered_description))
+# ver 2.
+with open('DESCRIPTION.rst') as description_file:
+    description = description_file.read()
+# print(description)
 
-for loader, module_name, is_pkg in pkgutil.walk_packages(current_dir):
-    modules_including.append(module_name)
-    _module = loader.find_module(module_name).load_module(module_name)
-    globals()[module_name] = _module
-
-print("Module Packages: ", modules_including)
-
-
-print(">>> STARTING PACKAGE SETUP <<<\n")
-print("... PARSING CONFIG FILES ...\n")
-
-"""
-PACKAGING DEVELOPER NOTE:
-
-We have to clean up the DESCRIPTION.rst file syntax using external code (sphinx_content_filter.py) so
-the package description content renders correctly in PYPI.
-
-This is not required for the README.rst or HISTORY.rst files (for some reason).
-
-You can check the syntax of your build using these commands:
-
-> twine check dist/*
-> python setup.py check --restructuredtext   # deprecated for the previous twine command.
-"""
-
-print("... PARSING DESCRIPTION RST ...\n")
-description_lines = read_text_lines('DESCRIPTION.rst')
-filtered_description_lines = ''.join(yield_sphinx_only_markup(description_lines)),
-
-print("... PARSING README RST ...\n")
+# print("... PARSING README RST ...\n")
 with open('README.rst') as readme_file:
     readme = readme_file.read()
+# print(readme)
 
-print("... PARSING HISTORY RST ...\n")
+# print("... PARSING HISTORY RST ...\n")
 with open('HISTORY.rst') as history_file:
     history = history_file.read()
+# print(history)
+
+linebreak = str('\n')
+# long_description = description + linebreak + readme + linebreak + history
+long_description = str(description + linebreak + readme + linebreak + history)
+# long_description = parse_rst(description + linebreak + readme + linebreak + history)
+# long_description = str(description + readme + history)
+# print("LONG DESCRIPTION: ")
+# print(long_description)
+# print("\n")pythonn str() retruns a string of type plantext
 
 
-print("... ASSIGNING CONFIGURATION VALUES ...\n")
-# Configuration for package when publishing.
-# Edit these values to reflect your package details.
-
-# -->>> !!!! IMPORTANT: BUMP THE VERSION WITH EVERY COMMIT USING SEMVER CONVENTIONS  <Major.minor.patch> !!!! <<<--
-# This value MUST be aligned with the value in .genome-dashboard-python/genomedashboard/__init__.py!!!
-# module_version                          = '0.0.54'
-
-# Get value form VERSION file. Avoids syncing between multiple locations problem.
-module_version                          = version
+# print("... ASSIGNING CONFIGURATION VALUES ...\n")
 module_name                             = 'genomedashboard'
-module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
-module_authors_email                    = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu'
-module_license                          = "MIT license"
+module_version                          = current_version
+# module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
+module_authors                          = authors
+module_authors_email                    = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu, taoteg@gmail.com'
+module_license_type                     = "MIT license"
 module_url                              = 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/'
+module_download_url                     = 'https://pypi.org/project/genomedashboard/#files'
 module_keywords                         = 'python biology genomics genome dashboard'
 module_python                           = '>=2.7'
-module_description                      = filtered_description_lines
+module_description                      = description
+module_long_description                 = description
+# module_long_description                 = description + '\n\n' + readme + '\n\n' + history
+# module_long_description                 = long_description
 module_long_description_content_type    = 'text/x-rst'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
-module_long_description                 = readme + '\n\n' + history
 module_data_included                    = True
 module_enable_compression               = False
 module_test_suite                       = 'tests'
@@ -127,17 +121,23 @@ module_excludes                         = [
                                             'contrib',
                                             'docs',
                                             'tests'
-
                                         ]
 
-# module_packages                         = find_packages()
+module_packages                         = find_packages()
 # module_packages                         = find_packages(exclude = module_excludes)
 # module_packages                         = find_packages('genomedashboard', exclude = module_excludes)
-module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
+# module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
+
+module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
 
 module_install_requires                 = [
-                                            'Click>=6.0',
-                                            'peppercorn',
+                                            'docutils>=0.3',
+                                            'click>=6.0',
+                                            'twobitreader',
+                                            'pyBigWig',
+                                            'numpy',
+                                            'scipy',
+                                            'matplotlib'
                                         ]
 
 module_classifiers                      = [
@@ -165,7 +165,8 @@ module_entry_points                     = {
                                         }
 
 module_package_data                     = {
-                                            '': ['*.txt'],
+                                            '': ['*.txt', '*.rst'],
+                                            'genomedashboard': ['*.msg'],
                                             'genomedashboard': ['data/*.dat'],
                                         }
 
@@ -174,22 +175,22 @@ module_extras_require                   = {
                                             'test': ['coverage'],
                                         }
 
-
-print("... BUILDING PACKAGE ...\n")
-# Setup method to publish package.
+# print("... RUNNING SETUP ...\n")
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name                            = module_name,
     version                         = module_version,
     description                     = module_description,
     packages                        = module_packages,
+    scripts                         = module_scripts,                       # new
     python_requires                 = module_python,
     author                          = module_authors,
     author_email                    = module_authors_email,
     long_description_content_type   = module_long_description_content_type,
     long_description                = module_long_description,
-    license                         = module_license,
+    license                         = module_license_type,
     url                             = module_url,
+    download_url                    = module_download_url,                  # new
     project_urls                    = module_project_urls,
     classifiers                     = module_classifiers,
     keywords                        = module_keywords,
@@ -203,6 +204,13 @@ setup(
     test_suite                      = module_test_suite,
     tests_require                   = module_test_requires,
 )
-
-print(">>> PACKAGE BUILT. SETUP COMPLETED. <<<\n")
-print(">>>PLEASE TEST AND PUBLISH. <<<\n")
+# print(">>> SETUP COMPLETED. <<<\n")
+# print(">>> PLEASE TEST AND PUBLISH. <<<\n")
+"""
+# USAGE
+# Build the package:    > python setup.standard.py sdist bdist
+# Check with package:   > twine check dist/*
+# Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+# Upload to PyPI:       > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+# Note: uploads require a PyPI user account.
+"""
