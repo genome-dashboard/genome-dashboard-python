@@ -2,6 +2,13 @@
 History
 =======
 
+0.0.60 - 0.0.61
+---------------
+
+Date: 2019-11-26
+
+* Complete structural overhaul of package.
+
 
 0.0.55 - 0.0.59
 ---------------
