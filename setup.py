@@ -14,18 +14,18 @@ from setuptools import setup, find_packages
 from io import open
 from sphinx_content_filter import *
 
-import docutils.nodes
-import docutils.parsers.rst
-import docutils.utils
-import docutils.frontend
-
-def parse_rst(text:str) -> docutils.nodes.document:
-    parser = docutils.parsers.rst.Parser()
-    components = (docutils.parsers.rst.Parser,)
-    settings = docutils.frontend.OptionParser(components=components).get_default_values()
-    document = docutils.utils.new_document('<rst-doc>', settings=settings)
-    parser.parse(text, document)
-    return document
+# import docutils.nodes
+# import docutils.parsers.rst
+# import docutils.utils
+# import docutils.frontend
+#
+# def parse_rst(text:str) -> docutils.nodes.document:
+#     parser = docutils.parsers.rst.Parser()
+#     components = (docutils.parsers.rst.Parser,)
+#     settings = docutils.frontend.OptionParser(components=components).get_default_values()
+#     document = docutils.utils.new_document('<rst-doc>', settings=settings)
+#     parser.parse(text, document)
+#     return document
 
 def read_text_lines(fname):
     with io.open(os.path.join(current_dir, fname)) as fd:
