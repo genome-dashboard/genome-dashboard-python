@@ -28,7 +28,7 @@ from setuptools import setup, find_packages
 from os import path
 from io import open
 from pathlib import Path
-from sphinx_content_filter import *
+# from sphinx_content_filter import *
 
 # RST parsing.
 # import docutils.nodes
@@ -65,8 +65,8 @@ if debug:
 if debug:
     print("\n>>> PARSING VERSION <<<\n")
 
-# with open('VERSION') as version_file:
-with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
+with open('VERSION') as version_file:
+# with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
 
 if debug:
@@ -75,8 +75,8 @@ if debug:
 if debug:
     print("\n>>> PARSING AUTHORS <<<\n")
 
-# with open('AUTHORS.rst') as authors_file:
-with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
+with open('AUTHORS.rst') as authors_file:
+# with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
     authors = authors_file.read().strip()
 
 if debug:
@@ -85,8 +85,8 @@ if debug:
 if debug:
     print("\n>>> PARSING DESCRIPTION RST <<<\n")
 
-# with open('DESCRIPTION.rst') as description_file:
-with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
+with open('DESCRIPTION.rst') as description_file:
+# with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
     description = description_file.read()
 
 if debug:
@@ -95,9 +95,9 @@ if debug:
 if debug:
     print("\n>>> PARSING README RST <<<\n")
 
-# with open('README.rst') as readme_file:
+with open('README.rst') as readme_file:
 # with open(path.join(current_dir, 'README.md'), encoding='utf-8') as readme_file:
-with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
+# with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
 
 if debug:
@@ -112,8 +112,8 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 if debug:
     print("\n>>> PARSING HISTORY RST <<<\n")
 
-# with open('HISTORY.rst') as history_file:
-with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
+with open('HISTORY.rst') as history_file:
+# with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
     history = history_file.read()
 
 if debug:

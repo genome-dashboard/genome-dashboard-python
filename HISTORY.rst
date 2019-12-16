@@ -2,6 +2,23 @@
 History
 =======
 
+0.0.69 - 0.0.71
+---------------
+
+Date: 2019-12-16
+
+* Dropped vestigial cli module (for now).
+* Reorganizing submodules.
+
+
+0.0.67 - 0.0.68
+---------------
+
+Date: 2019-12-16
+
+* Update of master release branch removing unneeded dependency in sphinx..
+
+
 0.0.62 - 0.0.66
 ---------------
 
