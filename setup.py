@@ -68,6 +68,7 @@ if debug:
 with open('VERSION') as version_file:
 # with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
+    # current_version = version_file.read()
 
 if debug:
     print(current_version)
@@ -77,7 +78,8 @@ if debug:
 
 with open('AUTHORS.rst') as authors_file:
 # with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
-    authors = authors_file.read().strip()
+    # authors = authors_file.read().strip()
+    authors = authors_file.read()
 
 if debug:
     print(authors)
@@ -123,10 +125,11 @@ if debug:
     print("\n>>> PARSING LONG_DESCRIPTION <<<\n")
 
 linebreak = str('\n')
+# long_description = str(description + readme + history)
 # long_description = description + linebreak + readme + linebreak + history
 long_description = str(description + linebreak + readme + linebreak + history)
 # long_description = parse_rst(description + linebreak + readme + linebreak + history)
-# long_description = str(description + readme + history)
+# long_description = parse_rst(str(description + linebreak + readme + linebreak + history))
 
 if debug:
     print(long_description)

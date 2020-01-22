@@ -2,6 +2,14 @@
 History
 =======
 
+0.0.72
+---------------
+
+Date: 2020-01-20
+
+* Cleaning up docs and readme text in PyPI and repo.
+
+
 0.0.69 - 0.0.71
 ---------------
 
