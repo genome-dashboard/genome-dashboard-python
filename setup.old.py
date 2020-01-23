@@ -1,64 +1,142 @@
-"""A setuptools based setup module.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-See:
+
+"""
+A setuptools based setup module (replaces disutils).
 https://packaging.python.org/guides/distributing-packages-using-setuptools/
 https://github.com/pypa/sampleproject
 """
 
-# Always prefer setuptools over distutils
+# debug = True
+debug = False
+
+if debug:
+    print("\n Debug: ", debug)
+
+# print_config = True
+print_config = False
+
+if print_config:
+    print("\n Print Config: ", print_config)
+
+if debug:
+    print("\n>>> STARTING SETUP SCRIPT <<<\n")
+
+import sys
 from setuptools import setup, find_packages
 from os import path
-# io.open is needed for projects that support Python 2.7
-# It ensures open() defaults to text mode with universal newlines,
-# and accepts an argument to specify the text encoding
-# Python 3 only projects can skip this import
 from io import open
-
-
-#######################################
-############# START ADDED.
-
 from pathlib import Path
+# from sphinx_content_filter import *
+
+# RST parsing.
+# import docutils.nodes
+# import docutils.parsers.rst
+# import docutils.utils
+# import docutils.frontend
+#
+# def parse_rst(text:str) -> docutils.nodes.document:
+#     parser = docutils.parsers.rst.Parser()
+#     components = (docutils.parsers.rst.Parser,)
+#     settings = docutils.frontend.OptionParser(components=components).get_default_values()
+#     document = docutils.utils.new_document('<rst-doc>', settings=settings)
+#     parser.parse(text, document)
+#     return document
+
+if debug:
+    print("\n>>> GETTING PATHS <<<\n")
 
 here = path.abspath(path.dirname(__file__))
+
+if debug:
+    print("\n here: ", here)
+
 current_dir = Path(here)
+
+if debug:
+    print("\n current dir: ", current_dir)
+
 parent_dir = current_dir.parent
 
+if debug:
+    print("\n parent dir: ", parent_dir)
+
+if debug:
+    print("\n>>> PARSING VERSION <<<\n")
+
 with open('VERSION') as version_file:
+# with open(path.join(current_dir, 'VERSION'), encoding='utf-8') as version_file:
     current_version = version_file.read().strip()
-    # print(current_version)
+    # current_version = version_file.read()
+
+if debug:
+    print(current_version)
+
+if debug:
+    print("\n>>> PARSING AUTHORS <<<\n")
 
 with open('AUTHORS.rst') as authors_file:
+# with open(path.join(current_dir, 'AUTHORS.rst'), encoding='utf-8') as authors_file:
+    # authors = authors_file.read().strip()
     authors = authors_file.read()
-    # print(authors)
+
+if debug:
+    print(authors)
+
+if debug:
+    print("\n>>> PARSING DESCRIPTION RST <<<\n")
 
 with open('DESCRIPTION.rst') as description_file:
+# with open(path.join(current_dir, 'DESCRIPTION.rst'), encoding='utf-8') as description_file:
     description = description_file.read()
+
+if debug:
     print(description)
 
+if debug:
+    print("\n>>> PARSING README RST <<<\n")
+
 with open('README.rst') as readme_file:
+# with open(path.join(current_dir, 'README.md'), encoding='utf-8') as readme_file:
+# with open(path.join(current_dir, 'README.rst'), encoding='utf-8') as readme_file:
     readme = readme_file.read()
+
+if debug:
     print(readme)
 
+"""
+# Get the long description from the README file
+with open(path.join(here, 'README.md'), encoding='utf-8') as f:
+    long_description = f.read()
+"""
+
+if debug:
+    print("\n>>> PARSING HISTORY RST <<<\n")
+
 with open('HISTORY.rst') as history_file:
+# with open(path.join(current_dir, 'HISTORY.rst'), encoding='utf-8') as history_file:
     history = history_file.read()
+
+if debug:
     print(history)
 
-# unsure of this...
+if debug:
+    print("\n>>> PARSING LONG_DESCRIPTION <<<\n")
+
 linebreak = str('\n')
+# long_description = str(description + readme + history)
+# long_description = description + linebreak + readme + linebreak + history
 long_description = str(description + linebreak + readme + linebreak + history)
-print(long_description)
+# long_description = parse_rst(description + linebreak + readme + linebreak + history)
+# long_description = parse_rst(str(description + linebreak + readme + linebreak + history))
 
-############# END ADDED.
-#######################################
+if debug:
+    print(long_description)
 
+if debug:
+    print("\n>>> ASSIGNING CONFIGURATION VALUES <<<\n")
 
-# Get the long description from the README file
-# with open(path.join(here, 'README.md'), encoding='utf-8') as f:
-#     long_description = f.read()
-
-
-# ASSIGN VALUES.
 module_name                             = 'genomedashboard'
 module_version                          = current_version
 # module_authors                          = 'Zilong Li, Ran Sun, Thomas C. Bishop'
@@ -68,11 +146,11 @@ module_license_type                     = "MIT license"
 module_url                              = 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/'
 module_download_url                     = 'https://pypi.org/project/genomedashboard/#files'
 module_keywords                         = 'python biology genomics genome dashboard'
-module_python                           = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4'
+module_python                           = '>=2.7'
 module_description                      = description
 # module_long_description                 = description + '\n\n' + readme + '\n\n' + history
-module_long_description                 = long_description
-# module_long_description                 = description   # Cant get text syntax to pass properly.
+# module_long_description                 = long_description
+module_long_description                 = description   # Cant get text syntax to pass properly.
 module_long_description_content_type    = 'text/x-rst'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
 module_data_included                    = True
 module_enable_compression               = False
@@ -155,7 +233,10 @@ module_entry_points                     = {
 
 module_package_data                     = {
                                             '': ['*.txt', '*.rst'],
-                                            '': ['data/*.dat','data/*.txt'],
+                                            # 'genomedashboard': ['*.msg'],
+                                            'src': ['*.msg'],
+                                            # 'genomedashboard': ['data/*.dat'],
+                                            'src': ['data/*.dat'],
                                         }
 
 module_extras_require                   = {
@@ -163,6 +244,40 @@ module_extras_require                   = {
                                             'test': ['coverage'],
                                         }
 
+if print_config:
+    print("\n=== === === Module Configuration Values === === ===")
+    print("\n name: ", module_name)
+    print("\n version: ", module_version)
+    print("\n description: ", module_description)
+    print("\n package_dir: ", module_package_dir)
+    print("\n packages: ", module_packages)
+    print("\n scripts: ", module_scripts)
+    print("\n python_requires: ", module_python)
+    print("\n author: ", module_authors)
+    print("\n author_email: ", module_authors_email)
+    print("\n long_description_content_type: ", module_long_description_content_type)
+    print("\n long_description: ", module_long_description)
+    print("\n license: ", module_license_type)
+    print("\n url: ", module_url)
+    print("\n download_url: ", module_download_url)
+    print("\n project_urls: ", module_project_urls)
+    print("\n classifiers: ", module_classifiers)
+    print("\n keywords: ", module_keywords)
+    print("\n install_requires: ", module_install_requires)
+    print("\n extras_require: ", module_extras_require)
+    print("\n package_data: ", module_package_data)
+    print("\n entry_points: ", module_entry_points)
+    print("\n include_package_data: ", module_data_included)
+    print("\n zip_safe: ", module_enable_compression)
+    print("\n setup_requires: ", module_setup_requires)
+    print("\n test_suite: ", module_test_suite)
+    print("\n tests_require: ", module_test_requires)
+
+    # Bail to check values.
+    sys.exit()
+
+if debug:
+    print("\n>>> RUNNING SETUP METHOD <<<\n")
 
 # DO NOT EDIT BELOW THIS LINE.
 setup(
@@ -193,6 +308,10 @@ setup(
     test_suite                      = module_test_suite,
     tests_require                   = module_test_requires
 )
+
+if debug:
+    print("\n>>> SETUP COMPLETED. <<<\n")
+    print("\n>>> PLEASE TEST AND PUBLISH. <<<\n")
 
 """
 # USAGE
