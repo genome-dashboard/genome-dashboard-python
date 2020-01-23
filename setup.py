@@ -9,7 +9,7 @@ See:
 PACKAGE PUBLISHING STEPS:
 
     1. Update the ./HISTORY.md file with the latest release notes.
-    2. Increment the version number in ./docs/version.md
+    2. Increment the version number in VERSION.md.
     3. Build the package:
         > python setup.py sdist
     4. Check with package:
@@ -39,7 +39,7 @@ from io import open
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'docs/version.md'), encoding='utf-8') as f:
+with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
     mod_version = f.read()
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
@@ -115,6 +115,5 @@ setup(
         'unittest',
         'click>=6.0',
         'numpy',
-        # 'scipy',
     ]
 )

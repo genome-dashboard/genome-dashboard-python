@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.81
+
+Date: 2020-01-23
+
+-   Reverted VERSION file back to avoid missing deps during sdist installation.
+
 ### 0.0.80
 
 Date: 2020-01-23

@@ -1,1 +1,1 @@
-0.0.80
+.. include:: ../VERSION.md
