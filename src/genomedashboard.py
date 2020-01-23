@@ -27,7 +27,7 @@ Module Sections:
 # IMPORTS
 #########################################
 
-from convert import convert as cv
+
 import click
 import copy
 import math
@@ -38,7 +38,6 @@ import pyBigWig
 import twobitreader
 import numpy as np
 from urllib.parse import urlparse
-from ds import ds as ds
 import os
 import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
@@ -50,302 +49,6 @@ sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 def module_name():
     print("Module: genomedashboard.py.")
-
-
-#########################################
-# IO.PY (input/read, output/write)
-#########################################
-
-# Check valid url
-def _CHECKURL(url):
-    """Check whether the url is valid"""
-    try:
-        result = urlparse(url)
-        return all([result.scheme, result.netloc])
-    except:
-        return False
-
-
-# Check valid file
-def _CHECKFILE(fp):
-    """Check whether the file is valid"""
-    if os.path.isfile(fp) == True:
-        return True
-    else:
-        return False
-
-
-class READ(object):
-    """A class to read data into data structure from different sources."""
-
-    def __init__(self, fp):
-        if _CHECKFILE(fp) == True:
-            self.fp = fp
-        elif _CHECKURL(fp) == True:
-            self.fp = fp
-        else:
-            print('No such file, please provide a valid file.')
-            sys.exit(0)
-
-    def hp(self, hptype='3DNA'):
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        data = [x.split()[1:] for x in content[3:]]
-        seq = ds.SEQ([x.split()[0] for x in content[3:]])
-        hps = []
-        for i in data:
-            hp_intra_tmp = ds.HP_intra(float(i[0]), float(i[1]), float(
-                i[2]), float(i[3]), float(i[4]), float(i[5]))
-            hp_inter_tmp = ds.HP_inter(float(i[6]), float(i[7]), float(
-                i[8]), float(i[9]), float(i[10]), float(i[11]))
-            hp_tmp = ds.HP(hp_intra_tmp, hp_inter_tmp, hptype)
-            hps.append(hp_tmp)
-        sc = ds.SC(HP=hps, SEQ=seq)
-        return sc
-
-    def rd(self):
-        """
-        Read rd from xyz file, specifically for xyz only contains 'CA' and 'H1,H2,H3' in base pair resolution
-        Read into SC class, as the rd for the space curve.
-        """
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        data = [x.split()[1:] for x in content[2:]]
-        rd = []
-        for i in range(int(len(data) / 4)):
-            rdtmp = ds.RD(np.array(data[i * 4], dtype=float), np.array(
-                data[(i * 4 + 1):(i * 4 + 4)], dtype=float) - np.array(data[i * 4], dtype=float))
-            rd.append(rdtmp)
-        sc = ds.SC(RD=rd)
-        return sc
-
-    def xyz(self):
-        """
-        Read general xyz file, which contains:
-        the first row as base-pair numbers
-        the second row as comments
-        data from the third row, with the first column as atom names, the 2-4 column as xyz coordinates
-        Data will read into a 3D Mask.
-        """
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        data = [x.split()[1:] for x in content[2:]]
-        atoms = [x.split()[0] for x in content[2:]]
-        return ds.Mask_3D(np.array(data, dtype=float), des=atoms)
-
-    def sequence_txt(self):
-        """
-        Given seqin.txt, either with one column of sequence or one/several rows of sequence
-        Return sequence(string) with uppercase 'ACGT's
-        """
-        with open(self.fp) as f:
-            seq = ''.join(line.replace('\n', '') for line in f)
-        seq = ds.SEQ(seq.upper())
-        return seq
-
-    def sequence_2bit(self, chromatin, start, end):
-        """
-        Given 2bit file, chromatin, start position, end position.
-        Return sequence with uppercase 'ACGT's
-        url is not work, need 2bit file
-        """
-        tbf = twobitreader.TwoBitFile(str(self.fp))
-        seq = tbf[str(chromatin)][int(start):int(end)]
-        seq = ds.SEQ(seq.upper())
-        return seq
-
-    def K(self):
-        """
-        e.g. MD-B.dat ; 6x6 or 12x12 stiffness matrix
-        """
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        k = {}
-        for i in range(16):
-            step = [x.split()[0] for x in content[i * 7 + 1:i * 7 + 2]]
-            k[step[0]] = np.array(
-                [x.split()[1:] for x in content[i * 7 + 1:i * 7 + 7]], dtype='float')
-        return k
-
-    def bigwig(self, chrom, start, end):
-        """
-        Read BigWig files, given chromosome number, start location and end location, return values
-        """
-        bw = pyBigWig.open(self.fp)
-        contents = bw.values(chrom, start, end)
-        return contents
-
-    def PDB(self):
-        """
-        Read standard PDB file, return a list of PDB_std data structure that contains all the information in ATOM and CONECT
-        """
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        atoms = [x for x in content if x[0:4] == 'ATOM']
-        conn = [x for x in content if x[0:6] == 'CONECT']
-        conn_list = []
-        for i in conn:
-            tmp = []
-            for j in range(int((len(i) - 11) / 5)):
-                if i[j * 5 + 6:j * 5 + 11] != '     ':
-                    tmp.append(int(i[j * 5 + 6:j * 5 + 11]))
-            conn_list.append(tmp)
-        pdb_list = []
-        for i in atoms:
-            tmppdb = ds.PDB_std(atom=i[0:6], serial=i[6:11], name=i[12:16], altLoc=i[16], resName=i[17:20], chainID=i[21], resSeq=i[22:26], iCode=i[26],
-                                x=i[30:38], y=i[38:46], z=i[46:54], occupancy=i[54:60], tempFactor=i[60:66], segID=i[72:76], element=i[76:78], charge=i[78:80])
-            for j in conn_list:
-                if int(tmppdb.serial) == j[0]:
-                    tmppdb.CONECT = j
-            pdb_list.append(tmppdb)
-        return pdb_list
-
-    def chrom(self):
-        """
-        Read chrom.bin file that provides chromosome length.
-        Output the format that will feed to pyBigWig headers.
-        """
-        f = open(self.fp, 'r')
-        content = [x.rstrip('\n') for x in f]
-        f.close()
-        data = [x.split() for x in content]
-        chrom_header = [(i[0], int(i[1])) for i in data]
-        return chrom_header
-
-
-class WRITE(object):
-    """a class to write data into different format"""
-
-    def __init__(self, fp):
-        self.fp = fp
-
-    def hp(self, HP, seq=None):
-        """Given HP data structure, write into HP files"""
-        if seq == None:
-            seq = ['L-L'] * len(HP)
-        else:
-            seq = seq.tolist()
-        f = open(self.fp, 'w')
-        f.write(str(len(HP)) + ' base pairs' + '\n')
-        f.write('   0  ***local base-pair & step parameters***' + '\n')
-        f.write('       Shear  Stretch  Stagger Buckle Prop-Tw Opening   Shift  Slide    Rise    Tilt    Roll   Twist' + '\n')
-        for i, j in enumerate(HP):
-            f.write(seq[i] + ' ')
-            if j.HP_intra == None:
-                f.write(str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(
-                    8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8))
-            else:
-                f.write(str("%0.2f" % j.HP_intra.she).rjust(8) + str("%0.2f" % j.HP_intra.str).rjust(8) + str("%0.2f" % j.HP_intra.sta).rjust(
-                    8) + str("%0.2f" % j.HP_intra.buc).rjust(8) + str("%0.2f" % j.HP_intra.pro).rjust(8) + str("%0.2f" % j.HP_intra.ope).rjust(8))
-            if j.HP_inter == None:
-                f.write(str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(
-                    8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8))
-            else:
-                f.write(str("%0.2f" % j.HP_inter.shi).rjust(8) + str("%0.2f" % j.HP_inter.sli).rjust(8) + str("%0.2f" % j.HP_inter.ris).rjust(
-                    8) + str("%0.2f" % j.HP_inter.til).rjust(8) + str("%0.2f" % j.HP_inter.rol).rjust(8) + str("%0.2f" % j.HP_inter.twi).rjust(8))
-            f.write('\n')
-        f.close()
-
-    def rd(self, RD):
-        """Given RD data structure, write into xyz files, this is for dna in base pair level"""
-        f = open(self.fp, 'w')
-        f.write(str(len(RD) * 4) + '\n')
-        f.write('COMMENT: zli' + '\n')
-        for i in RD:
-            f.write('CA'.ljust(7) + str("%0.5f" % i.r[0]).rjust(20) + str(
-                "%0.5f" % i.r[1]).rjust(20) + str("%0.5f" % i.r[2]).rjust(20) + '\n')
-            f.write('H1'.ljust(7) + str("%0.5f" % (i.r + i.d[0])[0]).rjust(20) + str("%0.5f" % (
-                i.r + i.d[0])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[0])[2]).rjust(20) + '\n')
-            f.write('H2'.ljust(7) + str("%0.5f" % (i.r + i.d[1])[0]).rjust(20) + str("%0.5f" % (
-                i.r + i.d[1])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[1])[2]).rjust(20) + '\n')
-            f.write('H3'.ljust(7) + str("%0.5f" % (i.r + i.d[2])[0]).rjust(20) + str("%0.5f" % (
-                i.r + i.d[2])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[2])[2]).rjust(20) + '\n')
-        f.close()
-
-    def xyz(self, Masks_3D):
-        """
-        xyz is for 3D Masks, not limited by DNA, but it does not specific direction frames.
-        Given a list of Masks, the atom/element name should provided in Mask_3D.des,
-        if there is no des, ATOM will be the name,
-        des should be a list, e.g. ['O','CA',...]
-        """
-        content = []
-        for i in Masks_3D:
-            if i.values.size == 3:
-                i.values = i.values.reshape(1, 3)
-            for x, j in enumerate(i.values):
-                if i.des is None:
-                    atom = 'ATOM'
-                else:
-                    atom = i.des[x]
-                content.append(atom.ljust(7) + str("%0.5f" % j[0]).rjust(20) + str(
-                    "%0.5f" % j[1]).rjust(20) + str("%0.5f" % j[2]).rjust(20) + '\n')
-        f = open(self.fp, 'w')
-        f.write(str(len(content)) + '\n')
-        f.write('COMMENT: zli' + '\n')
-        for i in content:
-            f.write(i)
-        f.close()
-
-    def pdb(self, pdb_list):
-        """
-        Given a list of pdb(class PDB_std), write into a standard pdb file.
-        Current version supports ATOM and CONECT
-        """
-        f = open(self.fp, 'w')
-        for i, j in enumerate(pdb_list):
-            if i > 0:
-                if j.chainID != pdb_list[i - 1].chainID:
-                    f.write('TER' + '\n')
-            f.write(j.atom.ljust(6) + str(j.serial).rjust(5) + ' ' + j.name.ljust(4) + j.altLoc + j.resName.rjust(3) + ' ' + j.chainID + str(j.resSeq).rjust(4) + j.iCode + ' '.rjust(3) + str("%0.3f" % float(j.x)).rjust(
-                8) + str("%0.3f" % float(j.y)).rjust(8) + str("%0.3f" % float(j.z)).rjust(8) + j.occupancy.rjust(6) + j.tempFactor.rjust(6) + ' '.rjust(6) + j.segID.ljust(4) + j.element.ljust(2) + j.charge.ljust(2))
-            f.write('\n')
-        f.write('TER' + '\n')
-        for k in pdb_list:
-            if k.CONECT is not None:
-                f.write('CONECT')
-                for x in k.CONECT:
-                    f.write(str(x).rjust(5))
-                f.write('\n')
-        f.write('END')
-        f.close()
-
-    def pdb2xyz(self, pdb_list):
-        """
-        Given a list of pdb(class PDB_std), write into xyz file.
-        """
-        f = open(self.fp, 'w')
-        f.write(str(len(pdb_list)) + '\n')
-        f.write('COMMENT: zli' + '\n')
-        for i in pdb_list:
-            f.write(i.name.strip()[0].ljust(7) + str("%0.5f" % float(i.x)).rjust(20) + str(
-                "%0.5f" % float(i.y)).rjust(20) + str("%0.5f" % float(i.z)).rjust(20) + '\n')
-        f.close()
-
-    def bigwig(self, chrom_len, chrom, start, end, values):
-        """
-        Write bigwig format file.
-        chrom_len can be obtained by chrom.bin file from UCSC
-        """
-        bw = pyBigWig.open(self.fp, 'w')
-        bw.addHeader(chrom_len, maxZooms=0)
-        bw.addEntries(np.array([chrom] * len(start)),
-                      start, ends=end, values=values)
-        bw.close()
-
-    def sequence_txt(self, SEQ):
-        """
-        Given a (class SEQ) sequence, output the txt sequence file.
-        """
-        f = open(self.fp, 'w')
-        for i in SEQ.tostring():
-            f.write(i + '\n')
-        f.close()
 
 
 #########################################
@@ -506,9 +209,304 @@ class PDB_std(object):
 
 
 #########################################
-# CONVERT.PY (data format conversions)
+# IO.PY (input/read, output/write)
 #########################################
 
+# Check valid url
+def _CHECKURL(url):
+    """Check whether the url is valid"""
+    try:
+        result = urlparse(url)
+        return all([result.scheme, result.netloc])
+    except:
+        return False
+
+
+# Check valid file
+def _CHECKFILE(fp):
+    """Check whether the file is valid"""
+    if os.path.isfile(fp) == True:
+        return True
+    else:
+        return False
+
+
+class READ(object):
+    """A class to read data into data structure from different sources."""
+
+    def __init__(self, fp):
+        if _CHECKFILE(fp) == True:
+            self.fp = fp
+        elif _CHECKURL(fp) == True:
+            self.fp = fp
+        else:
+            print('No such file, please provide a valid file.')
+            sys.exit(0)
+
+    def hp(self, hptype='3DNA'):
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split()[1:] for x in content[3:]]
+        seq = SEQ([x.split()[0] for x in content[3:]])
+        hps = []
+        for i in data:
+            hp_intra_tmp = HP_intra(float(i[0]), float(i[1]), float(
+                i[2]), float(i[3]), float(i[4]), float(i[5]))
+            hp_inter_tmp = HP_inter(float(i[6]), float(i[7]), float(
+                i[8]), float(i[9]), float(i[10]), float(i[11]))
+            hp_tmp = HP(hp_intra_tmp, hp_inter_tmp, hptype)
+            hps.append(hp_tmp)
+        sc = SC(HP=hps, SEQ=seq)
+        return sc
+
+    def rd(self):
+        """
+        Read rd from xyz file, specifically for xyz only contains 'CA' and 'H1,H2,H3' in base pair resolution
+        Read into SC class, as the rd for the space curve.
+        """
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split()[1:] for x in content[2:]]
+        rd = []
+        for i in range(int(len(data) / 4)):
+            rdtmp = RD(np.array(data[i * 4], dtype=float), np.array(
+                data[(i * 4 + 1):(i * 4 + 4)], dtype=float) - np.array(data[i * 4], dtype=float))
+            rd.append(rdtmp)
+        sc = SC(RD=rd)
+        return sc
+
+    def xyz(self):
+        """
+        Read general xyz file, which contains:
+        the first row as base-pair numbers
+        the second row as comments
+        data from the third row, with the first column as atom names, the 2-4 column as xyz coordinates
+        Data will read into a 3D Mask.
+        """
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split()[1:] for x in content[2:]]
+        atoms = [x.split()[0] for x in content[2:]]
+        return Mask_3D(np.array(data, dtype=float), des=atoms)
+
+    def sequence_txt(self):
+        """
+        Given seqin.txt, either with one column of sequence or one/several rows of sequence
+        Return sequence(string) with uppercase 'ACGT's
+        """
+        with open(self.fp) as f:
+            seq = ''.join(line.replace('\n', '') for line in f)
+        seq = SEQ(seq.upper())
+        return seq
+
+    def sequence_2bit(self, chromatin, start, end):
+        """
+        Given 2bit file, chromatin, start position, end position.
+        Return sequence with uppercase 'ACGT's
+        url is not work, need 2bit file
+        """
+        tbf = twobitreader.TwoBitFile(str(self.fp))
+        seq = tbf[str(chromatin)][int(start):int(end)]
+        seq = SEQ(seq.upper())
+        return seq
+
+    def K(self):
+        """
+        e.g. MD-B.dat ; 6x6 or 12x12 stiffness matrix
+        """
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        k = {}
+        for i in range(16):
+            step = [x.split()[0] for x in content[i * 7 + 1:i * 7 + 2]]
+            k[step[0]] = np.array(
+                [x.split()[1:] for x in content[i * 7 + 1:i * 7 + 7]], dtype='float')
+        return k
+
+    def bigwig(self, chrom, start, end):
+        """
+        Read BigWig files, given chromosome number, start location and end location, return values
+        """
+        bw = pyBigWig.open(self.fp)
+        contents = bw.values(chrom, start, end)
+        return contents
+
+    def PDB(self):
+        """
+        Read standard PDB file, return a list of PDB_std data structure that contains all the information in ATOM and CONECT
+        """
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        atoms = [x for x in content if x[0:4] == 'ATOM']
+        conn = [x for x in content if x[0:6] == 'CONECT']
+        conn_list = []
+        for i in conn:
+            tmp = []
+            for j in range(int((len(i) - 11) / 5)):
+                if i[j * 5 + 6:j * 5 + 11] != '     ':
+                    tmp.append(int(i[j * 5 + 6:j * 5 + 11]))
+            conn_list.append(tmp)
+        pdb_list = []
+        for i in atoms:
+            tmppdb = PDB_std(atom=i[0:6], serial=i[6:11], name=i[12:16], altLoc=i[16], resName=i[17:20], chainID=i[21], resSeq=i[22:26], iCode=i[26],
+                             x=i[30:38], y=i[38:46], z=i[46:54], occupancy=i[54:60], tempFactor=i[60:66], segID=i[72:76], element=i[76:78], charge=i[78:80])
+            for j in conn_list:
+                if int(tmppdb.serial) == j[0]:
+                    tmppdb.CONECT = j
+            pdb_list.append(tmppdb)
+        return pdb_list
+
+    def chrom(self):
+        """
+        Read chrom.bin file that provides chromosome length.
+        Output the format that will feed to pyBigWig headers.
+        """
+        f = open(self.fp, 'r')
+        content = [x.rstrip('\n') for x in f]
+        f.close()
+        data = [x.split() for x in content]
+        chrom_header = [(i[0], int(i[1])) for i in data]
+        return chrom_header
+
+
+class WRITE(object):
+    """a class to write data into different format"""
+
+    def __init__(self, fp):
+        self.fp = fp
+
+    def hp(self, HP, seq=None):
+        """Given HP data structure, write into HP files"""
+        if seq == None:
+            seq = ['L-L'] * len(HP)
+        else:
+            seq = seq.tolist()
+        f = open(self.fp, 'w')
+        f.write(str(len(HP)) + ' base pairs' + '\n')
+        f.write('   0  ***local base-pair & step parameters***' + '\n')
+        f.write('       Shear  Stretch  Stagger Buckle Prop-Tw Opening   Shift  Slide    Rise    Tilt    Roll   Twist' + '\n')
+        for i, j in enumerate(HP):
+            f.write(seq[i] + ' ')
+            if j.HP_intra == None:
+                f.write(str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(
+                    8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8))
+            else:
+                f.write(str("%0.2f" % j.HP_intra.she).rjust(8) + str("%0.2f" % j.HP_intra.str).rjust(8) + str("%0.2f" % j.HP_intra.sta).rjust(
+                    8) + str("%0.2f" % j.HP_intra.buc).rjust(8) + str("%0.2f" % j.HP_intra.pro).rjust(8) + str("%0.2f" % j.HP_intra.ope).rjust(8))
+            if j.HP_inter == None:
+                f.write(str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(
+                    8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8) + str("%0.2f" % 0.0).rjust(8))
+            else:
+                f.write(str("%0.2f" % j.HP_inter.shi).rjust(8) + str("%0.2f" % j.HP_inter.sli).rjust(8) + str("%0.2f" % j.HP_inter.ris).rjust(
+                    8) + str("%0.2f" % j.HP_inter.til).rjust(8) + str("%0.2f" % j.HP_inter.rol).rjust(8) + str("%0.2f" % j.HP_inter.twi).rjust(8))
+            f.write('\n')
+        f.close()
+
+    def rd(self, RD):
+        """Given RD data structure, write into xyz files, this is for dna in base pair level"""
+        f = open(self.fp, 'w')
+        f.write(str(len(RD) * 4) + '\n')
+        f.write('COMMENT: zli' + '\n')
+        for i in RD:
+            f.write('CA'.ljust(7) + str("%0.5f" % i.r[0]).rjust(20) + str(
+                "%0.5f" % i.r[1]).rjust(20) + str("%0.5f" % i.r[2]).rjust(20) + '\n')
+            f.write('H1'.ljust(7) + str("%0.5f" % (i.r + i.d[0])[0]).rjust(20) + str("%0.5f" % (
+                i.r + i.d[0])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[0])[2]).rjust(20) + '\n')
+            f.write('H2'.ljust(7) + str("%0.5f" % (i.r + i.d[1])[0]).rjust(20) + str("%0.5f" % (
+                i.r + i.d[1])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[1])[2]).rjust(20) + '\n')
+            f.write('H3'.ljust(7) + str("%0.5f" % (i.r + i.d[2])[0]).rjust(20) + str("%0.5f" % (
+                i.r + i.d[2])[1]).rjust(20) + str("%0.5f" % (i.r + i.d[2])[2]).rjust(20) + '\n')
+        f.close()
+
+    def xyz(self, Masks_3D):
+        """
+        xyz is for 3D Masks, not limited by DNA, but it does not specific direction frames.
+        Given a list of Masks, the atom/element name should provided in Mask_3D.des,
+        if there is no des, ATOM will be the name,
+        des should be a list, e.g. ['O','CA',...]
+        """
+        content = []
+        for i in Masks_3D:
+            if i.values.size == 3:
+                i.values = i.values.reshape(1, 3)
+            for x, j in enumerate(i.values):
+                if i.des is None:
+                    atom = 'ATOM'
+                else:
+                    atom = i.des[x]
+                content.append(atom.ljust(7) + str("%0.5f" % j[0]).rjust(20) + str(
+                    "%0.5f" % j[1]).rjust(20) + str("%0.5f" % j[2]).rjust(20) + '\n')
+        f = open(self.fp, 'w')
+        f.write(str(len(content)) + '\n')
+        f.write('COMMENT: zli' + '\n')
+        for i in content:
+            f.write(i)
+        f.close()
+
+    def pdb(self, pdb_list):
+        """
+        Given a list of pdb(class PDB_std), write into a standard pdb file.
+        Current version supports ATOM and CONECT
+        """
+        f = open(self.fp, 'w')
+        for i, j in enumerate(pdb_list):
+            if i > 0:
+                if j.chainID != pdb_list[i - 1].chainID:
+                    f.write('TER' + '\n')
+            f.write(j.atom.ljust(6) + str(j.serial).rjust(5) + ' ' + j.name.ljust(4) + j.altLoc + j.resName.rjust(3) + ' ' + j.chainID + str(j.resSeq).rjust(4) + j.iCode + ' '.rjust(3) + str("%0.3f" % float(j.x)).rjust(
+                8) + str("%0.3f" % float(j.y)).rjust(8) + str("%0.3f" % float(j.z)).rjust(8) + j.occupancy.rjust(6) + j.tempFactor.rjust(6) + ' '.rjust(6) + j.segID.ljust(4) + j.element.ljust(2) + j.charge.ljust(2))
+            f.write('\n')
+        f.write('TER' + '\n')
+        for k in pdb_list:
+            if k.CONECT is not None:
+                f.write('CONECT')
+                for x in k.CONECT:
+                    f.write(str(x).rjust(5))
+                f.write('\n')
+        f.write('END')
+        f.close()
+
+    def pdb2xyz(self, pdb_list):
+        """
+        Given a list of pdb(class PDB_std), write into xyz file.
+        """
+        f = open(self.fp, 'w')
+        f.write(str(len(pdb_list)) + '\n')
+        f.write('COMMENT: zli' + '\n')
+        for i in pdb_list:
+            f.write(i.name.strip()[0].ljust(7) + str("%0.5f" % float(i.x)).rjust(20) + str(
+                "%0.5f" % float(i.y)).rjust(20) + str("%0.5f" % float(i.z)).rjust(20) + '\n')
+        f.close()
+
+    def bigwig(self, chrom_len, chrom, start, end, values):
+        """
+        Write bigwig format file.
+        chrom_len can be obtained by chrom.bin file from UCSC
+        """
+        bw = pyBigWig.open(self.fp, 'w')
+        bw.addHeader(chrom_len, maxZooms=0)
+        bw.addEntries(np.array([chrom] * len(start)),
+                      start, ends=end, values=values)
+        bw.close()
+
+    def sequence_txt(self, SEQ):
+        """
+        Given a (class SEQ) sequence, output the txt sequence file.
+        """
+        f = open(self.fp, 'w')
+        for i in SEQ.tostring():
+            f.write(i + '\n')
+        f.close()
+
+
+#########################################
+# CONVERT.PY (data format conversions)
+#########################################
 sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 """
@@ -694,7 +692,7 @@ def HP2RD(HP, hptype='3DNA'):
     else:
         print('Please provide a valid type, "3DNA" or "CURVES"')
         sys.exit(0)
-    rd = ds.RD(r.T.reshape(3), Ti.T)
+    rd = RD(r.T.reshape(3), Ti.T)
     return rd
 
 
@@ -706,7 +704,7 @@ def RD_stack(rd1, rd2):
     """
     R = np.dot(rd2.r, rd1.d) + rd1.r
     D = np.dot(rd2.d, rd1.d)
-    rd = ds.RD(R, D)
+    rd = RD(R, D)
     return rd
 
 
@@ -726,8 +724,8 @@ def docking_Mask_3D(rd, Mask_3D):
     entry.d = rd.d
     exit.r = np.dot(exit.r, rd.d) + rd.r
     exit.d = np.dot(exit.d, rd.d)
-    Mask_new = ds.Mask_3D(value, RD_entry=entry, RD_exit=exit,
-                          skip=Mask_3D.skip, des=Mask_3D.des)
+    Mask_new = Mask_3D(value, RD_entry=entry, RD_exit=exit,
+                       skip=Mask_3D.skip, des=Mask_3D.des)
     return Mask_new
 
 
@@ -789,7 +787,7 @@ def RD2HP(rd1, rd2, hptype='3DNA'):
         sli = skal(disp, ym)
         ris = skal(disp, zm)
         twi = omega * 180.0 / np.pi
-        interHP = ds.HP_inter(shi, sli, ris, til, rol, twi)
+        interHP = HP_inter(shi, sli, ris, til, rol, twi)
     elif hptype == 'CURVES':
         G1 = rd1.d
         G2 = rd2.d
@@ -806,12 +804,12 @@ def RD2HP(rd1, rd2, hptype='3DNA'):
             trt = -(phi * 180 / np.pi) * theta / scale
         H = np.real(la.sqrtm(L))
         ssr = np.dot(dq.T, np.dot(G1.T, H.T))
-        interHP = ds.HP_inter(ssr[0], ssr[1], ssr[2],
-                              trt[0][0], trt[1][0], trt[2][0])
+        interHP = HP_inter(ssr[0], ssr[1], ssr[2],
+                           trt[0][0], trt[1][0], trt[2][0])
     else:
         print('Please provide a valid type, "3DNA" or "CURVES"')
         sys.exit(0)
-    return ds.HP(None, interHP, hptype=hptype)
+    return HP(None, interHP, hptype=hptype)
 
 
 def HP_T(HP, T):
@@ -835,8 +833,8 @@ def SEQ2HP(seq, HP_dic, occ=[], nuc_type=[], T=0):
     Return the HPs associate with the given sequence.
     """
     seqstep = seq.tostep()
-    hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                 ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+    hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+              HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
     j = 0
     while j < len(seqstep):
         hps.append(HP_T(HP_dic[seqstep[j]][0], T))
@@ -854,7 +852,7 @@ def SEQ2RD(seq, RD_dic, occ=[], nuc_type=[]):
     Return RDs associate with the given sequence.
     """
     seqstep = seq.tostep()
-    rd = [ds.RD(np.zeros(3), np.eye(3))]
+    rd = [RD(np.zeros(3), np.eye(3))]
     j = 0
     while j < len(seqstep):
         rd.append(RD_dic[seqstep[j]][-1])
@@ -1033,7 +1031,7 @@ def HP2SC(hp_list, hptype='3DNA'):
         y0r = np.zeros((1, 3))
         tr = [i for i in range(len(hp_list))]
         yr = odeint(odeSC_r, y0r.reshape(3,), tr, args=(new_list, d_half,))
-        rd_list = [ds.RD(yr[i], d[i]) for i in range(len(yr))]
+        rd_list = [RD(yr[i], d[i]) for i in range(len(yr))]
         '''
     elif hptype=='MATH_3DNA':
         new_list=hp_list[1:]
@@ -1054,12 +1052,12 @@ def HP2SC(hp_list, hptype='3DNA'):
         y0r = np.zeros((1,3))
         tr=[i for i in range(len(hp_list))]
         yr = odeint(odeSC_r,y0r.reshape(3,),tr,args=(new_list,d_half,))
-        rd_list = [ds.RD(yr[i],d[i]) for i in range(len(yr))]
+        rd_list = [RD(yr[i],d[i]) for i in range(len(yr))]
         '''
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
-    return ds.SC(HP=hp_list, RD=rd_list)
+    return SC(HP=hp_list, RD=rd_list)
 
 
 def RD2SC(rd_list, hptype='3DNA', step_size=1):
@@ -1112,16 +1110,16 @@ def RD2SC(rd_list, hptype='3DNA', step_size=1):
         #Twist = [np.dot(np.dot(2*np.arcsin(deltad1[i]/2),np.dot(np.real(la.sqrtm(np.dot(rd_list[i+1].d,rd_list[i].d.T))),rd_list[i].d).T),np.array([0,1,0]))*180/np.pi for i in range(len(s)-1)]
         #Roll = [np.dot(np.dot(2*np.arcsin(deltad3[i]/2),np.dot(np.real(la.sqrtm(np.dot(rd_list[i+1].d,rd_list[i].d.T))),rd_list[i].d).T),np.array([1,0,0]))*180/np.pi for i in range(len(s)-1)]
         #Tilt = [np.dot(np.dot(2*np.arcsin(deltad2[i]/2),np.dot(np.real(la.sqrtm(np.dot(rd_list[i+1].d,rd_list[i].d.T))),rd_list[i].d).T),np.array([0,0,1]))*180/np.pi for i in range(len(s)-1)]
-        hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                     ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+        hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                  HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
         for i in range(len(s) - 1):
-            hps.append(ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), ds.HP_inter(
+            hps.append(HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), HP_inter(
                 ssr[i][0], ssr[i][1], ssr[i][2], Tilt[i], Roll[i], Twist[i])))
         hp_list = hps
     else:
         print('Please provide a valid type, "3DNA", "CURVES" or "MATH"')
         sys.exit(0)
-    return ds.SC(HP=hp_list, RD=rd_list)
+    return SC(HP=hp_list, RD=rd_list)
 
 
 def atom_extract(Mask_3D, atom):
@@ -1152,10 +1150,10 @@ def RD2Mask_3D(RD):
     entry = RD[0]
     exit = RD[-1]
     values = np.array([x.r for x in RD])
-    return ds.Mask_3D(values, RD_entry=entry, RD_exit=exit, skip=len(RD), des=['CA'] * len(RD))
+    return Mask_3D(values, RD_entry=entry, RD_exit=exit, skip=len(RD), des=['CA'] * len(RD))
 
 
-def docking_Mask_pdb(rd, pdb_list, entry=ds.RD(np.zeros(3), np.eye(3)), exit=ds.RD(np.zeros(3), np.eye(3)), skip=0):
+def docking_Mask_pdb(rd, pdb_list, entry=RD(np.zeros(3), np.eye(3)), exit=RD(np.zeros(3), np.eye(3)), skip=0):
     """
     A usage of docking_Mask_3D, but pdb has its own format.
     This function will input a list of pdb, docking the x y z values to the desired location,
@@ -1164,7 +1162,7 @@ def docking_Mask_pdb(rd, pdb_list, entry=ds.RD(np.zeros(3), np.eye(3)), exit=ds.
     pdb_list_new = copy.deepcopy(pdb_list)
     l = [[i.x, i.y, i.z] for i in pdb_list_new]
     values = np.array(l, dtype=float)
-    values_new = docking_Mask_3D(rd, ds.Mask_3D(
+    values_new = docking_Mask_3D(rd, Mask_3D(
         values, RD_entry=entry, RD_exit=exit, skip=skip)).values
     if values_new.size == 3:
         values_new = values_new.reshape(1, 3)
@@ -1284,11 +1282,11 @@ def straight_twisted_line(Rise, Twist, step_number):
     """
     Given Rise, Twist, and number of steps, return a list of HPs.
     """
-    hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                 ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+    hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+              HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
     for i in range(step_number):
-        hps.append(ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                         ds.HP_inter(0.0, 0.0, Rise, 0.0, 0.0, Twist)))
+        hps.append(HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                      HP_inter(0.0, 0.0, Rise, 0.0, 0.0, Twist)))
     return hps
 
 
@@ -1296,8 +1294,8 @@ def circular_DNA(Rise, V1, V2, step_number, step_size=1.0, phase=0):
     """
     Given
     """
-    hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                 ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+    hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+              HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
     V1 = V1 / step_size
     Rise = Rise * step_size
     Twist = 360.0 * V2 / V1
@@ -1305,14 +1303,14 @@ def circular_DNA(Rise, V1, V2, step_number, step_size=1.0, phase=0):
         s = s + phase
         Tilt = np.sin(Twist * s * np.pi / 180.0) * 360.0 / V1
         Roll = np.cos(Twist * s * np.pi / 180.0) * 360.0 / V1
-        hps.append(ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                         ds.HP_inter(0.0, 0.0, Rise, Tilt, Roll, Twist)))
+        hps.append(HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                      HP_inter(0.0, 0.0, Rise, Tilt, Roll, Twist)))
     return hps
 
 
 def helix_torsion(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
-    hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                 ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+    hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+              HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
     V1 = V1 / step_size
     Twist = Twist * step_size
     Rise = Rise * step_size
@@ -1321,14 +1319,14 @@ def helix_torsion(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
         s = s + phase
         Tilt = np.sin((Twist + V2) * s * np.pi / 180.0) * 360.0 / V1
         Roll = np.cos((Twist + V2) * s * np.pi / 180.0) * 360.0 / V1
-        hps.append(ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                         ds.HP_inter(0.0, 0.0, Rise, Tilt, Roll, Twist)))
+        hps.append(HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                      HP_inter(0.0, 0.0, Rise, Tilt, Roll, Twist)))
     return hps
 
 
 def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
-    hps = [ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                 ds.HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
+    hps = [HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+              HP_inter(0.0, 0.0, 0.0, 0.0, 0.0, 0.0))]
     V1 = V1 / step_size
     Twist = Twist * step_size
     Rise = Rise * step_size
@@ -1339,8 +1337,8 @@ def helix_shear(Rise, Twist, V1, V2, step_number, step_size=1.0, phase=0):
         Roll = np.cos(Twist * s * np.pi / 180.0) * 360.0 / V1
         Shift = V2 * np.sin(Twist * s * np.pi / 180)
         Slide = V2 * np.cos(Twist * s * np.pi / 180)
-        hps.append(ds.HP(ds.HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
-                         ds.HP_inter(Shift, Slide, Rise, Tilt, Roll, Twist)))
+        hps.append(HP(HP_intra(0.0, 0.0, 0.0, 0.0, 0.0, 0.0),
+                      HP_inter(Shift, Slide, Rise, Tilt, Roll, Twist)))
     return hps
 
 
@@ -1355,7 +1353,7 @@ def circular_DNA_RD(Rise, V1, V2, step_number, step_size=1.0):
                       np.sin(s * 2 * np.pi / V1)]) + np.array([Radius, 0, 0])
         d = np.dot(np.array([[np.cos(Twist * s), -np.sin(Twist * s), 0], [np.sin(Twist * s), np.cos(Twist * s), 0], [0, 0, 1]]).T, np.array(
             [[np.cos(s * 2 * np.pi / V1), 0, -np.sin(s * 2 * np.pi / V1)], [0, 1, 0], [np.sin(s * 2 * np.pi / V1), 0, np.cos(s * 2 * np.pi / V1)]]))
-        rd.append(ds.RD(r, d))
+        rd.append(RD(r, d))
     return rd
 
 
@@ -1380,7 +1378,7 @@ def helix_torsion_RD(Rise, Twist, V1, V2, step_number, step_size):
         Z = np.array([[np.cos((Twist - tor) * s), -np.sin((Twist - tor) * s), 0],
                       [np.sin((Twist - tor) * s), np.cos((Twist - tor) * s), 0], [0, 0, 1]])
         d = np.dot(Z.T, np.dot(X, Y))
-        rd.append(ds.RD(r, d))
+        rd.append(RD(r, d))
     return rd
 
 
@@ -1402,7 +1400,7 @@ def helix_shear_RD(Rise, Twist, V1, V2, step_number, step_size):
         Z = np.array([[np.cos(Twist * s), -np.sin(Twist * s), 0],
                       [np.sin(Twist * s), np.cos(Twist * s), 0], [0, 0, 1]])
         d = np.dot(Z.T, np.dot(X, Y))
-        rd.append(ds.RD(r, d))
+        rd.append(RD(r, d))
     return rd
 
 
@@ -1417,7 +1415,8 @@ def main(args=None):
     #            "genomedashboard.cli.main")
     # click.echo("See click documentation at http://click.pocoo.org/")
     click.echo("This is the main() method of the genomedahsboard.cli module.")
-    click.echo("Edit the source code of the cli module to make it do something useful!")
+    click.echo(
+        "Edit the source code of the cli module to make it do something useful!")
     return 0
 
 
