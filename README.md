@@ -1,5 +1,7 @@
 [![image](https://img.shields.io/pypi/v/genomedashboard.svg)](https://pypi.python.org/pypi/genomedashboard)
+
 [![image](https://img.shields.io/travis/genomeDashboard/genomedashboard.svg)](https://travis-ci.org/genomeDashboard/genomedashboard)
+
 [![Documentation Status](https://readthedocs.org/projects/genomedashboard/badge/?version=latest)](https://genomedashboard.readthedocs.io/en/latest/?badge=latest)
 
 # Genome Dashboard
