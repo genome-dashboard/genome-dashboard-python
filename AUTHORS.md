@@ -1,6 +1,3 @@
----
-title: credits
----
 
 Development Lead
 ================

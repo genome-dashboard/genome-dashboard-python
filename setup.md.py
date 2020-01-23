@@ -61,8 +61,9 @@ with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
     # print(history)
 
 # unsure of this...
-linebreak = str('<br/><br/>')   # linebreaks in markdown: two spaces, backslash, <br/>, &nbsp;
-long_description = str(description + linebreak + readme + linebreak + history)
+linebreak = str('  ')   # linebreaks in markdown: two spaces, backslash, <br/>, &nbsp;
+# long_description = str(description + linebreak + readme + linebreak + history)
+long_description = str(description + readme + history)
 print(long_description)
 
 ############# END ADDED.
@@ -89,7 +90,7 @@ module_description                      = description
 # module_long_description                 = description + '\n\n' + readme + '\n\n' + history
 module_long_description                 = long_description
 # module_long_description                 = description   # Cant get text syntax to pass properly.
-module_long_description_content_type    = 'text/x-rst'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
+module_long_description_content_type    = 'text/markdown'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
 module_data_included                    = True
 module_enable_compression               = False
 module_test_suite                       = 'tests'
@@ -126,13 +127,9 @@ module_project_urls                     = {
 module_package_dir                      = {'': 'src'}  # Optional
 
 # module_packages                         = find_packages()
-# module_packages                         = find_packages(exclude = module_excludes)
-# module_packages                         = find_packages('genomedashboard', exclude = module_excludes)
-# module_packages                         = find_packages(include = module_includes, exclude = module_excludes)
-module_packages                         = find_packages(where = 'src')  # Required
+module_packages                         = find_packages(where = 'src')
 
-module_scripts                          = ['src/cli.py','src/convert.py','src/ds.py','src/io.py','src/mathfunction.py']
-# module_scripts                          = ['cli.py','convert.py','ds.py','io.py','mathfunction.py']
+module_scripts                          = ['src/genomedashboard.py']
 
 module_install_requires                 = [
                                             'docutils>=0.3',
@@ -164,8 +161,7 @@ module_classifiers                      = [
 
 module_entry_points                     = {
                                             'console_scripts': [
-                                                # 'genomedashboard=genomedashboard.cli:main',
-                                                'genomedashboard=src.cli:main',
+                                                'genomedashboard=src.genomedashboard:main',
                                             ],
                                         }
 

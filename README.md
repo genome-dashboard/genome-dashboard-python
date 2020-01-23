@@ -1,6 +1,3 @@
----
-title: Genome Dashboard
----
 
 [![image](https://img.shields.io/pypi/v/genomedashboard.svg)](https://pypi.python.org/pypi/genomedashboard)
 

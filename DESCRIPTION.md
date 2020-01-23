@@ -1,6 +1,3 @@
----
-title: description
----
 
 Genome Dashboard is the logic behind a web-based prototype of a genomics
 dashboard, specifically designed to integrate informatics and 4D
