@@ -2,6 +2,15 @@
 History
 =======
 
+0.0.73
+---------------
+
+Date: 2020-01-21
+
+* Refactored package into a flatfile.
+* Reorganized supporting build scripts and files.
+
+
 0.0.72
 ---------------
 
