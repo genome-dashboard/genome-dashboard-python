@@ -4,6 +4,7 @@
 
 [![Documentation Status](https://readthedocs.org/projects/genomedashboard/badge/?version=latest)](https://genomedashboard.readthedocs.io/en/latest/?badge=latest)
 
+
 # Genome Dashboard
 
 Genome Dashboard is the logic behind a web-based prototype of a genomics
