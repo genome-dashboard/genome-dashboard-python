@@ -61,10 +61,14 @@ with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
     # print(history)
 
 # unsure of this...
-linebreak = str('  ')   # linebreaks in markdown: two spaces, backslash, <br/>, &nbsp;
+# linebreak = str('  ')   # linebreaks in markdown: two spaces, backslash, <br/>, &nbsp;
 # long_description = str(description + linebreak + readme + linebreak + history)
-long_description = str(description + readme + history)
-print(long_description)
+# long_description = str(description + readme + history)
+# print(long_description)
+
+with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
+    long_description = f.read()
+    # print(long_description)
 
 ############# END ADDED.
 #######################################
@@ -208,6 +212,7 @@ setup(
 
 """
 # USAGE
+# Build long desc:      > pandoc -s -o LONG_DESCRIPTION.md README.md HISTORY.md
 # Build the package:    > python setup.standard.py sdist bdist
 # Check with package:   > twine check dist/*
 # Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
