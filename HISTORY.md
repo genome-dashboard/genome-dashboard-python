@@ -1,6 +1,14 @@
 ## History
 
 
+### 0.0.80
+
+Date: 2020-01-23
+
+-   Merged in many dependency updates.
+-   Fixed the documentation.
+-   Working on the CICD.
+
 ### 0.0.74 - 0.0.79
 
 Date: 2020-01-23
