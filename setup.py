@@ -19,6 +19,7 @@ PACKAGE PUBLISHING STEPS:
     - Uploads require a PyPI user account.
     - Use the twine keyring feature for cli credential management locally: https://pypi.org/project/twine/
     - Use the pypi-cli package to inspect package info and status: https://pypi.org/project/pypi-cli/
+        ex. > pypi info genomedashboard
 """
 
 
@@ -33,14 +34,16 @@ from setuptools import setup, find_packages
 from os import path
 from io import open
 from pathlib import Path
+
 here = path.abspath(path.dirname(__file__))
 current_dir = Path(here)
 parent_dir = current_dir.parent
 
 
-with open('VERSION') as version_file:
-    current_version = version_file.read().strip()
-    # print(current_version)
+with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+    current_version = f.read()
+    print(current_version)
+    exit()
 
 with open(path.join(here, 'AUTHORS.md'), encoding='utf-8') as f:
     authors = f.read()
