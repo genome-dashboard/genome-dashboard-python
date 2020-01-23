@@ -1,6 +1,4 @@
-=====
-Usage
-=====
+# Usage
 
 To use Genome Dashboard in a project::
 
