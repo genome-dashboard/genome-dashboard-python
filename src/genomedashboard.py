@@ -15,12 +15,12 @@ PyPi URL: https://pypi.org/project/genomedashboard/
 
 Module Sections:
  - IMPORTS          (line 26)
- - GLOBALS          (line 47)
- - IO               (line 55)
- - DS               (line 351)
- - CONVERT          (line 508)
- - MATHFUNCTIONS    (line 1278)
- - CLI              (line 1409)
+ - GLOBALS          (line 46)
+ - DS               (line 55)
+ - IO               (line 211)
+ - CONVERT          (line 507)
+ - MATHFUNCTIONS    (line 1275)
+ - CLI              (line 1406)
 """
 
 #########################################
@@ -507,7 +507,6 @@ class WRITE(object):
 #########################################
 # CONVERT.PY (data format conversions)
 #########################################
-sys.path.append(os.path.abspath(os.path.dirname(__file__) + '/' + '..'))
 
 """
 NOTE: There are good reasons for why scientific libraries don't usually have matplotlib as a direct dependency:
