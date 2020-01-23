@@ -10,7 +10,7 @@ PACKAGE PUBLISHING STEPS:
 
     1. Increment the version number under the VERSION file.
     2. Update the HISTORY file with the release notes.
-    3. Build the package:    > python setup.py sdist bdist
+    3. Build the package:    > python setup.py sdist
     4. Check with package:   > twine check dist/*
     5. Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
     6. Upload to PyPI:       > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
