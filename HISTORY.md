@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.74
+
+Date: 2020-01-23
+
+-   Cleaning up docs and streamlining setup for packaging process.
+
 ### 0.0.73
 
 Date: 2020-01-21
