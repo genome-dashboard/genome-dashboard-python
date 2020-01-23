@@ -16,13 +16,18 @@ or coarse-grained models of DNA, nucleosomes or chromatin.
 -   Free software: MIT license
 -   Documentation: <https://genomedashboard.readthedocs.io>.
 
-## Features
+## Authors
 
--   TODO
+### Developers
 
-## Credits
+-   Thomas C. Bishop \<<bishop@latech.edu>\>
+-   Zilong Li \<<zli007@latech.edu>\>
+-   Ran Sun \<<rsu007@latech.edu>\>
 
-This package was created with
-[Cookiecutter](https://github.com/audreyr/cookiecutter) and the
-[audreyr/cookiecutter-pypackage](https://github.com/audreyr/cookiecutter-pypackage)
-project template.
+### Contributors
+
+-   John Gentle \<<taoteg@gmail.com>\>
+
+### Maintainers
+
+-   Genome Dashboard \<<genome.dashboard@gmail.com>\>
