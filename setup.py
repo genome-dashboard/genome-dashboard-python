@@ -42,8 +42,7 @@ parent_dir = current_dir.parent
 
 with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
     current_version = f.read()
-    print(current_version)
-    exit()
+    # print(current_version)
 
 with open(path.join(here, 'AUTHORS.md'), encoding='utf-8') as f:
     authors = f.read()
