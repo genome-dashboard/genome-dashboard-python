@@ -9,6 +9,8 @@ See:
 PACKAGE PUBLISHING STEPS:
 
     Build long desc:      > pandoc -s -o LONG_DESCRIPTION.md README.md HISTORY.md
+       -- This throws syntax errors on PyPI.
+       -- Reverting to just using the README.
     Build the package:    > python setup.py sdist bdist
     Check with package:   > twine check dist/*
     Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
@@ -70,7 +72,7 @@ module_download_url                     = 'https://pypi.org/project/genomedashbo
 module_keywords                         = 'python biology genomics genome dashboard'
 module_python                           = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4'
 module_description                      = description
-module_long_description                 = long_description
+module_long_description                 = readme  # long_description
 module_long_description_content_type    = 'text/markdown'   # 'text/plain',  'text/markdown' or 'text/x-rst'.
 module_data_included                    = True
 module_enable_compression               = False
