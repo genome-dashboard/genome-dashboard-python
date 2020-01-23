@@ -1,0 +1,44 @@
+01.23.2020
+
+Updates:
+- Package builds successfully now.
+- Documentation presents in PyPI correctly.
+
+Issues:
+- Failing TravisCI/CD builds
+- Failing to generate new sphinx docs
+- Failing to install from PyPI with this error:
+
+    > pip install genomedashboard
+    Collecting genomedashboard
+      Downloading genomedashboard-0.0.81.tar.gz (17 kB)
+      Installing build dependencies ... done
+      Getting requirements to build wheel ... error
+      ERROR: Command errored out with exit status 1:
+       command: /Users/jgentle/miniconda3/envs/sgci-eds-gdash/bin/python /Users/jgentle/miniconda3/envs/sgci-eds-gdash/lib/python3.8/site-packages/pip/_vendor/pep517/_in_process.py get_requires_for_build_wheel /var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/tmpm4agxn3v
+           cwd: /private/var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/pip-install-zrb7u35d/genomedashboard
+      Complete output (16 lines):
+      Traceback (most recent call last):
+        File "/Users/jgentle/miniconda3/envs/sgci-eds-gdash/lib/python3.8/site-packages/pip/_vendor/pep517/_in_process.py", line 257, in <module>
+          main()
+        File "/Users/jgentle/miniconda3/envs/sgci-eds-gdash/lib/python3.8/site-packages/pip/_vendor/pep517/_in_process.py", line 240, in main
+          json_out['return_val'] = hook(**hook_input['kwargs'])
+        File "/Users/jgentle/miniconda3/envs/sgci-eds-gdash/lib/python3.8/site-packages/pip/_vendor/pep517/_in_process.py", line 91, in get_requires_for_build_wheel
+          return hook(config_settings)
+        File "/private/var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/pip-build-env-vb74z02u/overlay/lib/python3.8/site-packages/setuptools/build_meta.py", line 146, in get_requires_for_build_wheel
+          return self._get_build_requires(config_settings, requirements=['wheel'])
+        File "/private/var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/pip-build-env-vb74z02u/overlay/lib/python3.8/site-packages/setuptools/build_meta.py", line 127, in _get_build_requires
+          self.run_setup()
+        File "/private/var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/pip-build-env-vb74z02u/overlay/lib/python3.8/site-packages/setuptools/build_meta.py", line 142, in run_setup
+          exec(compile(code, __file__, 'exec'), locals())
+        File "setup.py", line 42, in <module>
+          with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+      FileNotFoundError: [Errno 2] No such file or directory: '/private/var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/pip-install-zrb7u35d/genomedashboard/VERSION.md'
+      ----------------------------------------
+    ERROR: Command errored out with exit status 1: /Users/jgentle/miniconda3/envs/sgci-eds-gdash/bin/python /Users/jgentle/miniconda3/envs/sgci-eds-gdash/lib/python3.8/site-packages/pip/_vendor/pep517/_in_process.py get_requires_for_build_wheel /var/folders/xp/fbjt5xxn0yb4kvxbrwf6mgf40000gp/T/tmpm4agxn3v Check the logs for full command output.
+
+
+Dev Notes:
+- Something somewhere is hung up on that version.md file.
+- Need to find the root cause and unblock that.
+- I think this is what is breaking the TravisCI builds and blocking everything else.
