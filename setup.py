@@ -52,7 +52,7 @@ setup(
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
     scripts=['src/genomedashboard.py'],
-    python_requires='>=2.7, ==3.0.*, ==3.1.*, ==3.2.*, ==3.3.*, ==3.4.*, ==3.5.*, ==3.6.*, ==3.7.*, ==3.8.*, <4',
+    python_requires='>=2.7, ==3.*, <4',
     author='Genome Dashboard Team',
     author_email='genome.dashboard@gmail.com',
     long_description=readme,
@@ -95,7 +95,7 @@ setup(
         'pyBigWig',
         'numpy',
         'scipy',
-        'matplotlib'
+        'matplotlib',
     ],
     extras_require={
         'dev': ['check-manifest'],
@@ -105,13 +105,16 @@ setup(
         '': ['data/*.dat', 'data/*.txt'],
     },
     entry_points={
-        'console_scripts': [
-            'genomedashboard=src.genomedashboard:main',
-        ],
+        'console_scripts': ['genomedashboard=src.genomedashboard:main'],
     },
     include_package_data=True,
     zip_safe=False,
     setup_requires=[ ],
     test_suite='tests',
-    tests_require=[ ]
+    tests_require=[
+        'unittest',
+        'click>=6.0',
+        'numpy',
+        # 'scipy',
+    ]
 )
