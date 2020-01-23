@@ -33,44 +33,42 @@ PACKAGE PUBLISHING STEPS:
 from setuptools import setup, find_packages
 from os import path
 from io import open
-from pathlib import Path
+# from pathlib import Path
 
 here = path.abspath(path.dirname(__file__))
-current_dir = Path(here)
-parent_dir = current_dir.parent
 
-
-with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
-    current_version = f.read()
-    # print(current_version)
-
-with open(path.join(here, 'AUTHORS.md'), encoding='utf-8') as f:
-    authors = f.read()
-    # print(authors)
-
-with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
-    description = f.read()
-    # print(description)
+# with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+#     current_version = f.read()
+#     # print(current_version)
+#
+# with open(path.join(here, 'AUTHORS.md'), encoding='utf-8') as f:
+#     authors = f.read()
+#     # print(authors)
+#
+# with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
+#     mod_description = f.read()
+#     # print(mod_description)
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     readme = f.read()
     # print(readme)
 
-with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
-    history = f.read()
-    # print(history)
+# with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
+#     history = f.read()
+#     # print(history)
 
+"""
 # ASSIGN VALUES.
 module_name = 'genomedashboard'
 module_version = current_version
 module_authors = authors
 module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu, jgentle@tacc.utexas.edu'
-module_license_type = "MIT license"
+module_license_type = 'MIT license'
 module_url = 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/'
 module_download_url = 'https://pypi.org/project/genomedashboard/#files'
 module_keywords = 'python biology genomics genome dashboard'
 module_python = '>=2.7, ==3.0.*, ==3.1.*, ==3.2.*, ==3.3.*, ==3.4.*, ==3.5.*, ==3.6.*, ==3.7.*, ==3.8.*, <4'
-module_description = description
+module_description = mod_description
 module_long_description = readme
 module_long_description_content_type = 'text/markdown'
 module_data_included = True
@@ -149,6 +147,7 @@ module_extras_require = {
     'test': ['coverage'],
 }
 
+
 # DO NOT EDIT BELOW THIS LINE.
 setup(
     name=module_name,
@@ -177,4 +176,76 @@ setup(
     setup_requires=module_setup_requires,
     test_suite=module_test_suite,
     tests_require=module_test_requires
+)
+"""
+
+# SIMPLIFIED SETUP METHOD.
+setup(
+    name='genomedashboard',
+    version='0.0.76',
+    description='Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.',
+    package_dir={'': 'src'},
+    packages=find_packages(where='src'),
+    scripts=['src/genomedashboard.py'],
+    python_requires='>=2.7, ==3.0.*, ==3.1.*, ==3.2.*, ==3.3.*, ==3.4.*, ==3.5.*, ==3.6.*, ==3.7.*, ==3.8.*, <4',
+    author='Thomas C. Bishop, Zilong Li, Ran Sun & John Gentle',
+    author_email='zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu, jgentle@tacc.utexas.edu',
+    long_description=readme,
+    long_description_content_type='text/markdown',
+    license='MIT license',
+    url='http://dna.engr.latech.edu/~gdash/GDash-landing-page/',
+    download_url='https://pypi.org/project/genomedashboard/#files',
+    project_urls={
+        'PyPI': 'https://pypi.org/project/genomedashboard/',
+        'Documentation': 'https://genomedashboard.readthedocs.io/en/latest/readme.html',
+        'Source Code': 'https://github.com/genomeDashboard/genomedashboard',
+        'Issue Tracker': 'https://github.com/genome-dashboard/genome-dashboard-python/issues',
+        'Demo': 'http://dna.engr.latech.edu/~gdash/',
+        # 'Funding': 'https://donate.pypi.org',
+        # 'Say Thanks!': 'http://saythanks.io/to/example',
+    },
+    classifiers=[
+        'Development Status :: 2 - Pre-Alpha',
+        'Intended Audience :: Developers',
+        'Intended Audience :: Science/Research',
+        'Intended Audience :: Healthcare Industry',
+        'Intended Audience :: Education',
+        'Topic :: Software Development :: Libraries',
+        'License :: OSI Approved :: MIT License',
+        'Natural Language :: English',
+        "Programming Language :: Python :: 2",
+        'Programming Language :: Python :: 2.7',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.4',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+    ],
+    keywords='python biology genomics genome dashboard',
+    install_requires=[
+        'docutils>=0.3',
+        'click>=6.0',
+        'twobitreader',
+        'pyBigWig',
+        'numpy',
+        'scipy',
+        'matplotlib'
+    ],
+    extras_require={
+        'dev': ['check-manifest'],
+        'test': ['coverage'],
+    },
+    package_data={
+        '': ['data/*.dat', 'data/*.txt'],
+    },
+    entry_points={
+        'console_scripts': [
+            'genomedashboard=src.genomedashboard:main',
+        ],
+    },
+    include_package_data=True,
+    zip_safe=False,
+    setup_requires=[ ],
+    test_suite='tests',
+    tests_require=[ ]
 )
