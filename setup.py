@@ -8,13 +8,12 @@ See:
 """
 PACKAGE PUBLISHING STEPS:
 
-    Build long desc:      > pandoc -s -o LONG_DESCRIPTION.md README.md HISTORY.md
-       -- This throws syntax errors on PyPI.
-       -- Reverting to just using the README.
-    Build the package:    > python setup.py sdist bdist
-    Check with package:   > twine check dist/*
-    Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-    Upload to PyPI:       > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
+    1. Increment the version number under the VERSION file.
+    2. Update the HISTORY file with the release notes.
+    3. Build the package:    > python setup.py sdist bdist
+    4. Check with package:   > twine check dist/*
+    5. Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
+    6. Upload to PyPI:       > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 
     Note: uploads require a PyPI user account.
 """
@@ -50,31 +49,24 @@ with open(path.join(here, 'DESCRIPTION.md'), encoding='utf-8') as f:
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     readme = f.read()
-    print(readme)
+    # print(readme)
 
 with open(path.join(here, 'HISTORY.md'), encoding='utf-8') as f:
     history = f.read()
     # print(history)
 
-# NOT USING THIS.
-# with open(path.join(here, 'LONG_DESCRIPTION.md'), encoding='utf-8') as f:
-#     long_description = f.read()
-    # print(long_description)
-
-
 # ASSIGN VALUES.
 module_name = 'genomedashboard'
 module_version = current_version
 module_authors = authors
-module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu, taoteg@gmail.com'
+module_authors_email = 'zli007@latech.edu, rsu007@latech.edu, bishop@latech.edu, jgentle@tacc.utexas.edu'
 module_license_type = "MIT license"
 module_url = 'http://dna.engr.latech.edu/~gdash/GDash-landing-page/'
 module_download_url = 'https://pypi.org/project/genomedashboard/#files'
 module_keywords = 'python biology genomics genome dashboard'
-module_python = '>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, <4'
+module_python = '>=2.7, ==3.0.*, ==3.1.*, ==3.2.*, ==3.3.*, ==3.4.*, ==3.5.*, ==3.6.*, ==3.7.*, ==3.8.*, <4'
 module_description = description
-module_long_description = readme  # long_description
-# 'text/plain',  'text/markdown' or 'text/x-rst'.
+module_long_description = readme
 module_long_description_content_type = 'text/markdown'
 module_data_included = True
 module_enable_compression = False
