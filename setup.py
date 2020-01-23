@@ -15,8 +15,10 @@ PACKAGE PUBLISHING STEPS:
     5. Test PyPI upload:     > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
     6. Upload to PyPI:       > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 
-    Note: uploads require a PyPI user account.
-    Use the twine keyring feature for cli credential management locally: https://pypi.org/project/twine/
+    Notes:
+    - Uploads require a PyPI user account.
+    - Use the twine keyring feature for cli credential management locally: https://pypi.org/project/twine/
+    - Use the pypi-cli package to inspect package info and status: https://pypi.org/project/pypi-cli/
 """
 
 
