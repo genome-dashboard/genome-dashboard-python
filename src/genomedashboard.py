@@ -11,15 +11,16 @@ genome browser and the JSMol molecular viewer to rapidly fold any
 DNA sequence into atomic or coarse-grained models of DNA, nucleosomes
 or chromatin.
 
-Module Sections:
- - IMPORTS          (line 23)
- - GLOBALS          (line 43)
- - IO               (line 51)
- - DS               (line 346)
- - CONVERT          (line 583)
- - MATHFUNCTIONS    (line 1273)
-
 PyPi URL: https://pypi.org/project/genomedashboard/
+
+Module Sections:
+ - IMPORTS          (line 26)
+ - GLOBALS          (line 47)
+ - IO               (line 55)
+ - DS               (line 351)
+ - CONVERT          (line 508)
+ - MATHFUNCTIONS    (line 1278)
+ - CLI              (line 1409)
 """
 
 #########################################
@@ -27,6 +28,7 @@ PyPi URL: https://pypi.org/project/genomedashboard/
 #########################################
 
 from convert import convert as cv
+import click
 import copy
 import math
 import matplotlib.pyplot as plt
@@ -1402,3 +1404,22 @@ def helix_shear_RD(Rise, Twist, V1, V2, step_number, step_size):
         d = np.dot(Z.T, np.dot(X, Y))
         rd.append(ds.RD(r, d))
     return rd
+
+
+#########################################
+# CLI.PY (console script)
+#########################################
+
+@click.command()
+def main(args=None):
+    """Console script for genomedashboard."""
+    # click.echo("Replace this message by putting your code into "
+    #            "genomedashboard.cli.main")
+    # click.echo("See click documentation at http://click.pocoo.org/")
+    click.echo("This is the main() method of the genomedahsboard.cli module.")
+    click.echo("Edit the source code of the cli module to make it do something useful!")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())  # pragma: no cover
