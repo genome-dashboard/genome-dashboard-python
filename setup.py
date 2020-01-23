@@ -9,9 +9,7 @@ See:
 PACKAGE PUBLISHING STEPS:
 
     1. Update the ./HISTORY.md file with the latest release notes.
-    2. Increment the version number:
-        - in ./docs/version.md
-        - in setup() method [below]
+    2. Increment the version number in ./docs/version.md
     3. Build the package:
         > python setup.py sdist
     4. Check with package:
@@ -41,12 +39,15 @@ from io import open
 
 here = path.abspath(path.dirname(__file__))
 
+with open(path.join(here, 'docs/version.md'), encoding='utf-8') as f:
+    mod_version = f.read()
+
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     readme = f.read()
 
 setup(
     name='genomedashboard',
-    version='0.0.77',
+    version=mod_version,
     description='Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
