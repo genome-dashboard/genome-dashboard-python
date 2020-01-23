@@ -1,12 +1,12 @@
 alabaster==0.7.12
 argh==0.26.2
 attrs==19.3.0
-Babel==2.7.0
+Babel==2.8.0
 bleach==3.1.0
-certifi==2019.9.11
+certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
-coverage==4.5.4
+coverage==5.0.3
 docutils==0.16
 entrypoints==0.3
 filelock==3.0.12
@@ -22,7 +22,7 @@ packaging==19.2
 pathtools==0.1.2
 peppercorn==0.6
 pkginfo==1.5.0.1
-pluggy==0.13.0
+pluggy==0.13.1
 py==1.8.0
 pycodestyle==2.5.0
 pyflakes==2.1.1
