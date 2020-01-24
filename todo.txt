@@ -42,3 +42,14 @@ Dev Notes:
 - Something somewhere is hung up on that version.md file.
 - Need to find the root cause and unblock that.
 - I think this is what is breaking the TravisCI builds and blocking everything else.
+
+
+UPDATE:
+
+This error is related to two things:
+
+1) The Module entry point is likely incorrect - the package works if I manually use the scripts, but pip install fails to find the module - so something is off in config there.
+2) TravisCI builds all fail right now due to env setup issues (at least so far). Need to adjust the travis.yml file until this passes finally.
+
+IDEA:
+- Remove all unneeded setup aspects and minify the process.
