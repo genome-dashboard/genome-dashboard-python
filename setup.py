@@ -28,6 +28,14 @@ PACKAGE PUBLISHING STEPS:
     - Use the twine keyring feature for cli credential management locally: https://pypi.org/project/twine/
     - Use the pypi-cli package to inspect package info and status: https://pypi.org/project/pypi-cli/
         ex. > pypi info genomedashboard
+
+TEST PYPI PACKAGE:
+
+    1. Install from test-pypi to validate package locally.
+        > pip install -i https://test.pypi.org/simple/ genomedashboard
+        > pip install -i https://test.pypi.org/simple/ genomedashboard==$VERSION
+    2. Install from PyPI and test once package passes validation.
+        > pip install genomedashboard
 """
 
 
@@ -48,7 +56,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='genomedashboard',
-    version='0.0.86',
+    version='0.0.87',
     description='Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
@@ -91,7 +99,7 @@ setup(
     keywords='python biology genomics genome dashboard',
     install_requires=[
         'docutils>=0.3',
-        'click>=6.0',
+        # 'click>=6.0',
         'twobitreader',
         'pyBigWig',
         'numpy',
@@ -112,7 +120,7 @@ setup(
     zip_safe=False,
     setup_requires=[
         'docutils>=0.3',
-        'click>=6.0',
+        # 'click>=6.0',
         'twobitreader',
         'pyBigWig',
         'numpy',
@@ -122,7 +130,7 @@ setup(
     test_suite='tests',
     tests_require=[
         'unittest',
-        'click>=6.0',
+        # 'click>=6.0',
         'numpy',
     ]
 )

@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.87
+
+Date: 2020-01-24
+
+-   Resolving missing module errors.
+
 ### 0.0.86
 
 Date: 2020-01-24
