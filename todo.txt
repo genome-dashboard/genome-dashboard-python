@@ -53,3 +53,44 @@ This error is related to two things:
 
 IDEA:
 - Remove all unneeded setup aspects and minify the process.
+
+
+
+
+
+
+
+
+
+
+
+Some Refs:
+
+- https://github.com/genome-dashboard
+- https://github.com/genome-dashboard/genome-dashboard-python
+- https://travis-ci.org/dashboard
+
+- https://packaging.python.org/tutorials/packaging-projects/
+- https://packaging.python.org/guides/distributing-packages-using-setuptools/#entry-points
+- https://setuptools.readthedocs.io/en/latest/setuptools.html#automatic-script-creation
+- https://packaging.python.org/specifications/core-metadata/#description-content-type-optional
+- https://packaging.python.org/discussions/wheel-vs-egg/
+- https://packaging.python.org/glossary/#term-distribution-package
+- https://docs.python.org/3.8/distutils/sourcedist.html
+
+- https://pythonwheels.com/
+
+- https://docs.travis-ci.com/
+- https://docs.travis-ci.com/user/job-lifecycle/
+- https://blog.travis-ci.com/2019-08-07-extensive-python-testing-on-travis-ci
+- https://travis-ci.community/t/python-setup-py-test-fails-because-of-strange-working-directory/4003/10
+- https://stackoverflow.com/questions/35972415/python-import-fails-on-travisci-but-not-locally
+- https://github.com/pypa/setuptools/issues/1644
+- https://github.com/locustio/locust/issues/810
+
+- https://twine.readthedocs.io/en/latest/
+- https://setuptools.readthedocs.io/en/latest/
+- https://setuptools.readthedocs.io/en/latest/setuptools.html#configuring-setup-using-setup-cfg-files
+- https://setuptools.readthedocs.io/en/latest/setuptools.html#declaring-dependencies
+- https://setuptools.readthedocs.io/en/latest/setuptools.html#dynamic-discovery-of-services-and-plugins
+- https://setuptools.readthedocs.io/en/latest/python3.html
