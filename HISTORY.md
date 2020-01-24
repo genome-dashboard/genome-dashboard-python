@@ -1,11 +1,12 @@
 ## History
 
 
-### 0.0.87
+### 0.0.87 - 0.0.88
 
 Date: 2020-01-24
 
 -   Resolving missing module errors.
+-   Updated travis.yml to not install tox.
 
 ### 0.0.86
 
