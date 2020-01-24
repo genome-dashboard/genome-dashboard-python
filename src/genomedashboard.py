@@ -16,7 +16,7 @@ PyPi URL: https://pypi.org/project/genomedashboard/
 Module Sections:
  - IMPORTS          (line 26)
  - GLOBALS          (line 46)
- - DS               (line 55)
+ - DS               (line 54)
  - IO               (line 211)
  - CONVERT          (line 507)
  - MATHFUNCTIONS    (line 1275)
@@ -28,7 +28,7 @@ Module Sections:
 #########################################
 
 
-import click
+# import click
 import copy
 import math
 import matplotlib.pyplot as plt
@@ -1407,14 +1407,14 @@ def helix_shear_RD(Rise, Twist, V1, V2, step_number, step_size):
 # CLI.PY (console script)
 #########################################
 
-@click.command()
-def main(args=None):
-    """Console script for genomedashboard."""
-    click.echo("This is the main() method of the genomedahsboard.cli module.")
-    click.echo(
-        "Edit the source code of the cli main() method to make it do something useful!")
-    return 0
-
-
-if __name__ == "__main__":
-    sys.exit(main())  # pragma: no cover
+# @click.command()
+# def main(args=None):
+#     """Console script for genomedashboard."""
+#     click.echo("This is the main() method of the genomedahsboard.cli module.")
+#     click.echo(
+#         "Edit the source code of the cli main() method to make it do something useful!")
+#     return 0
+#
+#
+# if __name__ == "__main__":
+#     sys.exit(main())  # pragma: no cover
