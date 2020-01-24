@@ -15,6 +15,7 @@ PACKAGE PUBLISHING STEPS:
             ** These values must match!!!
     4. Build the package:
         > python setup.py sdist
+            ** Making the wheel and bdists causes issues with pip install right now.
     5. Check with package:
         > twine check dist/*
     6. Test PyPI upload:
@@ -47,7 +48,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='genomedashboard',
-    version='0.0.83',
+    version='0.0.84',
     description='Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),

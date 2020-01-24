@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.84
+
+Date: 2020-01-24
+
+-   Fixing issues with wheel builds and pip install.
+
 ### 0.0.82 - 0.0.83
 
 Date: 2020-01-24
