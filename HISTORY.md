@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.90
+
+Date: 2020-01-24
+
+-   Changes to travis.yml build instructions.
+
 ### 0.0.87 - 0.0.89
 
 Date: 2020-01-24
