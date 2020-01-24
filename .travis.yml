@@ -24,6 +24,11 @@ matrix:
     - python: 3.8
       env: TOXENV=py38
 
+# Prepare the environment for the dependency installations.
+before_install:
+  - "pip install -U pip"
+  - export PYTHONPATH=$PYTHONPATH:$(pwd)
+
 # Install package dependencies.
 install: pip install -r requirements.txt --use-mirrors
 
