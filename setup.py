@@ -9,14 +9,21 @@ See:
 PACKAGE PUBLISHING STEPS:
 
     1. Update the ./HISTORY.md file with the latest release notes.
-    2. Increment the version number in VERSION.md.
-    3. Build the package:
+    2. Increment the version number.
+        - Approach 1:
+            -- Increment the version number in ./VERSION.
+            ** Keeps throwing install error on VERSION file, manifest should resolve this.
+        - Approach 2:
+            -- Increment the version number in docs/version.md manually.
+            -- Increment the version number in setup.py (below) manually.
+            ** These must match!!!
+    4. Build the package:
         > python setup.py sdist
-    4. Check with package:
+    5. Check with package:
         > twine check dist/*
-    5. Test PyPI upload:
+    6. Test PyPI upload:
         > twine upload --repository-url https://test.pypi.org/legacy/ dist/*
-    6. Upload to PyPI:
+    7. Upload to PyPI:
         > twine upload --repository-url https://upload.pypi.org/legacy/ dist/*
 
     Notes:
@@ -39,7 +46,7 @@ from io import open
 
 here = path.abspath(path.dirname(__file__))
 
-with open(path.join(here, 'VERSION.md'), encoding='utf-8') as f:
+with open(path.join(here, 'VERSION'), encoding='utf-8') as f:
     mod_version = f.read()
 
 with open(path.join(here, 'README.md'), encoding='utf-8') as f:

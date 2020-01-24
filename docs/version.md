@@ -1,1 +1,1 @@
-.. include:: ../VERSION.md
+.. include:: ../VERSION

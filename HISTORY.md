@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.82
+
+Date: 2020-01-24
+
+-   Testing change to VERSION file handling.
+
 ### 0.0.81
 
 Date: 2020-01-23
