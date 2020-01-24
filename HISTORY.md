@@ -1,6 +1,12 @@
 ## History
 
 
+### 0.0.86
+
+Date: 2020-01-24
+
+-   Added setup_requires dependencies.
+
 ### 0.0.84 - 0.0.85
 
 Date: 2020-01-24

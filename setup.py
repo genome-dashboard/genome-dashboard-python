@@ -48,7 +48,7 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
 
 setup(
     name='genomedashboard',
-    version='0.0.85',
+    version='0.0.86',
     description='Genome Dashboard is the logic behind a web-based prototype of a genomics dashboard, specifically designed to integrate informatics and 4D material studies of chromatin. Genome Dashboard unites our Interactive Chromatin Modeling (ICM) tools with the Biodalliance genome browser and the JSMol molecular viewer to rapidly fold any DNA sequence into atomic or coarse-grained models of DNA, nucleosomes or chromatin.',
     package_dir={'': 'src'},
     packages=find_packages(where='src'),
@@ -110,7 +110,15 @@ setup(
     },
     include_package_data=True,
     zip_safe=False,
-    setup_requires=[ ],
+    setup_requires=[
+        'docutils>=0.3',
+        'click>=6.0',
+        'twobitreader',
+        'pyBigWig',
+        'numpy',
+        'scipy',
+        'matplotlib',
+    ],
     test_suite='tests',
     tests_require=[
         'unittest',
