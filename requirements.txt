@@ -7,7 +7,7 @@ genomedashboard==0.0.89
 idna==2.8
 kiwisolver==1.1.0
 matplotlib==3.1.2
-numpy==1.18.1
+numpy==1.18.3
 pyBigWig==0.3.17
 pyparsing==2.4.6
 pypi-cli==0.4.1
