@@ -24,7 +24,7 @@ peppercorn==0.6
 pkginfo==1.5.0.1
 pluggy==0.13.1
 py==1.8.1
-pycodestyle==2.5.0
+pycodestyle==2.6.0
 pyflakes==2.1.1
 Pygments==2.5.2
 pyparsing==2.4.6
