@@ -31,7 +31,7 @@ pyparsing==2.4.6
 pytz==2019.3
 PyYAML==5.3
 readme-renderer==24.0
-requests==2.22.0
+requests==2.25.1
 requests-toolbelt==0.9.1
 rstvalidator==2019.4.13
 six==1.14.0
