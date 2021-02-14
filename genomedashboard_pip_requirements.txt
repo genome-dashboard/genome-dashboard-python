@@ -11,7 +11,7 @@ matplotlib==3.1.2
 numpy==1.18.1
 pkginfo==1.5.0.1
 pyBigWig==0.3.17
-Pygments==2.5.2
+Pygments==2.8.0
 pyparsing==2.4.6
 pypi-cli==0.4.1
 python-dateutil==2.8.1
