@@ -13,7 +13,7 @@ pyparsing==2.4.6
 pypi-cli==0.4.1
 python-dateutil==2.8.1
 requests==2.22.0
-scipy==1.4.1
+scipy==1.7.0
 six==1.14.0
 twobitreader==3.1.7
 urllib3==1.25.8
