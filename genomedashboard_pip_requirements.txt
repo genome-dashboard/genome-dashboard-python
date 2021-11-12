@@ -12,7 +12,7 @@ numpy==1.18.1
 pkginfo==1.5.0.1
 pyBigWig==0.3.17
 Pygments==2.5.2
-pyparsing==2.4.6
+pyparsing==3.0.6
 pypi-cli==0.4.1
 python-dateutil==2.8.1
 readme-renderer==24.0
