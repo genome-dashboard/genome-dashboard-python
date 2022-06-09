@@ -16,7 +16,7 @@ pyparsing==2.4.6
 pypi-cli==0.4.1
 python-dateutil==2.8.1
 readme-renderer==24.0
-requests==2.22.0
+requests==2.28.0
 requests-toolbelt==0.9.1
 scipy==1.4.1
 six==1.14.0
