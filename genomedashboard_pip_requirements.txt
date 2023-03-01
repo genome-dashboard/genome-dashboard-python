@@ -10,7 +10,7 @@ kiwisolver==1.1.0
 matplotlib==3.1.2
 numpy==1.18.1
 pkginfo==1.5.0.1
-pyBigWig==0.3.17
+pyBigWig==0.3.20
 Pygments==2.5.2
 pyparsing==2.4.6
 pypi-cli==0.4.1
