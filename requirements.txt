@@ -12,7 +12,7 @@ pyBigWig==0.3.17
 pyparsing==2.4.6
 pypi-cli==0.4.1
 python-dateutil==2.8.1
-requests==2.22.0
+requests==2.31.0
 scipy==1.4.1
 six==1.14.0
 twobitreader==3.1.7
