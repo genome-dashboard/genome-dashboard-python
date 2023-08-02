@@ -1,5 +1,5 @@
 certifi==2019.11.28
-chardet==3.0.4
+chardet==5.2.0
 Click==7.0
 cycler==0.10.0
 docutils==0.16
