@@ -37,7 +37,7 @@ rstvalidator==2019.4.13
 six==1.14.0
 snowballstemmer==2.0.0
 Sphinx==2.3.1
-sphinxcontrib-applehelp==1.0.1
+sphinxcontrib-applehelp==1.0.5
 sphinxcontrib-devhelp==1.0.1
 sphinxcontrib-htmlhelp==1.0.2
 sphinxcontrib-jsmath==1.0.1
