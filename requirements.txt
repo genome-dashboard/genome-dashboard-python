@@ -1,6 +1,6 @@
 certifi==2019.11.28
 chardet==3.0.4
-Click==7.0
+Click==8.1.7
 cycler==0.10.0
 docutils==0.16
 genomedashboard==0.0.89
