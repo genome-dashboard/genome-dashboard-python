@@ -1,7 +1,7 @@
 certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
-cycler==0.10.0
+cycler==0.12.0
 docutils==0.16
 genomedashboard==0.0.89
 idna==2.8
