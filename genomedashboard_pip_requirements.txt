@@ -14,7 +14,7 @@ pyBigWig==0.3.17
 Pygments==2.5.2
 pyparsing==2.4.6
 pypi-cli==0.4.1
-python-dateutil==2.8.1
+python-dateutil==2.9.0
 readme-renderer==24.0
 requests==2.22.0
 requests-toolbelt==0.9.1
